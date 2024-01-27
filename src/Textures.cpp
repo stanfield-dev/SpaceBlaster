@@ -17,24 +17,28 @@ Textures::~Textures()
 {
 }
 
-void Textures::init()
+void Textures::init(unsigned int shaderProgram)
 {
-	unsigned int loc, textureID;
+	unsigned int loc;
 	
-	glGenTextures(4, m_textureID);
+	glGenTextures(1, &m_backgroundTextureID);
+	glGenTextures(1, &m_playerTextureID);
+	glGenTextures(1, &m_enemyTextureID);
+	glGenTextures(1, &m_terrainTextureID);
 
-	textureID = loadTexture(BACKGROUND);
-	glBindTextureUnit(BACKGROUND, textureID);
+	m_backgroundTextureID = loadTexture(BACKGROUND);
+	glBindTextureUnit(BACKGROUND, m_backgroundTextureID);
 
-	textureID = loadTexture(PLAYER);
-	glBindTextureUnit(PLAYER, textureID);
+	m_playerTextureID = loadTexture(PLAYER);
+	glBindTextureUnit(PLAYER, m_playerTextureID);
 
-	//textureID = loadTexture(ENEMY);
-	//glBindTextureUnit(ENEMY, textureID);
-	//textureID = loadTexture(TERRAIN);
-	//glBindTextureUnit(TERRAIN, textureID);
+	//m_enemyTextureID = loadTexture(ENEMY);
+	//glBindTextureUnit(ENEMY, m_enemyTextureID);
+	//m_terrainTextureID = loadTexture(TERRAIN);
+	//glBindTextureUnit(TERRAIN, m_terrainTextureID);
 
-	loc = glGetUniformLocation(Shader::getShaderID(), "u_textures");
+	loc = glGetUniformLocation(shaderProgram, "u_textures");
+
 	int samplers[4] = { 0, 1, 2, 3 };
 	glUniform1iv(loc, 4, samplers);
 }

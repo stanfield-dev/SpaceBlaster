@@ -3,6 +3,8 @@
 #include "defines.h"
 #include "VertexBuffers.h"
 
+#include <iostream>
+
 VertexBuffers::VertexBuffers()
 {
 }
@@ -21,7 +23,7 @@ void VertexBuffers::init()
 void VertexBuffers::updateVertices(int type, float* vertices)
 {
 	unsigned int size = 4 * 20 * sizeof(float);	// # objects * elements per objects * 4 bytes
-	unsigned int offset = type * size;
+	unsigned int offset = type * (size/4);
 
 	glBindBuffer(GL_ARRAY_BUFFER, m_vertexbufferID);
 	glBufferData(GL_ARRAY_BUFFER, size, NULL, GL_DYNAMIC_DRAW);
@@ -34,7 +36,6 @@ void VertexBuffers::updateVertices(int type, float* vertices)
 	glEnableVertexAttribArray(2);
 	glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (const void*)(4 * sizeof(float)));
 
-	disableVAO();
 }
 
 void VertexBuffers::enableVAO()

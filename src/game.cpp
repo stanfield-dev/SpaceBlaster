@@ -36,6 +36,7 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 
 int main(void) {
 	GLFWwindow* window;
+	Renderer renderEngine;
 
 	/* Initialize the library */
 	if (!glfwInit())
@@ -61,22 +62,19 @@ int main(void) {
 		std::cout << "GLEW initialization failure!" << std::endl;
 	}
 
+	unsigned int shaderProgram = Shader::createShader(Shader::getVertexShader(), Shader::getFragmentShader());
+	Shader::useShader(shaderProgram);
 
 	VertexBuffers::init();
 	Background::init();
 	playerOne.init();
-
-	Renderer::init();
-
-	unsigned int shaderProgram = Shader::createShader(Shader::getVertexShader(), Shader::getFragmentShader());
-	Shader::useShader(shaderProgram);
-
-	Textures::init();
+	renderEngine.init();
+	Textures::init(shaderProgram);
 
 	while (!glfwWindowShouldClose(window)) {
 		playerOne.updatePlayerVertices(playerOne.calculatePlayerPosition());
 
-		Renderer::draw();
+		renderEngine.draw();
 
 		glfwSwapBuffers(window);
 

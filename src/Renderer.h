@@ -4,7 +4,7 @@
 
 #include "defines.h"
 
-static class Renderer 
+class Renderer 
 {
 private:
 
@@ -12,7 +12,7 @@ public:
 	Renderer();
 	~Renderer();
 
-	static void init();
-	static void draw();
+	void init();
+	void draw();
 };
 

@@ -4,6 +4,8 @@
 #include "Textures.h"
 #include "VertexBuffers.h"
 
+#include <iostream>
+
 Renderer::Renderer()
 {
 }
@@ -28,6 +30,6 @@ void Renderer::draw()
 
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
-	IndexBuffer::unbindIBO();
-	VertexBuffers::disableVAO();
+	//IndexBuffer::unbindIBO();
+	//VertexBuffers::disableVAO();
 }

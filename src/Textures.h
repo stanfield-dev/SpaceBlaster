@@ -16,8 +16,12 @@ private:
 		 1.0f, -1.0f,	//  UL
 	};
 
+	inline static unsigned int m_backgroundTextureID;
+	inline static unsigned int m_playerTextureID;
+	inline static unsigned int m_enemyTextureID;
+	inline static unsigned int m_terrainTextureID;
+
 	inline static unsigned int m_samplerID = 0;
-	inline static unsigned int m_textureID[4];
 	inline static unsigned char* m_textureData = nullptr;
 
 	void static loadImage(const std::string&);
@@ -26,7 +30,7 @@ public:
 	Textures();
 	~Textures();
 
-	static void init();
+	static void init(unsigned int);
 	static unsigned int loadTexture(int);
 };
 
