@@ -1,12 +1,15 @@
 #version 460 core
 
-layout(location = 0) in vec2 Position; 
-layout(location = 1) in vec2 texCoord;
+layout(location = 0) in vec2  a_objectCoord; 
+layout(location = 1) in vec2  a_textureCoord; 
+layout(location = 2) in float a_textureID; 
   
-out vec2 v_TexCoord; 
+out vec2 v_textureCoord; 
+out float v_textureID;
 
 void main()
 {
-    gl_Position = vec4(Position, 0.0, 1.0); 
-    v_TexCoord = texCoord;
+    gl_Position = vec4(a_objectCoord, 0.0, 1.0); 
+    v_textureCoord = a_textureCoord;
+    v_textureID = a_textureID;
 }

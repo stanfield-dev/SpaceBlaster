@@ -8,22 +8,17 @@ IndexBuffer::IndexBuffer()
 
 IndexBuffer::~IndexBuffer()
 {
-	glDeleteBuffers(1, &m_indexbufferID);
 }
 
-void IndexBuffer::createIndexBuffer(unsigned int* data, unsigned int count)
+void IndexBuffer::bindIBO()
 {
 	glGenBuffers(1, &m_indexbufferID);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_indexbufferID);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(unsigned int), data, GL_STATIC_DRAW);
-}
-
-void IndexBuffer::bindBuffer()
-{
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6 * sizeof(unsigned int), m_vertexIndices, GL_STATIC_DRAW);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_indexbufferID);
 }
 
-void IndexBuffer::unbindBuffer()
+void IndexBuffer::unbindIBO()
 {
 	glDeleteBuffers(1, &m_indexbufferID);
 }

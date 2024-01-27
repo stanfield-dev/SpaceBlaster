@@ -5,12 +5,13 @@
 #include <string>
 
 #include "defines.h"
+#include "Background.h"
 #include "Renderer.h"
 #include "Player.h"
 #include "Shader.h"
-#include "Texture.h"
+#include "Textures.h"
+#include "VertexBuffers.h"
 
-Renderer renderEngine;
 Player playerOne;
 
 static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
@@ -40,6 +41,10 @@ int main(void) {
 	if (!glfwInit())
 		return -1;
 
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
+	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
 	/* Create a windowed mode window and its OpenGL context */
 	window = glfwCreateWindow((int)SCREENWIDTH, (int)SCREENHEIGHT, "Test Game", NULL, NULL);
 	if (!window) {
@@ -56,35 +61,25 @@ int main(void) {
 		std::cout << "GLEW initialization failure!" << std::endl;
 	}
 
-	renderEngine.init();
+
+	VertexBuffers::init();
+	Background::init();
+	playerOne.init();
+
+	Renderer::init();
 
 	unsigned int shaderProgram = Shader::createShader(Shader::getVertexShader(), Shader::getFragmentShader());
 	Shader::useShader(shaderProgram);
 
-	renderEngine.renderBackground(shaderProgram);
+	Textures::init();
 
-	playerOne.setShaderID(shaderProgram);
-
-	//playerOne.updatePlayerVertices(PlayerOne.calculatePlayerPosition());
-
-	
-	//Texture::loadTexture(PLAYER_SPRITE, GL_TEXTURE_2D, shaderProgram);
-
-	/* Loop until the user closes the window */
 	while (!glfwWindowShouldClose(window)) {
+		playerOne.updatePlayerVertices(playerOne.calculatePlayerPosition());
 
-		/* Render here */
-		glClear(GL_COLOR_BUFFER_BIT);
+		Renderer::draw();
 
-		//playerOne.updatePlayerVertices(PlayerOne.calculatePlayerPosition());
-
-		renderEngine.draw();
-		//glDrawElements(GL_TRIANGLES, sizeof(indices) / 4, GL_UNSIGNED_INT, nullptr);
-
-		/* Swap front and back buffers */
 		glfwSwapBuffers(window);
 
-		/* Poll for and process events */
 		glfwPollEvents();
 	}
 

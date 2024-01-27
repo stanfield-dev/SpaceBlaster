@@ -31,14 +31,14 @@ int Shader::createShader(const std::string& vertexShader, const std::string& fra
 	return programID;
 }
 
-unsigned int Shader::getShaderID()
-{
-	return m_shaderID;
-}
-
 void Shader::setShaderID(unsigned int id)
 {
 	m_shaderID = id;
+}
+
+unsigned int Shader::getShaderID()
+{
+	return m_shaderID;
 }
 
 unsigned int Shader::compileShader(unsigned int type, const std::string& source)

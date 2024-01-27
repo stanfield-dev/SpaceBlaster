@@ -1,16 +1,15 @@
 #pragma once
-#include <string>
-#include "stb_image.h"
+
+#include "defines.h"
 
 class Player 
 {
 private:
-	// arbitary starting position defaults
+	float m_xOffset = PLAYERWIDTH / SCREENWIDTH;
+	float m_yOffset = PLAYERHEIGHT / SCREENHEIGHT;
 	float m_playerPosX;
 	float m_playerPosY;
-	float m_coordinates[16];
-
-	unsigned int m_shaderID;
+	float m_playerVertices[20];
 
 public:
 
@@ -20,10 +19,9 @@ public:
 	float getPosX();
 	float getPosY();
 
+	void init();
 	void updatePosX(float);
 	void updatePosY(float);
-	void setShaderID(unsigned int);
-	unsigned int getShaderID();
 	float* calculatePlayerPosition();
 	void updatePlayerVertices(float []);
 };
