@@ -41,9 +41,9 @@ void Enemy::init()
 {
 	m_enemyVertices[0] = m_enemyPosX;					// quad LL
 	m_enemyVertices[1] = m_enemyPosY;
-	m_enemyVertices[2] = -1.0f;						// text LL
-	m_enemyVertices[3] = -1.0f;
-	m_enemyVertices[4] = (float)ENEMY;				// text ID
+	m_enemyVertices[2] = -1.0f;							// text LL
+	m_enemyVertices[3] = -1.0f;	
+	m_enemyVertices[4] = (float)ENEMY;					// text ID
 
 	m_enemyVertices[5] = m_enemyPosX + m_xOffset;		// quad LR
 	m_enemyVertices[6] = m_enemyPosY;

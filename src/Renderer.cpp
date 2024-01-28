@@ -20,7 +20,6 @@ void Renderer::init()
 	glClearColor(0.0f, 0.2f, 0.1f, 1.0f);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_BLEND);
-	glEnable(GL_DEPTH_TEST);
 }
 
 void Renderer::draw(unsigned int shaderProgram)
@@ -32,6 +31,6 @@ void Renderer::draw(unsigned int shaderProgram)
 	VertexBuffers::enableVAO();
 	IndexBuffer::bindIBO();
 
-	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+	glDrawElements(GL_TRIANGLES, 24, GL_UNSIGNED_INT, 0);
 
 }
