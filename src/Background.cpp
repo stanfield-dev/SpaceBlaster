@@ -11,8 +11,8 @@ void Background::init()
 
 	m_backgroundVertices[5] =  1.0f;				// quad LR
 	m_backgroundVertices[6] = -1.0f;
-	m_backgroundVertices[7] = -1.0f;
-	m_backgroundVertices[8] =  1.0f;
+	m_backgroundVertices[7] =  1.0f;
+	m_backgroundVertices[8] = -1.0f;
 	m_backgroundVertices[9] = (float)BACKGROUND;
 
 	m_backgroundVertices[10] = 1.0f;				// quad UR
@@ -23,8 +23,8 @@ void Background::init()
 
 	m_backgroundVertices[15] = -1.0f;				// quad UL
 	m_backgroundVertices[16] =  1.0f;
-	m_backgroundVertices[17] =  1.0f;
-	m_backgroundVertices[18] = -1.0f;
+	m_backgroundVertices[17] = -1.0f;
+	m_backgroundVertices[18] =  1.0f;
 	m_backgroundVertices[19] = (float)BACKGROUND;
 
 	VertexBuffers::updateVertices(BACKGROUND, m_backgroundVertices);

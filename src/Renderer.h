@@ -13,6 +13,6 @@ public:
 	~Renderer();
 
 	void init();
-	void draw();
+	void draw(unsigned int);
 };
 

@@ -7,30 +7,38 @@
 #include "defines.h"
 #include "Background.h"
 #include "Renderer.h"
+#include "Enemy.h"
+#include "Terrain.h"
 #include "Player.h"
 #include "Shader.h"
 #include "Textures.h"
 #include "VertexBuffers.h"
 
 Player playerOne;
+Enemy enemyOne;
 
 static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
 
 	if (action == GLFW_PRESS || action == GLFW_REPEAT) {
 		switch (key) {
-		case GLFW_KEY_ESCAPE	:	glfwSetWindowShouldClose(window, 1);
-									break;
-		case GLFW_KEY_Q			:	glfwSetWindowShouldClose(window, 1);
-									break;
-		case GLFW_KEY_W			:	playerOne.updatePosY( (1.0f / SCREENHEIGHT) * 20 );
-									break;
-		case GLFW_KEY_A			:	playerOne.updatePosX(-(1.0f / SCREENWIDTH) * 20);
-									break;
-		case GLFW_KEY_S			:	playerOne.updatePosY(-(1.0f / SCREENHEIGHT) * 20);
-									break;
-		case GLFW_KEY_D			:	playerOne.updatePosX( (1.0f / SCREENWIDTH) * 20);
-									break;
+			case GLFW_KEY_ESCAPE	:	glfwSetWindowShouldClose(window, 1);
+										break;
+			case GLFW_KEY_Q			:	glfwSetWindowShouldClose(window, 1);
+										break;
+			case GLFW_KEY_W			:	playerOne.updatePosY( (1.0f / SCREENHEIGHT) * 20 );
+										playerOne.updatePlayerVertices(playerOne.calculatePlayerPosition());
+										break;
+			case GLFW_KEY_A			:	playerOne.updatePosX(-(1.0f / SCREENWIDTH) * 20);
+										playerOne.updatePlayerVertices(playerOne.calculatePlayerPosition());
+										break;
+			case GLFW_KEY_S			:	playerOne.updatePosY(-(1.0f / SCREENHEIGHT) * 20);
+										playerOne.updatePlayerVertices(playerOne.calculatePlayerPosition());
+										break;
+			case GLFW_KEY_D			:	playerOne.updatePosX( (1.0f / SCREENWIDTH) * 20);
+										playerOne.updatePlayerVertices(playerOne.calculatePlayerPosition());
+										break;
 		}
+		
 	}
 }
 
@@ -67,14 +75,15 @@ int main(void) {
 
 	VertexBuffers::init();
 	Background::init();
+	Terrain::init();
+	enemyOne.init();
 	playerOne.init();
 	renderEngine.init();
 	Textures::init(shaderProgram);
 
 	while (!glfwWindowShouldClose(window)) {
-		playerOne.updatePlayerVertices(playerOne.calculatePlayerPosition());
 
-		renderEngine.draw();
+		renderEngine.draw(shaderProgram);
 
 		glfwSwapBuffers(window);
 

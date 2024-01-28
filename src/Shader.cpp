@@ -28,6 +28,8 @@ int Shader::createShader(const std::string& vertexShader, const std::string& fra
 	glDeleteShader(vsID);
 	glDeleteShader(fsID);
 
+	setShaderID(programID);
+
 	return programID;
 }
 

@@ -47,8 +47,8 @@ void Player::init()
 
 	m_playerVertices[5] = m_playerPosX + m_xOffset;		// quad LR
 	m_playerVertices[6] = m_playerPosY;
-	m_playerVertices[7] = -1.0f;
-	m_playerVertices[8] = 1.0f;
+	m_playerVertices[7] =  1.0f;
+	m_playerVertices[8] = -1.0f;
 	m_playerVertices[9] = (float)PLAYER;
 
 	m_playerVertices[10] = m_playerPosX + m_xOffset;	// quad UR
@@ -59,8 +59,8 @@ void Player::init()
 
 	m_playerVertices[15] = m_playerPosX;				// quad UL
 	m_playerVertices[16] = m_playerPosY + m_yOffset;
-	m_playerVertices[17] = 1.0f;
-	m_playerVertices[18] = -1.0f;
+	m_playerVertices[17] = -1.0f;
+	m_playerVertices[18] =  1.0f;
 	m_playerVertices[19] = (float)PLAYER;
 
 	updatePlayerVertices(m_playerVertices);
