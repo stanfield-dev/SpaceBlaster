@@ -27,15 +27,23 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 										break;
 			case GLFW_KEY_W			:	playerOne.updatePosY( (1.0f / SCREENHEIGHT) * 20 );
 										playerOne.updatePlayerVertices(playerOne.calculatePlayerPosition());
+										enemyOne.updatePosX((1.0f / SCREENHEIGHT) * 10);
+										enemyOne.updateEnemyVertices(enemyOne.calculateEnemyPosition());
 										break;
 			case GLFW_KEY_A			:	playerOne.updatePosX(-(1.0f / SCREENWIDTH) * 20);
 										playerOne.updatePlayerVertices(playerOne.calculatePlayerPosition());
+										enemyOne.updatePosX((1.0f / SCREENHEIGHT) * 10);
+										enemyOne.updateEnemyVertices(enemyOne.calculateEnemyPosition());
 										break;
 			case GLFW_KEY_S			:	playerOne.updatePosY(-(1.0f / SCREENHEIGHT) * 20);
 										playerOne.updatePlayerVertices(playerOne.calculatePlayerPosition());
+										enemyOne.updatePosX((1.0f / SCREENHEIGHT) * 10);
+										enemyOne.updateEnemyVertices(enemyOne.calculateEnemyPosition());
 										break;
 			case GLFW_KEY_D			:	playerOne.updatePosX( (1.0f / SCREENWIDTH) * 20);
 										playerOne.updatePlayerVertices(playerOne.calculatePlayerPosition());
+										enemyOne.updatePosX((1.0f / SCREENHEIGHT) * 10);
+										enemyOne.updateEnemyVertices(enemyOne.calculateEnemyPosition());
 										break;
 		}
 		

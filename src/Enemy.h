@@ -18,11 +18,13 @@ public:
 
 	float getPosX();
 	float getPosY();
+	void setPosX(float);
+	void setPosY(float);
 
 	void init();
 	void updatePosX(float);
 	void updatePosY(float);
 	float* calculateEnemyPosition();
-	void updateEnemyVertices(float[]);
+	void updateEnemyVertices(float*);
 };
 

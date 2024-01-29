@@ -19,17 +19,16 @@ Textures::~Textures()
 
 void Textures::init(unsigned int shaderProgram)
 {
-	unsigned int loc;
+	unsigned int loc0, loc1;
 
-	loadTexture(BACKGROUND);
 	loadTexture(PLAYER);
 	loadTexture(ENEMY);
 	loadTexture(TERRAIN);
+	loadTexture(BACKGROUND);
 
-	loc = glGetUniformLocation(shaderProgram, "u_textures");
-
+	loc0 = glGetUniformLocation(shaderProgram, "u_textures");
 	int samplers[4] = { 0, 1, 2, 3 }; 
-	glUniform1iv(loc, 4, samplers);
+	glUniform1iv(loc0, 4, samplers);
 }
 
 void Textures::loadTexture(int type)
