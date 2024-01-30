@@ -15,8 +15,8 @@ const std::string FSHADER_PATH = "src/resources/shaders/fragmentShader.frag";
 
 // sprites
 const std::string BACKGROUND_IMAGE = "src/resources/textures/background.png";
-const std::string PLAYER_SPRITE = "src/resources/textures/player.png";
-const std::string ENEMY_SPRITE = "src/resources/textures/enemy.png";
+const std::string PLAYER_SPRITE = "src/resources/textures/player-ship-spritesheet.png";
+const std::string ENEMY_SPRITE = "src/resources/textures/enemy-ship-spritesheet.png";
 const std::string TERRAIN_SPRITE = "src/resources/textures/terrain.png";
 
 // friendly names

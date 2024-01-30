@@ -5,10 +5,21 @@
 class Player 
 {
 private:
+	const float m_playerSpriteSheetWidth = 4096.0f;
+	const float m_playerSpriteSheetHeight = 512.0f;
+	const float m_playerSpriteWidth = 512.0f;
+	const float m_playerSpriteHeight = 512.0f;
+
 	float m_xOffset = PLAYERWIDTH / SCREENWIDTH;
 	float m_yOffset = PLAYERHEIGHT / SCREENHEIGHT;
 	float m_playerPosX;
 	float m_playerPosY;
+
+	float m_spriteXOrigin = 0.0f;
+	float m_spriteXOffset = m_playerSpriteWidth / m_playerSpriteSheetWidth;
+	float m_spriteYOrigin = 0.0f;
+	float m_spriteYOffset = m_playerSpriteHeight / m_playerSpriteSheetHeight;
+
 	float m_playerVertices[20];
 
 public:
