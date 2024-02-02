@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <string>
+#include <time.h>
 
 #include "defines.h"
 #include "Background.h"
@@ -25,28 +26,23 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 										break;
 			case GLFW_KEY_Q			:	glfwSetWindowShouldClose(window, 1);
 										break;
-			case GLFW_KEY_W			:	playerOne.updatePosY( (1.0f / SCREENHEIGHT) * 20 );
+			case GLFW_KEY_W			:	[[fallthrough]];
+			case GLFW_KEY_UP		:	playerOne.updatePosY( (1.0f / SCREENHEIGHT) * 20 );
 										playerOne.updatePlayerVertices(playerOne.calculatePlayerPosition());
-										enemyOne.updatePosY((1.0f / SCREENHEIGHT) * 10);
-										enemyOne.updateEnemyVertices(enemyOne.calculateEnemyPosition());
 										break;
-			case GLFW_KEY_A			:	playerOne.updatePosX(-(1.0f / SCREENWIDTH) * 20);
+			case GLFW_KEY_A			:	[[fallthrough]];
+			case GLFW_KEY_LEFT		:	playerOne.updatePosX(-(1.0f / SCREENWIDTH) * 20);
 										playerOne.updatePlayerVertices(playerOne.calculatePlayerPosition());
-										enemyOne.updatePosX((-1.0f / SCREENHEIGHT) * 10);
-										enemyOne.updateEnemyVertices(enemyOne.calculateEnemyPosition());
 										break;
+			case GLFW_KEY_DOWN		:	[[fallthrough]];
 			case GLFW_KEY_S			:	playerOne.updatePosY(-(1.0f / SCREENHEIGHT) * 20);
 										playerOne.updatePlayerVertices(playerOne.calculatePlayerPosition());
-										enemyOne.updatePosY((-1.0f / SCREENHEIGHT) * 10);
-										enemyOne.updateEnemyVertices(enemyOne.calculateEnemyPosition());
 										break;
-			case GLFW_KEY_D			:	playerOne.updatePosX( (1.0f / SCREENWIDTH) * 20);
+			case GLFW_KEY_RIGHT		:	[[fallthrough]];
+			case GLFW_KEY_D			:	playerOne.updatePosX((1.0f / SCREENWIDTH) * 20);
 										playerOne.updatePlayerVertices(playerOne.calculatePlayerPosition());
-										enemyOne.updatePosX((1.0f / SCREENHEIGHT) * 10);
-										enemyOne.updateEnemyVertices(enemyOne.calculateEnemyPosition());
 										break;
 		}
-		
 	}
 }
 
@@ -89,7 +85,19 @@ int main(void) {
 	renderEngine.init();
 	Textures::init(shaderProgram);
 
+	int frame = 0;
 	while (!glfwWindowShouldClose(window)) {
+
+		std::srand(time(0));
+		frame++;
+
+		if (frame == 10) {
+			enemyOne.updatePosX((float)(1.0f * (std::rand() % 10) / SCREENWIDTH));
+			enemyOne.updatePosY((float)(1.0f * (std::rand() % 10) / SCREENHEIGHT));
+			enemyOne.updateEnemyVertices(enemyOne.calculateEnemyPosition());
+
+			frame = 0;
+		}
 
 		renderEngine.draw(shaderProgram);
 
