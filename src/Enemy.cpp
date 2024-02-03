@@ -17,12 +17,12 @@ Enemy::~Enemy()
 {
 }
 
-float Enemy::getPosX()
+float Enemy::getPosX() const
 {
 	return m_enemyPosX;
 }
 
-float Enemy::getPosY()
+float Enemy::getPosY() const
 {
 	return m_enemyPosY;
 }
@@ -39,50 +39,43 @@ void Enemy::setPosY(float y)
 
 void Enemy::updatePosX(float x)
 {
-	m_enemyPosX += x;
 
 	if (x > 0.0f) {
-		if (m_spriteXOrigin + m_spriteXOffset >= 1.0f) {
-			m_spriteXOrigin = 0.0f;
-			m_spriteXOffset = m_enemySpriteWidth / m_enemySpriteSheetWidth;
+		if (m_enemyPosX + m_xOffset + x >= 1.0f) {
+			m_enemyPosX -= x;
 		}
 		else {
-			m_spriteXOrigin += m_spriteXOffset;
+			m_enemyPosX += x;
 		}
 	}
 
 	if (x < 0.0f) {
-		if (m_spriteXOrigin - m_spriteXOffset <= 0.0f) {
-			m_spriteXOffset = m_enemySpriteWidth / m_enemySpriteSheetWidth;
-			m_spriteXOrigin = 1.0f - m_spriteXOffset;
+		if (m_enemyPosX + x <= -1.0f) {
+			m_enemyPosX = -1.0f;
 		}
 		else {
-			m_spriteXOrigin -= m_spriteXOffset;
+			m_enemyPosX += x;
 		}
 	}
 }
 
 void Enemy::updatePosY(float y)
 {
-	m_enemyPosY += y;
-
 	if (y > 0.0f) {
-		if (m_spriteXOrigin + m_spriteXOffset >= 1.0f) {
-			m_spriteXOrigin = 0.0f;
-			m_spriteXOffset = m_enemySpriteWidth / m_enemySpriteSheetWidth;
+		if (m_enemyPosY + m_yOffset + y >= 1.0f) {
+			m_enemyPosY -= y;
 		}
 		else {
-			m_spriteXOrigin += m_spriteXOffset;
+			m_enemyPosY += y;
 		}
 	}
 
 	if (y < 0.0f) {
-		if (m_spriteXOrigin - m_spriteXOffset <= 0.0f) {
-			m_spriteXOffset = m_enemySpriteWidth / m_enemySpriteSheetWidth;
-			m_spriteXOrigin = 1.0f - m_spriteXOffset;
+		if (m_enemyPosY + y <= -0.7f) {
+			m_enemyPosY = -0.7f;
 		}
 		else {
-			m_spriteXOrigin -= m_spriteXOffset;
+			m_enemyPosY += y;
 		}
 	}
 }
@@ -124,28 +117,7 @@ void Enemy::updateEnemyVertices(float* enemyVertices)
 float* Enemy::calculateEnemyPosition()
 {
 	float newPosX = getPosX();
-
-	if ((newPosX + m_xOffset) > 1.0f) {
-		newPosX = -1.0f;
-		setPosX(-1.0f);
-	}
-
-	else if ((newPosX + m_xOffset) < -1.0f) {
-		newPosX = 1.0f - m_xOffset;
-		setPosX(1.0f - m_xOffset);
-	}
-
 	float newPosY = getPosY();
-
-	if ((newPosY + m_yOffset) > 1.0f) {
-		newPosY = -1.0f;
-		setPosY(-1.0f);
-	}
-
-	else if ((newPosY + m_yOffset) < -1.0f) {
-		newPosY = 1.0f - m_yOffset;
-		setPosY(1.0f - m_yOffset);
-	}
 
 	m_enemyVertices[0] = newPosX;					// quad LL
 	m_enemyVertices[1] = newPosY;

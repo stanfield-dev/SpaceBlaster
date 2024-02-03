@@ -10,10 +10,10 @@ private:
 	const float m_enemySpriteWidth = 512.0f;
 	const float m_enemySpriteHeight = 512.0f;
 
-	float m_xOffset = PLAYERWIDTH / SCREENWIDTH;
-	float m_yOffset = PLAYERHEIGHT / SCREENHEIGHT;
-	float m_enemyPosX = 0.15f;
-	float m_enemyPosY = 0.23f;
+	float m_enemyPosX = -1.0f;
+	float m_enemyPosY = 0.0f;
+	float m_xOffset = ENEMYWIDTH / SCREENWIDTH;
+	float m_yOffset = ENEMYHEIGHT / SCREENHEIGHT;
 
 	float m_spriteXOrigin = 0.0f;
 	float m_spriteXOffset = m_enemySpriteWidth / m_enemySpriteSheetWidth;
@@ -27,8 +27,8 @@ public:
 	Enemy();
 	~Enemy();
 
-	float getPosX();
-	float getPosY();
+	float getPosX() const;
+	float getPosY() const;
 	void setPosX(float);
 	void setPosY(float);
 

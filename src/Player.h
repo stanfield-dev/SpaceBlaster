@@ -1,5 +1,6 @@
 #pragma once
 
+#include <array>
 #include "defines.h"
 
 class Player 
@@ -27,8 +28,8 @@ public:
 	Player();
 	~Player();
 
-	float getPosX();
-	float getPosY();
+	float getPosX() const;
+	float getPosY() const;
 	void setPosX(float);
 	void setPosY(float);
 

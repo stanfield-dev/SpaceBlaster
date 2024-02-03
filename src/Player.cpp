@@ -17,12 +17,12 @@ Player::~Player()
 {
 }
 
-float Player::getPosX()
+float Player::getPosX() const
 {
 	return m_playerPosX;
 }
 
-float Player::getPosY()
+float Player::getPosY() const
 {
 	return m_playerPosY;
 }

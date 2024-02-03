@@ -86,24 +86,22 @@ int main(void) {
 	Textures::init(shaderProgram);
 
 	int frame = 0;
+
 	while (!glfwWindowShouldClose(window)) {
 
-		std::srand(time(0));
-		frame++;
-
-		if (frame == 10) {
-			enemyOne.updatePosX((float)(1.0f * (std::rand() % 10) / SCREENWIDTH));
-			enemyOne.updatePosY((float)(1.0f * (std::rand() % 10) / SCREENHEIGHT));
-			enemyOne.updateEnemyVertices(enemyOne.calculateEnemyPosition());
-
+		if (frame == 5) {
+			Background::scrollBackground();
 			frame = 0;
 		}
+
 
 		renderEngine.draw(shaderProgram);
 
 		glfwSwapBuffers(window);
 
 		glfwPollEvents();
+
+		frame++;
 	}
 
 	Shader::deleteShader(shaderProgram);
