@@ -13,7 +13,6 @@ private:
 	inline static unsigned int m_playerTextureID;
 	inline static unsigned int m_enemyTextureID;
 	inline static unsigned int m_terrainTextureID;
-	inline static unsigned int m_lasersTextureID;
 
 	inline static unsigned char* m_textureData = nullptr;
 

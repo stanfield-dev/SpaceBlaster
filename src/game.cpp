@@ -27,20 +27,10 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 			case GLFW_KEY_Q			:	glfwSetWindowShouldClose(window, 1);
 										break;
 			case GLFW_KEY_W			:	[[fallthrough]];
-			case GLFW_KEY_UP		:	playerOne.updatePosY( (1.0f / SCREENHEIGHT) * 20 );
-										playerOne.updatePlayerVertices(playerOne.calculatePlayerPosition());
-										break;
-			case GLFW_KEY_A			:	[[fallthrough]];
-			case GLFW_KEY_LEFT		:	playerOne.updatePosX(-(1.0f / SCREENWIDTH) * 20);
-										playerOne.updatePlayerVertices(playerOne.calculatePlayerPosition());
+			case GLFW_KEY_UP		:	playerOne.updatePosY( (1.0f / SCREENHEIGHT) * 8.0f);							
 										break;
 			case GLFW_KEY_DOWN		:	[[fallthrough]];
-			case GLFW_KEY_S			:	playerOne.updatePosY(-(1.0f / SCREENHEIGHT) * 20);
-										playerOne.updatePlayerVertices(playerOne.calculatePlayerPosition());
-										break;
-			case GLFW_KEY_RIGHT		:	[[fallthrough]];
-			case GLFW_KEY_D			:	playerOne.updatePosX((1.0f / SCREENWIDTH) * 20);
-										playerOne.updatePlayerVertices(playerOne.calculatePlayerPosition());
+			case GLFW_KEY_S			:	playerOne.updatePosY(-(1.0f / SCREENHEIGHT) * 8.0f);
 										break;
 		}
 	}
@@ -89,11 +79,15 @@ int main(void) {
 
 	while (!glfwWindowShouldClose(window)) {
 
+		if (frame == 2) {
+			playerOne.fireEngines();
+			enemyOne.fireEngines();
+		}
+
 		if (frame == 5) {
 			Background::scrollBackground();
 			frame = 0;
 		}
-
 
 		renderEngine.draw(shaderProgram);
 

@@ -37,5 +37,6 @@ public:
 	void updatePosY(float);
 	float* calculateEnemyPosition();
 	void updateEnemyVertices(float*);
+	void fireEngines();
 };
 

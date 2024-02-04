@@ -21,15 +21,14 @@ void Textures::init(unsigned int shaderProgram)
 {
 	unsigned int loc0;
 
-	loadTexture(LASERS);
 	loadTexture(PLAYER);
 	loadTexture(ENEMY);
 	loadTexture(TERRAIN);
 	loadTexture(BACKGROUND);
 
 	loc0 = glGetUniformLocation(shaderProgram, "u_textures");
-	int samplers[5] = { 0, 1, 2, 3, 4 }; 
-	glUniform1iv(loc0, 5, samplers);
+	int samplers[5] = { 0, 1, 2, 3 }; 
+	glUniform1iv(loc0, 4, samplers);
 }
 
 void Textures::loadTexture(int type)
@@ -92,21 +91,6 @@ void Textures::loadTexture(int type)
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_textureData);
 
 		glBindTextureUnit(3, m_terrainTextureID);
-	}
-
-	if (type == LASERS) {
-		glCreateTextures(GL_TEXTURE_2D, 1, &m_lasersTextureID);
-		glBindTexture(GL_TEXTURE_2D, m_lasersTextureID);
-
-		loadImage(LASER_SPRITE);
-
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_textureData);
-
-		glBindTextureUnit(4, m_lasersTextureID);
 	}
 
 	if (m_textureData) {

@@ -39,7 +39,6 @@ void Enemy::setPosY(float y)
 
 void Enemy::updatePosX(float x)
 {
-
 	if (x > 0.0f) {
 		if (m_enemyPosX + m_xOffset + x >= 1.0f) {
 			m_enemyPosX -= x;
@@ -142,7 +141,22 @@ float* Enemy::calculateEnemyPosition()
 	return m_enemyVertices;
 }
 
+void Enemy::fireEngines()
+{
+	if (m_spriteXOrigin + m_spriteXOffset >= 1.0f) {
+		m_spriteXOrigin = 0.0f;
+	}
+	else {
+		m_spriteXOrigin += m_spriteXOffset;
+	}
 
+	m_enemyVertices[2] = m_spriteXOrigin;						// LLx
+	m_enemyVertices[7] = m_spriteXOrigin + m_spriteXOffset;		// LRx
+	m_enemyVertices[12] = m_spriteXOrigin + m_spriteXOffset;	// URx
+	m_enemyVertices[17] = m_spriteXOrigin;						// ULx
+
+	updateEnemyVertices(m_enemyVertices);
+}
 
 
 

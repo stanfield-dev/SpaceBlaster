@@ -13,8 +13,10 @@ private:
 
 	float m_xOffset = PLAYERWIDTH / SCREENWIDTH;
 	float m_yOffset = PLAYERHEIGHT / SCREENHEIGHT;
-	float m_playerPosX;
-	float m_playerPosY;
+
+	// arbitary starting position defaults
+	float m_playerPosX = -0.9f;
+	float m_playerPosY = 0.0f;
 
 	float m_spriteXOrigin = 0.0f;
 	float m_spriteXOffset = m_playerSpriteWidth / m_playerSpriteSheetWidth;
@@ -30,6 +32,8 @@ public:
 
 	float getPosX() const;
 	float getPosY() const;
+	float getGunPosition() const;
+
 	void setPosX(float);
 	void setPosY(float);
 
@@ -38,5 +42,6 @@ public:
 	void updatePosY(float);
 	float* calculatePlayerPosition();
 	void updatePlayerVertices(float*);
+	void fireEngines();
 };
 

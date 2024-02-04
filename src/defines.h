@@ -20,8 +20,6 @@ const std::string BACKGROUND_IMAGE = "src/resources/textures/background.png";
 const std::string PLAYER_SPRITE = "src/resources/textures/player-ship-spritesheet.png";
 const std::string ENEMY_SPRITE = "src/resources/textures/enemy-ship-spritesheet.png";
 const std::string TERRAIN_SPRITE = "src/resources/textures/terrain.png";
-const std::string LASER_SPRITE = "src/resources/textures/lasers-spritesheet.png";
-
 
 // friendly names
 enum objectType : int
@@ -30,5 +28,4 @@ enum objectType : int
 	PLAYER,
 	ENEMY,
 	TERRAIN,
-	LASERS
 };

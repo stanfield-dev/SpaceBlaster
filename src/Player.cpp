@@ -8,9 +8,6 @@
 
 Player::Player()
 {
-	// arbitary starting position defaults
-	m_playerPosX = (0.0f - (m_xOffset / 2));
-	m_playerPosY = -0.8f;
 }
 
 Player::~Player()
@@ -37,54 +34,49 @@ void Player::setPosY(float y)
 	m_playerPosY = y;
 }
 
-void Player::updatePosX(float x)
+float Player::getGunPosition() const
 {
-	m_playerPosX += x;
-
-	if (x > 0.0f) {
-		if (m_spriteXOrigin + m_spriteXOffset >= 1.0f) {
-			m_spriteXOrigin = 0.0f;
-			m_spriteXOffset = m_playerSpriteWidth / m_playerSpriteSheetWidth;
-		}
-		else {
-			m_spriteXOrigin += m_spriteXOffset;
-		}
-	}
-
-	if (x < 0.0f) {
-		if (m_spriteXOrigin - m_spriteXOffset <= 0.0f) {
-			m_spriteXOffset = m_playerSpriteWidth / m_playerSpriteSheetWidth;
-			m_spriteXOrigin = 1.0f - m_spriteXOffset;
-		}
-		else {
-			m_spriteXOrigin -= m_spriteXOffset;
-		}
-	}
+	return m_playerPosY + (m_yOffset / 2);
 }
+
+//void Player::updatePosX(float x)
+//{
+//	if (x > 0.0f) {
+//		if (m_playerPosX + m_xOffset + x >= 1.0f) {
+//			m_playerPosX -= x;
+//		}
+//		else {
+//			m_playerPosX += x;
+//		}
+//	}
+//
+//	if (x < 0.0f) {
+//		if (m_playerPosX + x <= -1.0f) {
+//			m_playerPosX = -1.0f;
+//		}
+//		else {
+//			m_playerPosX += x;
+//		}
+//	}
+//
+//	calculatePlayerPosition();
+//}
 
 void Player::updatePosY(float y)
 {
-	m_playerPosY += y;
-
 	if (y > 0.0f) {
-		if (m_spriteXOrigin + m_spriteXOffset >= 1.0f) {
-			m_spriteXOrigin = 0.0f;
-			m_spriteXOffset = m_playerSpriteWidth / m_playerSpriteSheetWidth;
-		}
-		else {
-			m_spriteXOrigin += m_spriteXOffset;
+		if (m_playerPosY + m_yOffset + y < 0.98f) {
+			m_playerPosY += y;
 		}
 	}
 
 	if (y < 0.0f) {
-		if (m_spriteXOrigin - m_spriteXOffset <= 0.0f) {
-			m_spriteXOffset = m_playerSpriteWidth / m_playerSpriteSheetWidth;
-			m_spriteXOrigin = 1.0f - m_spriteXOffset;
-		}
-		else {
-			m_spriteXOrigin -= m_spriteXOffset;
+		if (m_playerPosY + y >= -0.85f) {
+			m_playerPosY += y;
 		}
 	}
+
+	calculatePlayerPosition();
 }
 
 void Player::init()
@@ -148,25 +140,34 @@ float* Player::calculatePlayerPosition() {
 
 	m_playerVertices[0] =  newPosX;					// quad LL
 	m_playerVertices[1] =  newPosY;
-	m_playerVertices[2] = m_spriteXOrigin;			// text LL
-	m_playerVertices[3] = m_spriteYOrigin;
 
 	m_playerVertices[5] =  newPosX + m_xOffset;		// quad LR
 	m_playerVertices[6] =  newPosY;
-	m_playerVertices[7] = m_spriteXOrigin + m_spriteXOffset;
-	m_playerVertices[8] = m_spriteYOrigin;
 
 	m_playerVertices[10] = newPosX + m_xOffset;		// quad UR
 	m_playerVertices[11] = newPosY + m_yOffset;
-	m_playerVertices[12] = m_spriteXOrigin + m_spriteXOffset;
-	m_playerVertices[13] = m_spriteYOrigin + m_spriteYOffset;
 
 	m_playerVertices[15] = newPosX;					// quad UL
 	m_playerVertices[16] = newPosY + m_yOffset;
-	m_playerVertices[17] = m_spriteXOrigin;
-	m_playerVertices[18] = m_spriteYOrigin + m_spriteYOffset;
 
 	return m_playerVertices;
+}
+
+void Player::fireEngines()
+{
+	if (m_spriteXOrigin + m_spriteXOffset >= 1.0f) {
+		m_spriteXOrigin = 0.0f;
+	}
+	else {
+		m_spriteXOrigin += m_spriteXOffset;
+	}
+
+	m_playerVertices[2] = m_spriteXOrigin;						// LLx
+	m_playerVertices[7] = m_spriteXOrigin + m_spriteXOffset;	// LRx
+	m_playerVertices[12] = m_spriteXOrigin + m_spriteXOffset;	// URx
+	m_playerVertices[17] = m_spriteXOrigin;						// ULx
+
+	updatePlayerVertices(m_playerVertices);
 }
 
 
