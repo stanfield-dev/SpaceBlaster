@@ -15,7 +15,7 @@ VertexBuffers::~VertexBuffers()
 
 void VertexBuffers::init()
 {
-	unsigned int size = 4 * 20 * sizeof(float);	// # objects * elements per objects * 4 bytes
+	unsigned int size = 100 * 20 * sizeof(float);	// (grossly excessive)# objects * elements per objects * 4 bytes
 
 	glGenVertexArrays(1, &m_VAO);
 	enableVAO();
@@ -32,10 +32,10 @@ void VertexBuffers::init()
 
 void VertexBuffers::updateVertices(int type, float* vertices)
 {
-	unsigned int size = 4 * 20 * sizeof(float);	// # objects * elements per objects * 4 bytes
-	unsigned int offset = type * (size/4);
+	unsigned int size = TOTALOBJECTS * 20 * sizeof(float);	// # objects * elements per objects * 4 bytes
+	unsigned int offset = type * (size/TOTALOBJECTS);
 
-	glNamedBufferSubData(m_vertexbufferID, offset, size / 4, vertices);
+	glNamedBufferSubData(m_vertexbufferID, offset, size / TOTALOBJECTS, vertices);
 }
 
 void VertexBuffers::enableVAO()

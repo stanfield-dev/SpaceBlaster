@@ -3,6 +3,8 @@
 static class VertexBuffers
 {
 private:
+	const static int TOTALOBJECTS = 5;
+
 	static inline unsigned int m_VAO;
 	static inline unsigned int m_vertexbufferID;
 

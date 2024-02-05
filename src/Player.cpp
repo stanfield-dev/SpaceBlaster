@@ -81,30 +81,6 @@ void Player::updatePosY(float y)
 
 void Player::init()
 {
-	m_playerVertices[0] = m_playerPosX;					// quad LL
-	m_playerVertices[1] = m_playerPosY;
-	m_playerVertices[2] = m_spriteXOrigin;				// text LL
-	m_playerVertices[3] = m_spriteYOrigin;
-	m_playerVertices[4] = (float)PLAYER;				// text ID
-
-	m_playerVertices[5] = m_playerPosX + m_xOffset;		// quad LR
-	m_playerVertices[6] = m_playerPosY;
-	m_playerVertices[7] = m_spriteXOrigin + m_spriteXOffset;
-	m_playerVertices[8] = m_spriteYOrigin;
-	m_playerVertices[9] = (float)PLAYER;
-
-	m_playerVertices[10] = m_playerPosX + m_xOffset;	// quad UR
-	m_playerVertices[11] = m_playerPosY + m_yOffset;
-	m_playerVertices[12] = m_spriteXOrigin + m_spriteXOffset;
-	m_playerVertices[13] = m_spriteYOrigin + m_spriteYOffset;
-	m_playerVertices[14] = (float)PLAYER;
-
-	m_playerVertices[15] = m_playerPosX;				// quad UL
-	m_playerVertices[16] = m_playerPosY + m_yOffset;
-	m_playerVertices[17] = m_spriteXOrigin;
-	m_playerVertices[18] = m_spriteYOrigin + m_spriteYOffset;
-	m_playerVertices[19] = (float)PLAYER;
-
 	updatePlayerVertices(m_playerVertices);
 }
 

@@ -2,6 +2,7 @@
 #include <GLFW/glfw3.h>
 
 #include <iostream>
+#include <map>
 #include <string>
 #include <time.h>
 
@@ -18,22 +19,48 @@
 Player playerOne;
 Enemy enemyOne;
 
+std::map<int, bool> keyIsPressed 
+{
+	{GLFW_KEY_W, false},
+	{GLFW_KEY_UP, false},
+
+	{GLFW_KEY_DOWN, false},
+	{GLFW_KEY_S, false}
+};
+
 static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
 
-	if (action == GLFW_PRESS || action == GLFW_REPEAT) {
+	if (action == GLFW_PRESS) {
 		switch (key) {
 			case GLFW_KEY_ESCAPE	:	glfwSetWindowShouldClose(window, 1);
 										break;
 			case GLFW_KEY_Q			:	glfwSetWindowShouldClose(window, 1);
 										break;
-			case GLFW_KEY_W			:	[[fallthrough]];
-			case GLFW_KEY_UP		:	playerOne.updatePosY( (1.0f / SCREENHEIGHT) * 8.0f);							
+
+			case GLFW_KEY_W			:	keyIsPressed[GLFW_KEY_W] = true;
 										break;
-			case GLFW_KEY_DOWN		:	[[fallthrough]];
-			case GLFW_KEY_S			:	playerOne.updatePosY(-(1.0f / SCREENHEIGHT) * 8.0f);
+			case GLFW_KEY_UP		:	keyIsPressed[GLFW_KEY_UP] = true;			
+										break;
+			case GLFW_KEY_DOWN		:	keyIsPressed[GLFW_KEY_DOWN] = true;
+										break;
+			case GLFW_KEY_S			:	keyIsPressed[GLFW_KEY_S] = true;
 										break;
 		}
 	}
+
+	if (action == GLFW_RELEASE) {
+		switch (key) {
+			case GLFW_KEY_W			:	keyIsPressed[GLFW_KEY_W] = false;
+										break;
+			case GLFW_KEY_UP		:	keyIsPressed[GLFW_KEY_UP] = false;
+										break;
+			case GLFW_KEY_DOWN		:	keyIsPressed[GLFW_KEY_DOWN] = false;
+										break;
+			case GLFW_KEY_S			:	keyIsPressed[GLFW_KEY_S] = false;
+										break;
+		}
+	}
+
 }
 
 int main(void) {
@@ -87,6 +114,14 @@ int main(void) {
 		if (frame == 5) {
 			Background::scrollBackground();
 			frame = 0;
+		}
+
+		if (keyIsPressed[GLFW_KEY_W] == true || keyIsPressed[GLFW_KEY_UP] == true) {
+			playerOne.updatePosY((1.0f / SCREENHEIGHT) * 8.0f);
+		}
+
+		if (keyIsPressed[GLFW_KEY_S] == true || keyIsPressed[GLFW_KEY_DOWN] == true) {
+			playerOne.updatePosY(-(1.0f / SCREENHEIGHT) * 8.0f);
 		}
 
 		renderEngine.draw(shaderProgram);

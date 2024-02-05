@@ -23,7 +23,23 @@ private:
 	float m_spriteYOrigin = 0.0f;
 	float m_spriteYOffset = m_playerSpriteHeight / m_playerSpriteSheetHeight;
 
-	float m_playerVertices[20];
+	float m_playerVertices[20] = {
+		m_playerPosX, m_playerPosY,
+		m_spriteXOrigin, m_spriteYOrigin,
+		(float)PLAYER,
+
+		m_playerPosX + m_xOffset, m_playerPosY,
+		m_spriteXOrigin + m_spriteXOffset, m_spriteYOrigin,
+		(float)PLAYER,
+
+		m_playerPosX + m_xOffset, m_playerPosY + m_yOffset,
+		m_spriteXOrigin + m_spriteXOffset, m_spriteYOrigin + m_spriteYOffset,
+		(float)PLAYER,
+
+		m_playerPosX, m_playerPosY + m_yOffset,
+		m_spriteXOrigin, m_spriteYOrigin + m_spriteYOffset,
+		(float)PLAYER
+	};
 
 public:
 

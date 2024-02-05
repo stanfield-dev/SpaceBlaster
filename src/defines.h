@@ -28,4 +28,5 @@ enum objectType : int
 	PLAYER,
 	ENEMY,
 	TERRAIN,
+	LASER
 };
