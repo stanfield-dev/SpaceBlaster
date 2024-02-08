@@ -6,14 +6,6 @@
 #include <iostream>
 #include <fstream>
 
-Shader::Shader()
-{
-}
-
-Shader::~Shader()
-{
-}
-
 int Shader::createShader(const std::string& vertexShader, const std::string& fragmentShader)
 {
 	unsigned int programID = glCreateProgram();

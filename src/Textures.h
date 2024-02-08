@@ -10,8 +10,9 @@ private:
 	inline static int m_bpp = 0;
 
 	inline static unsigned int m_backgroundTextureID;
-	inline static unsigned int m_playerTextureID;
 	inline static unsigned int m_enemyTextureID;
+	inline static unsigned int m_playerTextureID;
+	inline static unsigned int m_projectileTextureID;
 	inline static unsigned int m_terrainTextureID;
 
 	inline static unsigned char* m_textureData = nullptr;

@@ -8,16 +8,12 @@
 
 #include "defines.h"
 #include "Background.h"
-#include "Renderer.h"
 #include "Enemy.h"
-#include "Terrain.h"
+#include "Manager.h"
 #include "Player.h"
 #include "Shader.h"
 #include "Textures.h"
-#include "VertexBuffers.h"
 
-Player playerOne;
-Enemy enemyOne;
 
 std::map<int, bool> keyIsPressed 
 {
@@ -65,7 +61,6 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 
 int main(void) {
 	GLFWwindow* window;
-	Renderer renderEngine;
 
 	/* Initialize the library */
 	if (!glfwInit())
@@ -94,37 +89,32 @@ int main(void) {
 	unsigned int shaderProgram = Shader::createShader(Shader::getVertexShader(), Shader::getFragmentShader());
 	Shader::useShader(shaderProgram);
 
-	VertexBuffers::init();
-	Background::init();
-	Terrain::init();
-	enemyOne.init();
-	playerOne.init();
-	renderEngine.init();
-	Textures::init(shaderProgram);
+	Background* background = new Background(BACKGROUND, 0.0f, 0.0f, -1.0f);
+
+	Enemy* enemy = new Enemy(ENEMY, 1.0f, 0.0f, 0.0f);
+	Player* player = new Player(PLAYER, -1.0f, 0.0f, 0.0f);
 
 	int frame = 0;
 
 	while (!glfwWindowShouldClose(window)) {
 
-		if (frame == 2) {
-			playerOne.fireEngines();
-			enemyOne.fireEngines();
-		}
+		//if (frame == 2) {
+		//	player->fireEngines();
+		//	enemyOne.fireEngines();
+		//}
 
 		if (frame == 5) {
-			Background::scrollBackground();
+			background->scrollBackground();
 			frame = 0;
 		}
 
-		if (keyIsPressed[GLFW_KEY_W] == true || keyIsPressed[GLFW_KEY_UP] == true) {
-			playerOne.updatePosY((1.0f / SCREENHEIGHT) * 8.0f);
-		}
+		//if (keyIsPressed[GLFW_KEY_W] == true || keyIsPressed[GLFW_KEY_UP] == true) {
+		//	playerOne.updatePosY((1.0f / SCREENHEIGHT) * 8.0f);
+		//}
 
-		if (keyIsPressed[GLFW_KEY_S] == true || keyIsPressed[GLFW_KEY_DOWN] == true) {
-			playerOne.updatePosY(-(1.0f / SCREENHEIGHT) * 8.0f);
-		}
-
-		renderEngine.draw(shaderProgram);
+		//if (keyIsPressed[GLFW_KEY_S] == true || keyIsPressed[GLFW_KEY_DOWN] == true) {
+		//	playerOne.updatePosY(-(1.0f / SCREENHEIGHT) * 8.0f);
+		//}
 
 		glfwSwapBuffers(window);
 

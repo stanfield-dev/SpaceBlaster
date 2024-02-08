@@ -1,17 +1,20 @@
 #include "Background.h"
-#include "VertexBuffers.h"
+#include "Manager.h"
 
-void Background::init()
+Background::Background(int type, float x, float y, float z)
+	: Entity(type, x, y, z)
 {
-	VertexBuffers::updateVertices(BACKGROUND, m_backgroundVertices);
+	Manager::addEntity(this);
+}
+
+Background::~Background()
+{
 }
 
 void Background::scrollBackground()
 {
-	m_backgroundVertices[2] += 0.002f;				// LLx
-	m_backgroundVertices[7] += 0.002f;				// LRx
-	m_backgroundVertices[12] += 0.002f;				// URx
-	m_backgroundVertices[17] += 0.002f;				// ULx
-
-	VertexBuffers::updateVertices(BACKGROUND, m_backgroundVertices);
+	m_vertexArray[3]  += 0.002f;				// LLx
+	m_vertexArray[8]  += 0.002f;				// LRx
+	m_vertexArray[13] += 0.002f;				// URx
+	m_vertexArray[18] += 0.002f;				// ULx
 }

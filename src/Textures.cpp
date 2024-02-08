@@ -23,12 +23,13 @@ void Textures::init(unsigned int shaderProgram)
 
 	loadTexture(PLAYER);
 	loadTexture(ENEMY);
+	loadTexture(PROJECTILE);
 	loadTexture(TERRAIN);
 	loadTexture(BACKGROUND);
 
 	loc0 = glGetUniformLocation(shaderProgram, "u_textures");
-	int samplers[5] = { 0, 1, 2, 3 }; 
-	glUniform1iv(loc0, 4, samplers);
+	int samplers[5] = { 0, 1, 2, 3, 4 }; 
+	glUniform1iv(loc0, 5, samplers);
 }
 
 void Textures::loadTexture(int type)
@@ -78,6 +79,21 @@ void Textures::loadTexture(int type)
 		glBindTextureUnit(2, m_enemyTextureID);
 	}
 
+	if (type == PROJECTILE) {
+		glCreateTextures(GL_TEXTURE_2D, 1, &m_projectileTextureID);
+		glBindTexture(GL_TEXTURE_2D, m_projectileTextureID);
+
+		loadImage(PROJECTILE_SPRITE);
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_textureData);
+
+		glBindTextureUnit(3, m_projectileTextureID);
+	}
+
 	if (type == TERRAIN) {
 		glCreateTextures(GL_TEXTURE_2D, 1, &m_terrainTextureID);
 		glBindTexture(GL_TEXTURE_2D, m_terrainTextureID);
@@ -90,7 +106,7 @@ void Textures::loadTexture(int type)
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_textureData);
 
-		glBindTextureUnit(3, m_terrainTextureID);
+		glBindTextureUnit(4, m_terrainTextureID);
 	}
 
 	if (m_textureData) {

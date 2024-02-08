@@ -1,29 +1,21 @@
 #pragma once
 
-#include "defines.h"
+#include "Entity.h"
 
-static class Background
+class Background : public Entity
 {
 private:
-	static inline float m_backgroundVertices[20] = {
-		-1.0f, -1.0f,
-		0.0f, 0.0f,
-		(float)BACKGROUND,
+	const float m_spriteSheetWidth = 2048.0f;
+	const float m_spriteSheetHeight = 1536.0f;
+	const float m_spriteWidth = 2048.0f;
+	const float m_spriteHeight = 1536.0f;
 
-		1.0f, -1.0f,
-		1.0f, 0.0f,
-		(float)BACKGROUND,
-
-		1.0f, 1.0f,
-		1.0f, 1.0f,
-		(float)BACKGROUND,
-
-		-1.0f, 1.0f,
-		0.0f, 1.0f,
-		(float)BACKGROUND,
-	};
+	float m_displayWidth = SCREENWIDTH;
+	float m_displayHeight = SCREENHEIGHT;
 
 public:
-	static void init();
-	static void scrollBackground();
+	Background(int, float, float, float);
+	~Background();
+
+	void scrollBackground();
 };

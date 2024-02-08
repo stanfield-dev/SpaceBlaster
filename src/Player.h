@@ -1,63 +1,22 @@
 #pragma once
 
-#include <array>
-#include "defines.h"
+#include "Entity.h"
 
-class Player 
+class Player : public Entity
 {
 private:
-	const float m_playerSpriteSheetWidth = 4096.0f;
-	const float m_playerSpriteSheetHeight = 512.0f;
-	const float m_playerSpriteWidth = 512.0f;
-	const float m_playerSpriteHeight = 512.0f;
+	const float m_spriteSheetWidth = 4096.0f;
+	const float m_spriteSheetHeight = 512.0f;
+	const float m_spriteWidth = 512.0f;
+	const float m_spriteHeight = 512.0f;
 
-	float m_xOffset = PLAYERWIDTH / SCREENWIDTH;
-	float m_yOffset = PLAYERHEIGHT / SCREENHEIGHT;
-
-	// arbitary starting position defaults
-	float m_playerPosX = -0.9f;
-	float m_playerPosY = 0.0f;
-
-	float m_spriteXOrigin = 0.0f;
-	float m_spriteXOffset = m_playerSpriteWidth / m_playerSpriteSheetWidth;
-	float m_spriteYOrigin = 0.0f;
-	float m_spriteYOffset = m_playerSpriteHeight / m_playerSpriteSheetHeight;
-
-	float m_playerVertices[20] = {
-		m_playerPosX, m_playerPosY,
-		m_spriteXOrigin, m_spriteYOrigin,
-		(float)PLAYER,
-
-		m_playerPosX + m_xOffset, m_playerPosY,
-		m_spriteXOrigin + m_spriteXOffset, m_spriteYOrigin,
-		(float)PLAYER,
-
-		m_playerPosX + m_xOffset, m_playerPosY + m_yOffset,
-		m_spriteXOrigin + m_spriteXOffset, m_spriteYOrigin + m_spriteYOffset,
-		(float)PLAYER,
-
-		m_playerPosX, m_playerPosY + m_yOffset,
-		m_spriteXOrigin, m_spriteYOrigin + m_spriteYOffset,
-		(float)PLAYER
-	};
+	float m_displayWidth = 128.0f;
+	float m_displayHeight = 128.0f;
 
 public:
-
-	Player();
+	Player(int, float, float, float);
 	~Player();
 
-	float getPosX() const;
-	float getPosY() const;
-	float getGunPosition() const;
-
-	void setPosX(float);
-	void setPosY(float);
-
-	void init();
-	void updatePosX(float);
-	void updatePosY(float);
-	float* calculatePlayerPosition();
-	void updatePlayerVertices(float*);
-	void fireEngines();
+	void updateYPosition(float);
 };
 
