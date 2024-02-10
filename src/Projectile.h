@@ -16,6 +16,4 @@ private:
 public:
 	Projectile(int, float, float, float);
 	~Projectile();
-
-	void updateXPosition(float);
 };

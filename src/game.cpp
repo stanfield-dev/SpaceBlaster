@@ -8,9 +8,7 @@
 
 #include "defines.h"
 #include "Background.h"
-#include "Enemy.h"
-#include "Manager.h"
-#include "Player.h"
+#include "EntityManager.h"
 #include "Shader.h"
 #include "Textures.h"
 
@@ -40,6 +38,8 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 			case GLFW_KEY_DOWN		:	keyIsPressed[GLFW_KEY_DOWN] = true;
 										break;
 			case GLFW_KEY_S			:	keyIsPressed[GLFW_KEY_S] = true;
+										break;
+			case GLFW_KEY_SPACE		:	keyIsPressed[GLFW_KEY_SPACE] = true;
 										break;
 		}
 	}
@@ -91,8 +91,8 @@ int main(void) {
 
 	Background* background = new Background(BACKGROUND, 0.0f, 0.0f, -1.0f);
 
-	Enemy* enemy = new Enemy(ENEMY, 1.0f, 0.0f, 0.0f);
-	Player* player = new Player(PLAYER, -1.0f, 0.0f, 0.0f);
+	Entity* player = EntityManager::spawnEntity(PLAYER, -1.0f, 0.0f, 0.0f, PLAYER);
+	Entity* enemy = EntityManager::spawnEntity(ENEMY, 1.0f, 0.0f, 0.0f, ENEMY);
 
 	int frame = 0;
 
@@ -108,13 +108,17 @@ int main(void) {
 			frame = 0;
 		}
 
-		//if (keyIsPressed[GLFW_KEY_W] == true || keyIsPressed[GLFW_KEY_UP] == true) {
-		//	playerOne.updatePosY((1.0f / SCREENHEIGHT) * 8.0f);
-		//}
+		if (keyIsPressed[GLFW_KEY_W] == true || keyIsPressed[GLFW_KEY_UP] == true) {
+			player->updatePositionY((1.0f / SCREENHEIGHT) * 8.0f);
+		}
 
-		//if (keyIsPressed[GLFW_KEY_S] == true || keyIsPressed[GLFW_KEY_DOWN] == true) {
-		//	playerOne.updatePosY(-(1.0f / SCREENHEIGHT) * 8.0f);
-		//}
+		if (keyIsPressed[GLFW_KEY_S] == true || keyIsPressed[GLFW_KEY_DOWN] == true) {
+			player->updatePositionY(-(1.0f / SCREENHEIGHT) * 8.0f);
+		}
+
+		if (keyIsPressed[GLFW_KEY_SPACE] == true) {
+			EntityManager::spawnEntity(PROJECTILE, player->getGunPositionX(), player->getGunPositionY(), 0.0f, PLAYER);
+		}
 
 		glfwSwapBuffers(window);
 

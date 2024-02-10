@@ -16,7 +16,5 @@ private:
 public:
 	Player(int, float, float, float);
 	~Player();
-
-	void updateYPosition(float);
 };
 

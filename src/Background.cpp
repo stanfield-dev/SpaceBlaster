@@ -1,10 +1,10 @@
 #include "Background.h"
-#include "Manager.h"
+#include "EntityManager.h"
 
 Background::Background(int type, float x, float y, float z)
 	: Entity(type, x, y, z)
 {
-	Manager::addEntity(this);
+	EntityManager::addEntityToRegistry(this);
 }
 
 Background::~Background()

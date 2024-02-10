@@ -16,8 +16,5 @@ private:
 public:
 	Enemy(int, float, float, float);
 	~Enemy();
-
-	void updateXPosition(float);
-	void updateYPosition(float);
 };
 

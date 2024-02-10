@@ -51,12 +51,19 @@ public:
 	Entity(int, float, float, float);
 	~Entity();
 
+	int getType();
+
 	float getPositionX() const;
 	float getPositionY() const;
-	float getGunPosition() const;
+
+	float getGunPositionX() const;
+	float getGunPositionY() const;
 
 	void setPositionX(float);
 	void setPositionY(float);
+
+	void updatePositionX(float);
+	void updatePositionY(float);
 
 	float* updateVertexArray();
 
