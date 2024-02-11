@@ -38,10 +38,14 @@ void EntityManager::removeEntityFromRegistry(Entity* entity)
 
 std::vector<Entity*> EntityManager::getEntityRegistry()
 {
-	for (auto anentity : m_entityRegistry) {
-		std::cout << anentity->getType() << std::endl;
-	}
-	std::cin.get();
-
 	return m_entityRegistry;
 }
+
+void EntityManager::updateVertexBuffers()
+{
+	for (auto entity : m_entityRegistry) {
+		entity->updateVertexBuffer();
+	}
+}
+
+

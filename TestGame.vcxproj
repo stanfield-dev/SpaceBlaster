@@ -155,7 +155,6 @@
     <ClCompile Include="src\Enemy.cpp" />
     <ClCompile Include="src\Entity.cpp" />
     <ClCompile Include="src\game.cpp" />
-    <ClCompile Include="src\IndexBuffer.cpp" />
     <ClCompile Include="src\EntityManager.cpp" />
     <ClCompile Include="src\Player.cpp" />
     <ClCompile Include="src\Projectile.cpp" />
@@ -164,7 +163,6 @@
     <ClCompile Include="src\stb_image.cpp" />
     <ClCompile Include="src\Terrain.cpp" />
     <ClCompile Include="src\Textures.cpp" />
-    <ClCompile Include="src\VertexBuffers.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="src\resources\shaders\fragmentShader.frag" />
@@ -174,7 +172,6 @@
     <ClInclude Include="src\Background.h" />
     <ClInclude Include="src\defines.h" />
     <ClInclude Include="src\Enemy.h" />
-    <ClInclude Include="src\IndexBuffer.h" />
     <ClInclude Include="src\EntityManager.h" />
     <ClInclude Include="src\Player.h" />
     <ClInclude Include="dependencies\stb_image\stb_image.h" />
@@ -183,7 +180,6 @@
     <ClInclude Include="src\Shader.h" />
     <ClInclude Include="src\Terrain.h" />
     <ClInclude Include="src\Textures.h" />
-    <ClInclude Include="src\VertexBuffers.h" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="Debug\image.jpg" />

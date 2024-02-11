@@ -3,16 +3,16 @@
 #include <GL/glew.h>
 
 #include "defines.h"
+#include "Entity.h"
 
-class Renderer 
+#include "vector"
+
+static class Renderer 
 {
 private:
 
 public:
-	Renderer();
-	~Renderer();
-
-	void init();
-	void draw(unsigned int);
+	static void init();
+	static void drawEntities(unsigned int, std::vector<Entity*>);
 };
 

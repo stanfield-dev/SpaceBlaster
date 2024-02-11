@@ -79,21 +79,6 @@ void Textures::loadTexture(int type)
 		glBindTextureUnit(2, m_enemyTextureID);
 	}
 
-	if (type == PROJECTILE) {
-		glCreateTextures(GL_TEXTURE_2D, 1, &m_projectileTextureID);
-		glBindTexture(GL_TEXTURE_2D, m_projectileTextureID);
-
-		loadImage(PROJECTILE_SPRITE);
-
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_textureData);
-
-		glBindTextureUnit(3, m_projectileTextureID);
-	}
-
 	if (type == TERRAIN) {
 		glCreateTextures(GL_TEXTURE_2D, 1, &m_terrainTextureID);
 		glBindTexture(GL_TEXTURE_2D, m_terrainTextureID);
@@ -106,7 +91,22 @@ void Textures::loadTexture(int type)
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_textureData);
 
-		glBindTextureUnit(4, m_terrainTextureID);
+		glBindTextureUnit(3, m_terrainTextureID);
+	}
+
+	if (type == PROJECTILE) {
+		glCreateTextures(GL_TEXTURE_2D, 1, &m_projectileTextureID);
+		glBindTexture(GL_TEXTURE_2D, m_projectileTextureID);
+
+		loadImage(PROJECTILE_SPRITE);
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_textureData);
+
+		glBindTextureUnit(4, m_projectileTextureID);
 	}
 
 	if (m_textureData) {
@@ -120,7 +120,7 @@ void Textures::loadImage(const std::string& path)
 	m_textureData = stbi_load(path.c_str(), &m_width, &m_height, &m_bpp, 4);
 
 	if (m_textureData == nullptr)
-		std::cout << "FAILED TO LOAD TEXTURE FILE: " << stbi_failure_reason() << std::endl;
+		std::cout << "FAILED TO LOAD TEXTURE FILE: " << path << " " << stbi_failure_reason() << std::endl;
 }
 
 

@@ -1,19 +1,7 @@
 #include "Renderer.h"
-
-#include "IndexBuffer.h"
 #include "Shader.h"
-#include "Textures.h"
-#include "VertexBuffers.h"
 
 #include <iostream>
-
-Renderer::Renderer()
-{
-}
-
-Renderer::~Renderer()
-{
-}
 
 void Renderer::init()
 {
@@ -22,15 +10,18 @@ void Renderer::init()
 	glEnable(GL_BLEND);
 }
 
-void Renderer::draw(unsigned int shaderProgram)
+void Renderer::drawEntities(unsigned int shaderProgram, std::vector<Entity*> entityRegistry)
 {
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	Shader::useShader(shaderProgram);
-
-	VertexBuffers::enableVAO();
-	IndexBuffer::bindIBO();
-
-	glDrawElements(GL_TRIANGLES, 24, GL_UNSIGNED_INT, 0);
-
+	for (auto entity : entityRegistry) {
+		entity->bindVAO();
+		entity->bindIBO();
+		if (entity->getType() == PLAYER || entity->getType() == ENEMY) {
+			entity->fireEngines();
+		}
+		entity->updateVertexBuffer();
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		entity->unbindVAO();
+	}
 }

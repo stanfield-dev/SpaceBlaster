@@ -18,4 +18,6 @@ public:
 	static void removeEntityFromRegistry(Entity*);
 
 	static std::vector<Entity*> getEntityRegistry();
+
+	static void updateVertexBuffers();
 };

@@ -1,16 +1,19 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
+#include "defines.h"
+#include "Background.h"
+#include "EntityManager.h"
+#include "Renderer.h"
+#include "Shader.h"
+#include "Terrain.h"
+#include "Textures.h"
+
 #include <iostream>
 #include <map>
 #include <string>
 #include <time.h>
 
-#include "defines.h"
-#include "Background.h"
-#include "EntityManager.h"
-#include "Shader.h"
-#include "Textures.h"
 
 
 std::map<int, bool> keyIsPressed 
@@ -54,6 +57,8 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 										break;
 			case GLFW_KEY_S			:	keyIsPressed[GLFW_KEY_S] = false;
 										break;
+			case GLFW_KEY_SPACE		:	keyIsPressed[GLFW_KEY_SPACE] = false;
+										break;
 		}
 	}
 
@@ -86,13 +91,18 @@ int main(void) {
 		std::cout << "GLEW initialization failure!" << std::endl;
 	}
 
+	Renderer::init();
+
 	unsigned int shaderProgram = Shader::createShader(Shader::getVertexShader(), Shader::getFragmentShader());
-	Shader::useShader(shaderProgram);
+	Shader::useShader(shaderProgram); 
+	
+	Textures::init(shaderProgram);
 
-	Background* background = new Background(BACKGROUND, 0.0f, 0.0f, -1.0f);
+	Background* background = new Background(BACKGROUND, -1.0f, -1.0f, -1.0f);
+	Terrain* terrain = new Terrain(TERRAIN, -1.0f, -1.0f, -0.5f);
 
-	Entity* player = EntityManager::spawnEntity(PLAYER, -1.0f, 0.0f, 0.0f, PLAYER);
-	Entity* enemy = EntityManager::spawnEntity(ENEMY, 1.0f, 0.0f, 0.0f, ENEMY);
+	Entity* player = EntityManager::spawnEntity(PLAYER, -0.9f, 0.0f, 0.0f, PLAYER);
+	Entity* enemy = EntityManager::spawnEntity(ENEMY, 0.7f, 0.0f, 0.0f, ENEMY);
 
 	int frame = 0;
 
@@ -119,6 +129,9 @@ int main(void) {
 		if (keyIsPressed[GLFW_KEY_SPACE] == true) {
 			EntityManager::spawnEntity(PROJECTILE, player->getGunPositionX(), player->getGunPositionY(), 0.0f, PLAYER);
 		}
+
+		EntityManager::updateVertexBuffers();
+		Renderer::drawEntities(shaderProgram, EntityManager::getEntityRegistry());
 
 		glfwSwapBuffers(window);
 
