@@ -14,8 +14,6 @@
 #include <string>
 #include <time.h>
 
-
-
 std::map<int, bool> keyIsPressed 
 {
 	{GLFW_KEY_W, false},
@@ -128,10 +126,13 @@ int main(void) {
 
 		if (keyIsPressed[GLFW_KEY_SPACE] == true) {
 			EntityManager::spawnEntity(PROJECTILE, player->getGunPositionX(), player->getGunPositionY(), 0.0f, PLAYER);
+			keyIsPressed[GLFW_KEY_SPACE] = false; // prevent bullet spam
 		}
 
 		EntityManager::updateVertexBuffers();
 		Renderer::drawEntities(shaderProgram, EntityManager::getEntityRegistry());
+
+		EntityManager::checkCollisions();
 
 		glfwSwapBuffers(window);
 

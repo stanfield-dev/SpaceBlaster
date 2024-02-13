@@ -1,5 +1,7 @@
 #include "Entity.h"
 
+#include <iostream>
+
 Entity::Entity(int type, float x, float y, float z)
 	: m_type(type), m_positionX(x), m_positionY(y), m_positionZ(z)
 {
@@ -10,7 +12,9 @@ Entity::Entity(int type, float x, float y, float z)
 
 Entity::~Entity()
 {
+	unbindVAO();
 	glDeleteBuffers(1, &m_indexbufferID);
+	glDeleteBuffers(1, &m_vertexbufferID);
 }
 
 int Entity::getType() const
@@ -24,6 +28,26 @@ float Entity::getPositionX() const
 }
 
 float Entity::getPositionY() const
+{
+	return m_positionY;
+}
+
+float Entity::getRightEdge() const
+{
+	return m_positionX + m_positionXOffset;
+}
+
+float Entity::getLeftEdge() const
+{
+	return m_positionX;
+}
+
+float Entity::getTopEdge() const
+{
+	return m_positionY + m_positionYOffset;
+}
+
+float Entity::getBottomEdge() const
 {
 	return m_positionY;
 }
@@ -50,24 +74,7 @@ void Entity::setPositionY(float y)
 
 void Entity::updatePositionX(float x)
 {
-	if (x > 0.0f) {
-		if (m_positionX + m_positionXOffset + x >= 1.0f) {
-			m_positionX -= x;
-		}
-		else {
-			m_positionX += x;
-		}
-	}
-
-	if (x < 0.0f) {
-		if (m_positionX + x <= -1.0f) {
-			m_positionX = -1.0f;
-		}
-		else {
-			m_positionX += x;
-		}
-	}
-
+	m_positionX += x;
 	updateVertexArray();
 }
 
@@ -106,6 +113,16 @@ void Entity::fireEngines()
 	m_vertexArray[21] = m_spriteX;						// ULx
 
 	updateVertexArray();
+}
+
+int Entity::getProjectileSource()
+{
+	return m_projectileSource;
+}
+
+void Entity::projectileImpact()
+{	// TODO: add explosion animation sequence via texture ID increment, then delte entity
+	std::cout << "Projectile Impact! Abandon Ship!" << std::endl;
 }
 
 float* Entity::updateVertexArray()

@@ -20,6 +20,14 @@ void Renderer::drawEntities(unsigned int shaderProgram, std::vector<Entity*> ent
 		if (entity->getType() == PLAYER || entity->getType() == ENEMY) {
 			entity->fireEngines();
 		}
+		if (entity->getType() == PROJECTILE) {
+			if (entity->getProjectileSource() == PLAYER) {
+				entity->updatePositionX(0.03f);
+			}
+			else {
+				entity->updatePositionX(-0.03f);
+			}
+		}
 		entity->updateVertexBuffer();
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		entity->unbindVAO();

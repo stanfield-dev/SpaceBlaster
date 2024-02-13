@@ -20,4 +20,6 @@ public:
 	static std::vector<Entity*> getEntityRegistry();
 
 	static void updateVertexBuffers();
+
+	static void checkCollisions();
 };

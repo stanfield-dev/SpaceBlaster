@@ -31,6 +31,8 @@ protected:
 
 	int m_type;
 
+	int m_projectileSource;
+
 	unsigned int m_VAO, m_vertexbufferID, m_indexbufferID;
 
 	unsigned int m_iboIndices[6] = {
@@ -69,12 +71,17 @@ protected:
 
 public:
 	Entity(int, float, float, float);
-	~Entity();
+	virtual ~Entity();
 
 	int getType() const;
 
 	float getPositionX() const;
 	float getPositionY() const;
+
+	float getRightEdge() const;
+	float getLeftEdge() const;
+	float getTopEdge() const;
+	float getBottomEdge() const;
 
 	float getGunPositionX() const;
 	float getGunPositionY() const;
@@ -85,10 +92,12 @@ public:
 	void updatePositionX(float);
 	void updatePositionY(float);
 
-	float* updateVertexArray();
-
 	void fireEngines();
+	int getProjectileSource();
 
+	void projectileImpact();
+
+	float* updateVertexArray();
 	void updateVertexBuffer();
 
 	void bindVAO();
