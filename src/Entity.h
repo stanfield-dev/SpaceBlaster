@@ -33,6 +33,8 @@ protected:
 
 	int m_projectileSource;
 
+	int m_explosionFrame = 0;
+
 	unsigned int m_VAO, m_vertexbufferID, m_indexbufferID;
 
 	unsigned int m_iboIndices[6] = {
@@ -77,6 +79,7 @@ public:
 
 	float getPositionX() const;
 	float getPositionY() const;
+	float getPositionZ() const;
 
 	float getRightEdge() const;
 	float getLeftEdge() const;
@@ -86,6 +89,8 @@ public:
 	float getGunPositionX() const;
 	float getGunPositionY() const;
 
+	int getExplosionFrame() const;
+
 	void setPositionX(float);
 	void setPositionY(float);
 
@@ -93,9 +98,9 @@ public:
 	void updatePositionY(float);
 
 	void fireEngines();
-	int getProjectileSource();
+	int getProjectileSource() const;
 
-	void projectileImpact();
+	void animateExplosion();
 
 	float* updateVertexArray();
 	void updateVertexBuffer();

@@ -24,12 +24,13 @@ void Textures::init(unsigned int shaderProgram)
 	loadTexture(PLAYER);
 	loadTexture(ENEMY);
 	loadTexture(PROJECTILE);
+	loadTexture(EXPLOSION);
 	loadTexture(TERRAIN);
 	loadTexture(BACKGROUND);
 
 	loc0 = glGetUniformLocation(shaderProgram, "u_textures");
-	int samplers[5] = { 0, 1, 2, 3, 4 }; 
-	glUniform1iv(loc0, 5, samplers);
+	int samplers[6] = { 0, 1, 2, 3, 4, 5 }; 
+	glUniform1iv(loc0, 6, samplers);
 }
 
 void Textures::loadTexture(int type)
@@ -107,6 +108,21 @@ void Textures::loadTexture(int type)
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_textureData);
 
 		glBindTextureUnit(4, m_projectileTextureID);
+	}
+
+	if (type == EXPLOSION) {
+		glCreateTextures(GL_TEXTURE_2D, 1, &m_explosionTextureID);
+		glBindTexture(GL_TEXTURE_2D, m_explosionTextureID);
+
+		loadImage(EXPLOSION_SPRITE);
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_textureData);
+
+		glBindTextureUnit(5, m_explosionTextureID);
 	}
 
 	if (m_textureData) {

@@ -32,6 +32,11 @@ float Entity::getPositionY() const
 	return m_positionY;
 }
 
+float Entity::getPositionZ() const
+{
+	return m_positionZ;
+}
+
 float Entity::getRightEdge() const
 {
 	return m_positionX + m_positionXOffset;
@@ -60,6 +65,11 @@ float Entity::getGunPositionX() const
 float Entity::getGunPositionY() const
 {
 	return m_positionY + (m_positionYOffset / 2);
+}
+
+int Entity::getExplosionFrame() const
+{
+	return m_explosionFrame;
 }
 
 void Entity::setPositionX(float x)
@@ -115,14 +125,28 @@ void Entity::fireEngines()
 	updateVertexArray();
 }
 
-int Entity::getProjectileSource()
+int Entity::getProjectileSource() const
 {
 	return m_projectileSource;
 }
 
-void Entity::projectileImpact()
-{	// TODO: add explosion animation sequence via texture ID increment, then delte entity
-	std::cout << "Projectile Impact! Abandon Ship!" << std::endl;
+void Entity::animateExplosion()
+{
+	m_explosionFrame++;
+
+	if (m_spriteX + m_spriteXOffset >= 1.0f) {
+		m_spriteX = 0.0f;
+	}
+	else {
+		m_spriteX += m_spriteXOffset;
+	}
+
+	m_vertexArray[3] = m_spriteX;						// LLx
+	m_vertexArray[9] = m_spriteX + m_spriteXOffset;		// LRx
+	m_vertexArray[15] = m_spriteX + m_spriteXOffset;	// URx
+	m_vertexArray[21] = m_spriteX;						// ULx
+
+	updateVertexArray();
 }
 
 float* Entity::updateVertexArray()

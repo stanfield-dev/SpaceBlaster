@@ -7,8 +7,8 @@
 Player::Player(int type, float x, float y, float z)
 	: Entity(type, x, y, z)
 {
-	m_displayWidth = 128.0f;
-	m_displayHeight = 128.0f;
+	m_displayWidth = PLAYERWIDTH;
+	m_displayHeight = PLAYERHEIGHT;
 	m_positionXOffset = m_displayWidth / SCREENWIDTH;
 	m_positionYOffset = m_displayHeight / SCREENHEIGHT;
 

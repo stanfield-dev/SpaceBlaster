@@ -11,6 +11,7 @@ private:
 
 	inline static unsigned int m_backgroundTextureID;
 	inline static unsigned int m_enemyTextureID;
+	inline static unsigned int m_explosionTextureID;
 	inline static unsigned int m_playerTextureID;
 	inline static unsigned int m_projectileTextureID;
 	inline static unsigned int m_terrainTextureID;

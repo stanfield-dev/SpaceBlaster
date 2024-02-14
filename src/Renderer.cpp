@@ -1,3 +1,4 @@
+#include "EntityManager.h"
 #include "Renderer.h"
 #include "Shader.h"
 
@@ -17,9 +18,13 @@ void Renderer::drawEntities(unsigned int shaderProgram, std::vector<Entity*> ent
 	for (auto entity : entityRegistry) {
 		entity->bindVAO();
 		entity->bindIBO();
+
+		// engine animation
 		if (entity->getType() == PLAYER || entity->getType() == ENEMY) {
 			entity->fireEngines();
 		}
+
+		// move projectile across screen
 		if (entity->getType() == PROJECTILE) {
 			if (entity->getProjectileSource() == PLAYER) {
 				entity->updatePositionX(0.03f);
@@ -28,6 +33,18 @@ void Renderer::drawEntities(unsigned int shaderProgram, std::vector<Entity*> ent
 				entity->updatePositionX(-0.03f);
 			}
 		}
+
+		// explosion animation
+		if (entity->getType() == EXPLOSION) {
+			if (entity->getExplosionFrame() > 24) {
+				EntityManager::removeEntityFromRegistry(entity);
+				entity->~Entity();
+			}
+			else {
+				entity->animateExplosion();
+			}
+		}
+
 		entity->updateVertexBuffer();
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		entity->unbindVAO();

@@ -4,8 +4,8 @@
 Projectile::Projectile(int type, float x, float y, float z, int projectileSource)
 	: Entity(type, x, y, z)
 {
-	m_displayWidth = 64.0f;
-	m_displayHeight = 32.0f;
+	m_displayWidth = PROJECTILEWIDTH;
+	m_displayHeight = PROJECTILEHEIGHT;
 	m_positionXOffset = m_displayWidth / SCREENWIDTH;
 	m_positionYOffset = m_displayHeight / SCREENHEIGHT;
 

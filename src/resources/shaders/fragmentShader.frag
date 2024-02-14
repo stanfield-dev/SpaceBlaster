@@ -5,7 +5,7 @@ in float v_textureID;
 
 out vec4 texColor;
 
-uniform sampler2D u_textures[5];
+uniform sampler2D u_textures[6];
 
 void main()
 {
