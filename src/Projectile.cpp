@@ -53,6 +53,9 @@ Projectile::Projectile(int type, float x, float y, float z, int projectileSource
 	m_projectileTargetCoordinates[0] = targetCoordinates[0];
 	m_projectileTargetCoordinates[1] = targetCoordinates[1];
 
+	m_vectorSourceToTarget[0] = m_projectileTargetCoordinates[0] - m_projectileSourceCoordinates[0];
+	m_vectorSourceToTarget[1] = m_projectileTargetCoordinates[1] - m_projectileSourceCoordinates[1];
+
 	if (projectileSource == ENEMY) {
 		m_spriteX = m_spriteXOffset;
 	}

@@ -165,9 +165,6 @@ int Entity::getProjectileSource() const
 
 void Entity::moveProjectile() 
 {	
-	m_vectorSourceToTarget[0] = m_projectileTargetCoordinates[0] - m_projectileSourceCoordinates[0];
-	m_vectorSourceToTarget[1] = m_projectileTargetCoordinates[1] - m_projectileSourceCoordinates[1];
-
 	m_positionX += (m_vectorSourceToTarget[0] * m_projectileVelocity);
 	m_positionY += (m_vectorSourceToTarget[1] * m_projectileVelocity);
 

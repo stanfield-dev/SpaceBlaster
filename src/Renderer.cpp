@@ -4,6 +4,8 @@
 
 void Renderer::init()
 {
+	glViewport(0, 0, SCREENWIDTH, SCREENHEIGHT);
+
 	glClearColor(0.0f, 0.2f, 0.1f, 1.0f);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_BLEND);

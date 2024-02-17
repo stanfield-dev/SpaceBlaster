@@ -148,7 +148,6 @@ int main(void) {
 		if (keyIsPressed[GLFW_KEY_SPACE] == true) {
 			entityManager->spawnEntity(PROJECTILE, player->getGunPositionX(), player->getGunPositionY(), 0.0f, 
 										PLAYER, nullptr, nullptr);
-			ma_engine_play_sound(&soundEngine, PROJECTILE_SOUND.c_str(), NULL);
 			keyIsPressed[GLFW_KEY_SPACE] = false; // prevent bullet spam
 		}
 

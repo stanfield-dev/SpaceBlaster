@@ -36,6 +36,7 @@ Entity* EntityManager::spawnEntity(int type, float x, float y, float z, int proj
 								newEntity = new Projectile(type, x, y, z, projectileSource,
 															sourceCoordinates, targetCoordinates, this);
 							}
+							ma_engine_play_sound(m_soundEngine, PROJECTILE_SOUND.c_str(), NULL);
 							break;
 	}
 	
