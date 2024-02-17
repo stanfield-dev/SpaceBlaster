@@ -5,6 +5,7 @@
 #include "defines.h"
 #include "Entity.h"
 
+#include "miniaudio.h"
 
 static class EntityManager
 {
@@ -12,7 +13,7 @@ private:
 	static inline std::vector<Entity*> m_entityRegistry;
 
 public:
-	static Entity* spawnEntity(int, float, float, float, int);
+	static Entity* spawnEntity(int, float, float, float, int, float*, float*);
 
 	static void addEntityToRegistry(Entity*);
 	static void removeEntityFromRegistry(Entity*);
@@ -21,5 +22,5 @@ public:
 
 	static void updateVertexBuffers();
 
-	static void checkCollisions();
+	static void checkCollisions(ma_engine*);
 };

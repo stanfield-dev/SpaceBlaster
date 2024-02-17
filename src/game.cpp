@@ -1,6 +1,8 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
+#include "miniaudio.h"
+
 #include "defines.h"
 #include "Background.h"
 #include "EntityManager.h"
@@ -13,6 +15,7 @@
 #include <iostream>
 #include <map>
 #include <string>
+#include <stdlib.h>
 #include <time.h>
 
 std::map<int, bool> keyIsPressed 
@@ -90,6 +93,28 @@ int main(void) {
 		std::cout << "GLEW initialization failure!" << std::endl;
 	}
 
+	// miniaudio setup
+	ma_result result;
+	ma_engine soundEngine;
+	ma_engine_config soundEngineConfig;
+
+	soundEngineConfig = ma_engine_config_init();
+
+	result = ma_engine_init(NULL, &soundEngine);
+	if (result != MA_SUCCESS) {
+		return result;
+	}
+
+	ma_sound backgroundMusic;
+	result = ma_sound_init_from_file(&soundEngine, GAME_MUSIC.c_str(), 0, NULL, NULL, &backgroundMusic);
+	if (result != MA_SUCCESS) {
+		return result;
+	}
+
+	// TODO add volume controls
+	ma_sound_set_looping(&backgroundMusic, true);
+	ma_sound_start(&backgroundMusic);
+
 	Renderer::init();
 
 	unsigned int shaderProgram = Shader::createShader(Shader::getVertexShader(), Shader::getFragmentShader());
@@ -100,22 +125,14 @@ int main(void) {
 	Background* background = new Background(BACKGROUND, -1.0f, -1.0f, -1.0f);
 	Terrain* terrain = new Terrain(TERRAIN, -1.0f, -1.0f, -0.5f);
 
-	Entity* player = EntityManager::spawnEntity(PLAYER, -0.9f, 0.0f, 0.0f, PLAYER);
-	Entity* enemy = EntityManager::spawnEntity(ENEMY, 0.7f, 0.0f, 0.0f, ENEMY);
+	Entity* player = EntityManager::spawnEntity(PLAYER, -0.9f, 0.0f, 0.0f, PLAYER, nullptr, nullptr);
+	Entity* enemy = EntityManager::spawnEntity(ENEMY, 0.7f, 0.0f, 0.0f, ENEMY, nullptr, nullptr);
 
 	int frame = 0;
 
+	srand(time(0));
+
 	while (!glfwWindowShouldClose(window)) {
-
-		//if (frame == 2) {
-		//	player->fireEngines();
-		//	enemyOne.fireEngines();
-		//}
-
-		if (frame == 5) {
-			background->scrollBackground();
-			frame = 0;
-		}
 
 		if (keyIsPressed[GLFW_KEY_W] == true || keyIsPressed[GLFW_KEY_UP] == true) {
 			player->updatePositionY((1.0f / SCREENHEIGHT) * 8.0f);
@@ -126,14 +143,24 @@ int main(void) {
 		}
 
 		if (keyIsPressed[GLFW_KEY_SPACE] == true) {
-			EntityManager::spawnEntity(PROJECTILE, player->getGunPositionX(), player->getGunPositionY(), 0.0f, PLAYER);
+			EntityManager::spawnEntity(PROJECTILE, player->getGunPositionX(), player->getGunPositionY(), 0.0f, 
+										PLAYER, nullptr, nullptr);
+			ma_engine_play_sound(&soundEngine, PROJECTILE_SOUND.c_str(), NULL);
 			keyIsPressed[GLFW_KEY_SPACE] = false; // prevent bullet spam
 		}
 
-		EntityManager::updateVertexBuffers();
-		Renderer::drawEntities(shaderProgram, EntityManager::getEntityRegistry());
+		background->scrollBackground();
 
-		EntityManager::checkCollisions();
+		// TODO move this into the enemy entity somehow and call from manager(?)
+		if (rand() % 100 > 98) {
+			EntityManager::spawnEntity(PROJECTILE, enemy->getGunPositionX(), enemy->getGunPositionY(), 0.0f, ENEMY,
+				enemy->getProjectileSourcePosition(), player->getProjectileTargetPosition());
+		}
+
+		EntityManager::updateVertexBuffers();
+		EntityManager::checkCollisions(&soundEngine);
+
+		Renderer::drawEntities(shaderProgram, EntityManager::getEntityRegistry());
 
 		glfwSwapBuffers(window);
 

@@ -8,7 +8,8 @@
 #include <iostream>
 #include <iterator>
 
-Entity* EntityManager::spawnEntity(int type, float x, float y, float z, int projectileSource)
+Entity* EntityManager::spawnEntity(int type, float x, float y, float z, int projectileSource,
+	float* sourceCoordinates, float* targetCoordinates)
 {
 	Entity* newEntity = nullptr;
 
@@ -19,7 +20,13 @@ Entity* EntityManager::spawnEntity(int type, float x, float y, float z, int proj
 							break;
 		case PLAYER		:	newEntity = new Player(type, x, y, z);
 							break;
-		case PROJECTILE	:	newEntity = new Projectile(type, x, y, z, projectileSource); 
+		case PROJECTILE:	if (projectileSource == PLAYER) {
+								newEntity = new Projectile(type, x, y, z, projectileSource);
+							}
+							else {
+								newEntity = new Projectile(type, x, y, z, projectileSource,
+															sourceCoordinates, targetCoordinates);
+							}
 							break;
 	}
 	
@@ -51,7 +58,7 @@ void EntityManager::updateVertexBuffers()
 	}
 }
 
-void EntityManager::checkCollisions()
+void EntityManager::checkCollisions(ma_engine *soundEngine)
 {
 	for (auto entity : m_entityRegistry) {
 		if (entity->getType() == PROJECTILE) {
@@ -67,7 +74,8 @@ void EntityManager::checkCollisions()
 														target->getPositionX(),
 														target->getPositionY(),
 														target->getPositionZ(),
-														EXPLOSION);
+														EXPLOSION, nullptr, nullptr);
+											ma_engine_play_sound(soundEngine, EXPLOSION_SOUND.c_str(), NULL);
 											removeEntityFromRegistry(entity);
 											entity->~Entity();
 											delete entity;
@@ -80,17 +88,18 @@ void EntityManager::checkCollisions()
 								}
 				case ENEMY	:	for (auto target : m_entityRegistry) {
 									if (target->getType() == PLAYER) {
-										if ((entity->getLeftEdge() > target->getRightEdge()) &&
-											(entity->getLeftEdge() < target->getLeftEdge()) &&
+										if ((entity->getLeftEdge() < target->getRightEdge()) &&
+											(entity->getLeftEdge() > target->getLeftEdge()) &&
 											(entity->getTopEdge() > target->getBottomEdge()) &&
 											(entity->getTopEdge() < target->getTopEdge()))
 										{
-											removeEntityFromRegistry(entity);
 											spawnEntity(EXPLOSION,
 														target->getPositionX(),
 														target->getPositionY(),
 														target->getPositionZ(),
-														EXPLOSION);
+														EXPLOSION, nullptr, nullptr);
+											ma_engine_play_sound(soundEngine, EXPLOSION_SOUND.c_str(), NULL);
+											removeEntityFromRegistry(entity);
 											entity->~Entity();
 											delete entity;
 											return;

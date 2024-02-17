@@ -26,11 +26,11 @@ void Renderer::drawEntities(unsigned int shaderProgram, std::vector<Entity*> ent
 
 		// move projectile across screen
 		if (entity->getType() == PROJECTILE) {
-			if (entity->getProjectileSource() == PLAYER) {
+			if (entity->getProjectileSource() == PLAYER) { // horizontal only
 				entity->updatePositionX(0.03f);
 			}
 			else {
-				entity->updatePositionX(-0.03f);
+				entity->moveProjectile();
 			}
 		}
 

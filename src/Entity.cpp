@@ -37,6 +37,34 @@ float Entity::getPositionZ() const
 	return m_positionZ;
 }
 
+float* Entity::getProjectileTargetPosition() 
+{
+	if (this->m_type == PLAYER) {
+		m_projectileSourceCoordinates[0] = m_positionX + m_positionXOffset;
+		m_projectileSourceCoordinates[1] = m_positionY + (m_positionYOffset / 2);
+		return m_projectileSourceCoordinates;
+	}
+	else {
+		m_projectileSourceCoordinates[0] = m_positionX;
+		m_projectileSourceCoordinates[1] = m_positionY + (m_positionYOffset / 2);
+		return m_projectileSourceCoordinates;
+	}
+}
+
+float* Entity::getProjectileSourcePosition() 
+{
+	if (this->m_type == PLAYER) {
+		m_projectileTargetCoordinates[0] = m_positionX + m_positionXOffset;
+		m_projectileTargetCoordinates[1] = m_positionY + (m_positionYOffset / 2);
+		return m_projectileTargetCoordinates;
+	}
+	else {
+		m_projectileTargetCoordinates[0] = m_positionX;
+		m_projectileTargetCoordinates[1] = m_positionY + (m_positionYOffset / 2);
+		return m_projectileTargetCoordinates;
+	}
+}
+
 float Entity::getRightEdge() const
 {
 	return m_positionX + m_positionXOffset;
@@ -59,7 +87,12 @@ float Entity::getBottomEdge() const
 
 float Entity::getGunPositionX() const
 {
-	return m_positionX + m_positionXOffset;
+	if(this->m_type == PLAYER) {
+		return m_positionX + m_positionXOffset;
+	}
+	else {
+		return m_positionX;
+	}
 }
 
 float Entity::getGunPositionY() const
@@ -128,6 +161,18 @@ void Entity::fireEngines()
 int Entity::getProjectileSource() const
 {
 	return m_projectileSource;
+}
+
+void Entity::moveProjectile() 
+{	
+	m_vectorSourceToTarget[0] = m_projectileTargetCoordinates[0] - m_projectileSourceCoordinates[0];
+	m_vectorSourceToTarget[1] = m_projectileTargetCoordinates[1] - m_projectileSourceCoordinates[1];
+
+	m_positionX += (m_vectorSourceToTarget[0] * m_projectileVelocity);
+	m_positionY += (m_vectorSourceToTarget[1] * m_projectileVelocity);
+
+	updateVertexArray();
+
 }
 
 void Entity::animateExplosion()

@@ -2,6 +2,9 @@
 
 #include <GL/glew.h>
 
+#include "glm/glm.hpp"
+#include <glm/gtc/matrix_transform.hpp>
+
 #include "defines.h"
 
 class Entity
@@ -9,7 +12,6 @@ class Entity
 private:
 
 protected:
-
 	float m_spriteSheetWidth = 0.0f;
 	float m_spriteSheetHeight = 0.0f;
 	float m_spriteWidth = 0.0f;
@@ -32,6 +34,10 @@ protected:
 	int m_type;
 
 	int m_projectileSource;
+	float m_projectileVelocity = 0.025f;
+	float m_projectileSourceCoordinates[2] = { 0.0f, 0.0f };
+	float m_projectileTargetCoordinates[2] = { 0.0f, 0.0f };
+	float m_vectorSourceToTarget[2] = { 0.0f, 0.0f };
 
 	int m_explosionFrame = 0;
 
@@ -81,6 +87,7 @@ public:
 	float getPositionY() const;
 	float getPositionZ() const;
 
+
 	float getRightEdge() const;
 	float getLeftEdge() const;
 	float getTopEdge() const;
@@ -98,7 +105,13 @@ public:
 	void updatePositionY(float);
 
 	void fireEngines();
+
 	int getProjectileSource() const;
+
+	float* getProjectileTargetPosition();
+	float* getProjectileSourcePosition();
+
+	void moveProjectile();
 
 	void animateExplosion();
 

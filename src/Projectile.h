@@ -8,5 +8,6 @@ private:
 
 public:
 	Projectile(int, float, float, float, int);
+	Projectile(int, float, float, float, int, float*, float*);
 	~Projectile();
 };
