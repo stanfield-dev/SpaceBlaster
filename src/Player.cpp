@@ -2,9 +2,8 @@
 #include <GLFW/glfw3.h>
 
 #include "Player.h"
-#include "EntityManager.h"
 
-Player::Player(int type, float x, float y, float z)
+Player::Player(int type, float x, float y, float z, EntityManager* entityManager)
 	: Entity(type, x, y, z)
 {
 	m_displayWidth = PLAYERWIDTH;
@@ -21,7 +20,7 @@ Player::Player(int type, float x, float y, float z)
 
 	updateVertexArray();
 
-	EntityManager::addEntityToRegistry(this);
+	entityManager->addEntityToRegistry(this);
 }
 
 Player::~Player()

@@ -1,6 +1,4 @@
-#include "EntityManager.h"
 #include "Renderer.h"
-#include "Shader.h"
 
 #include <iostream>
 
@@ -11,11 +9,11 @@ void Renderer::init()
 	glEnable(GL_BLEND);
 }
 
-void Renderer::drawEntities(unsigned int shaderProgram, std::vector<Entity*> entityRegistry)
+void Renderer::drawEntities(unsigned int shaderProgram, EntityManager* entityManager)
 {
 	glClear(GL_COLOR_BUFFER_BIT);
 
-	for (auto entity : entityRegistry) {
+	for (auto entity : entityManager->getEntityRegistry()) {
 		entity->bindVAO();
 		entity->bindIBO();
 
@@ -37,7 +35,7 @@ void Renderer::drawEntities(unsigned int shaderProgram, std::vector<Entity*> ent
 		// explosion animation
 		if (entity->getType() == EXPLOSION) {
 			if (entity->getExplosionFrame() > 24) {
-				EntityManager::removeEntityFromRegistry(entity);
+				entityManager->removeEntityFromRegistry(entity);
 				entity->~Entity();
 			}
 			else {

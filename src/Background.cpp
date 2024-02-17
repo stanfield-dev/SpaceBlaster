@@ -1,7 +1,7 @@
 #include "Background.h"
 #include "EntityManager.h"
 
-Background::Background(int type, float x, float y, float z)
+Background::Background(int type, float x, float y, float z, EntityManager* entityManager)
 	: Entity(type, x, y, z)
 {
 	m_displayWidth = SCREENWIDTH;
@@ -18,7 +18,7 @@ Background::Background(int type, float x, float y, float z)
 
 	updateVertexArray();
 
-	EntityManager::addEntityToRegistry(this);
+	entityManager->addEntityToRegistry(this);
 }
 
 Background::~Background()

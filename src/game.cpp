@@ -24,7 +24,9 @@ std::map<int, bool> keyIsPressed
 	{GLFW_KEY_UP, false},
 
 	{GLFW_KEY_DOWN, false},
-	{GLFW_KEY_S, false}
+	{GLFW_KEY_S, false},
+
+	{GLFW_KEY_SPACE, false}
 };
 
 static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
@@ -115,6 +117,7 @@ int main(void) {
 	ma_sound_set_looping(&backgroundMusic, true);
 	ma_sound_start(&backgroundMusic);
 
+	EntityManager *entityManager = new EntityManager(&soundEngine);
 	Renderer::init();
 
 	unsigned int shaderProgram = Shader::createShader(Shader::getVertexShader(), Shader::getFragmentShader());
@@ -122,11 +125,11 @@ int main(void) {
 	
 	Textures::init(shaderProgram);
 
-	Background* background = new Background(BACKGROUND, -1.0f, -1.0f, -1.0f);
-	Terrain* terrain = new Terrain(TERRAIN, -1.0f, -1.0f, -0.5f);
+	Background* background = new Background(BACKGROUND, -1.0f, -1.0f, -1.0f, entityManager);
+	Terrain* terrain = new Terrain(TERRAIN, -1.0f, -1.0f, -0.5f, entityManager);
 
-	Entity* player = EntityManager::spawnEntity(PLAYER, -0.9f, 0.0f, 0.0f, PLAYER, nullptr, nullptr);
-	Entity* enemy = EntityManager::spawnEntity(ENEMY, 0.7f, 0.0f, 0.0f, ENEMY, nullptr, nullptr);
+	Entity* player = entityManager->spawnEntity(PLAYER, -0.9f, 0.0f, 0.0f, PLAYER, nullptr, nullptr);
+	Entity* enemy = entityManager->spawnEntity(ENEMY, 0.7f, 0.0f, 0.0f, ENEMY, nullptr, nullptr);
 
 	int frame = 0;
 
@@ -143,7 +146,7 @@ int main(void) {
 		}
 
 		if (keyIsPressed[GLFW_KEY_SPACE] == true) {
-			EntityManager::spawnEntity(PROJECTILE, player->getGunPositionX(), player->getGunPositionY(), 0.0f, 
+			entityManager->spawnEntity(PROJECTILE, player->getGunPositionX(), player->getGunPositionY(), 0.0f, 
 										PLAYER, nullptr, nullptr);
 			ma_engine_play_sound(&soundEngine, PROJECTILE_SOUND.c_str(), NULL);
 			keyIsPressed[GLFW_KEY_SPACE] = false; // prevent bullet spam
@@ -153,14 +156,14 @@ int main(void) {
 
 		// TODO move this into the enemy entity somehow and call from manager(?)
 		if (rand() % 100 > 98) {
-			EntityManager::spawnEntity(PROJECTILE, enemy->getGunPositionX(), enemy->getGunPositionY(), 0.0f, ENEMY,
+			entityManager->spawnEntity(PROJECTILE, enemy->getGunPositionX(), enemy->getGunPositionY(), 0.0f, ENEMY,
 				enemy->getProjectileSourcePosition(), player->getProjectileTargetPosition());
 		}
 
-		EntityManager::updateVertexBuffers();
-		EntityManager::checkCollisions(&soundEngine);
+		entityManager->updateVertexBuffers();
+		entityManager->checkCollisions();
 
-		Renderer::drawEntities(shaderProgram, EntityManager::getEntityRegistry());
+		Renderer::drawEntities(shaderProgram, entityManager);
 
 		glfwSwapBuffers(window);
 

@@ -7,20 +7,24 @@
 
 #include "miniaudio.h"
 
-static class EntityManager
+class EntityManager
 {
 private:
-	static inline std::vector<Entity*> m_entityRegistry;
+	ma_engine* m_soundEngine;
+	std::vector<Entity*> m_entityRegistry;
 
 public:
-	static Entity* spawnEntity(int, float, float, float, int, float*, float*);
+	EntityManager(ma_engine*);
+	~EntityManager();
 
-	static void addEntityToRegistry(Entity*);
-	static void removeEntityFromRegistry(Entity*);
+	Entity* spawnEntity(int, float, float, float, int, float*, float*);
 
-	static std::vector<Entity*> getEntityRegistry();
+	void addEntityToRegistry(Entity*);
+	void removeEntityFromRegistry(Entity*);
 
-	static void updateVertexBuffers();
+	std::vector<Entity*> getEntityRegistry();
 
-	static void checkCollisions(ma_engine*);
+	void updateVertexBuffers();
+
+	void checkCollisions();
 };

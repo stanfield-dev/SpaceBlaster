@@ -4,7 +4,7 @@
 #include "Enemy.h"
 #include "EntityManager.h"
 
-Enemy::Enemy(int type, float x, float y, float z)
+Enemy::Enemy(int type, float x, float y, float z, EntityManager* entityManager)
 	: Entity(type, x, y, z)
 {
 	m_displayWidth = ENEMYWIDTH;
@@ -21,7 +21,7 @@ Enemy::Enemy(int type, float x, float y, float z)
 
 	updateVertexArray();
 
-	EntityManager::addEntityToRegistry(this);
+	entityManager->addEntityToRegistry(this);
 }
 
 Enemy::~Enemy()

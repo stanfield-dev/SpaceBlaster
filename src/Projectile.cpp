@@ -1,7 +1,6 @@
 #include "Projectile.h"
-#include "EntityManager.h"
 
-Projectile::Projectile(int type, float x, float y, float z, int projectileSource)
+Projectile::Projectile(int type, float x, float y, float z, int projectileSource, EntityManager* entityManager)
 	: Entity(type, x, y, z)
 {
 	m_displayWidth = PROJECTILEWIDTH;
@@ -26,12 +25,12 @@ Projectile::Projectile(int type, float x, float y, float z, int projectileSource
 
 	updateVertexArray();
 
-	EntityManager::addEntityToRegistry(this);
+	entityManager->addEntityToRegistry(this);
 }
 
 // overload for enemy AI to support auto-targetting the player
 Projectile::Projectile(int type, float x, float y, float z, int projectileSource,
-	float* sourceCoordinates, float* targetCoordinates)
+	float* sourceCoordinates, float* targetCoordinates, EntityManager* entityManager)
 	: Entity(type, x, y, z)
 {
 	m_displayWidth = PROJECTILEWIDTH;
@@ -60,7 +59,7 @@ Projectile::Projectile(int type, float x, float y, float z, int projectileSource
 
 	updateVertexArray();
 
-	EntityManager::addEntityToRegistry(this);
+	entityManager->addEntityToRegistry(this);
 }
 
 Projectile::~Projectile()

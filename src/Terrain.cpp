@@ -1,7 +1,6 @@
 #include "Terrain.h"
-#include "EntityManager.h"
 
-Terrain::Terrain(int type, float x, float y, float z)
+Terrain::Terrain(int type, float x, float y, float z, EntityManager* entityManager)
 	: Entity(type, x, y, z)
 {
 	m_displayWidth = SCREENWIDTH;
@@ -18,7 +17,7 @@ Terrain::Terrain(int type, float x, float y, float z)
 
 	updateVertexArray();
 
-	EntityManager::addEntityToRegistry(this);
+	entityManager->addEntityToRegistry(this);
 }
 
 Terrain::~Terrain()

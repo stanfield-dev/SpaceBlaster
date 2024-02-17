@@ -8,24 +8,33 @@
 #include <iostream>
 #include <iterator>
 
+EntityManager::EntityManager(ma_engine* soundEngine)
+{
+	m_soundEngine = soundEngine;
+}
+
+EntityManager::~EntityManager()
+{
+}
+
 Entity* EntityManager::spawnEntity(int type, float x, float y, float z, int projectileSource,
 	float* sourceCoordinates, float* targetCoordinates)
 {
 	Entity* newEntity = nullptr;
 
 	switch (type) {
-		case ENEMY		:	newEntity = new Enemy(type, x, y, z);
+		case ENEMY		:	newEntity = new Enemy(type, x, y, z, this);
 							break;
-		case EXPLOSION	:	newEntity = new Explosion(type, x, y, z);
+		case EXPLOSION	:	newEntity = new Explosion(type, x, y, z, this);
 							break;
-		case PLAYER		:	newEntity = new Player(type, x, y, z);
+		case PLAYER		:	newEntity = new Player(type, x, y, z, this);
 							break;
 		case PROJECTILE:	if (projectileSource == PLAYER) {
-								newEntity = new Projectile(type, x, y, z, projectileSource);
+								newEntity = new Projectile(type, x, y, z, projectileSource, this);
 							}
 							else {
 								newEntity = new Projectile(type, x, y, z, projectileSource,
-															sourceCoordinates, targetCoordinates);
+															sourceCoordinates, targetCoordinates, this);
 							}
 							break;
 	}
@@ -58,7 +67,7 @@ void EntityManager::updateVertexBuffers()
 	}
 }
 
-void EntityManager::checkCollisions(ma_engine *soundEngine)
+void EntityManager::checkCollisions()
 {
 	for (auto entity : m_entityRegistry) {
 		if (entity->getType() == PROJECTILE) {
@@ -75,7 +84,7 @@ void EntityManager::checkCollisions(ma_engine *soundEngine)
 														target->getPositionY(),
 														target->getPositionZ(),
 														EXPLOSION, nullptr, nullptr);
-											ma_engine_play_sound(soundEngine, EXPLOSION_SOUND.c_str(), NULL);
+											ma_engine_play_sound(m_soundEngine, EXPLOSION_SOUND.c_str(), NULL);
 											removeEntityFromRegistry(entity);
 											entity->~Entity();
 											delete entity;
@@ -98,7 +107,7 @@ void EntityManager::checkCollisions(ma_engine *soundEngine)
 														target->getPositionY(),
 														target->getPositionZ(),
 														EXPLOSION, nullptr, nullptr);
-											ma_engine_play_sound(soundEngine, EXPLOSION_SOUND.c_str(), NULL);
+											ma_engine_play_sound(m_soundEngine, EXPLOSION_SOUND.c_str(), NULL);
 											removeEntityFromRegistry(entity);
 											entity->~Entity();
 											delete entity;
