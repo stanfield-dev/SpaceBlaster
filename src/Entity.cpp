@@ -169,6 +169,13 @@ void Entity::moveProjectile()
 	m_positionY += (m_vectorSourceToTarget[1] * m_projectileVelocity);
 
 	updateVertexArray();
+}
+
+glm::mat4 Entity::getModelMatrix()
+{
+	//return glm::translate(m_rotationMatrix, glm::vec3(m_positionX, m_positionY, m_positionZ)); 
+	return m_rotationMatrix;
+}
 
 }
 
