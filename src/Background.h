@@ -11,5 +11,5 @@ public:
 	Background(int, float, float, float, EntityManager*);
 	~Background();
 
-	void scrollBackground();
+	void scrollBackground() override;
 };

@@ -118,20 +118,18 @@ int main(void) {
 	ma_sound_start(&backgroundMusic);
 
 	EntityManager *entityManager = new EntityManager(&soundEngine);
-	Renderer::init();
 
 	unsigned int shaderProgram = Shader::createShader(Shader::getVertexShader(), Shader::getFragmentShader());
 	Shader::useShader(shaderProgram); 
 	
+	Renderer::init(shaderProgram);
+
 	Textures::init(shaderProgram);
 
-	Background* background = new Background(BACKGROUND, -1.0f, -1.0f, -1.0f, entityManager);
-	Terrain* terrain = new Terrain(TERRAIN, -1.0f, -1.0f, -0.5f, entityManager);
-
+	Entity* background = entityManager->spawnEntity(BACKGROUND, -1.0f, -1.0f, 0.0f, BACKGROUND, nullptr, nullptr);
+	Entity* terrain = entityManager->spawnEntity(TERRAIN, -1.0f, -1.0f, 0.0f, TERRAIN, nullptr, nullptr);
 	Entity* player = entityManager->spawnEntity(PLAYER, -0.9f, 0.0f, 0.0f, PLAYER, nullptr, nullptr);
 	Entity* enemy = entityManager->spawnEntity(ENEMY, 0.7f, 0.0f, 0.0f, ENEMY, nullptr, nullptr);
-
-	int frame = 0;
 
 	srand(time(0));
 
@@ -151,10 +149,8 @@ int main(void) {
 			keyIsPressed[GLFW_KEY_SPACE] = false; // prevent bullet spam
 		}
 
-		background->scrollBackground();
-
 		// TODO move this into the enemy entity somehow and call from manager(?)
-		if (rand() % 100 > 98) {
+		if (rand() % 1000 < 10) {
 			entityManager->spawnEntity(PROJECTILE, enemy->getGunPositionX(), enemy->getGunPositionY(), 0.0f, ENEMY,
 				enemy->getProjectileSourcePosition(), player->getProjectileTargetPosition());
 		}
@@ -167,8 +163,6 @@ int main(void) {
 		glfwSwapBuffers(window);
 
 		glfwPollEvents();
-
-		frame++;
 	}
 
 	Shader::deleteShader(shaderProgram);

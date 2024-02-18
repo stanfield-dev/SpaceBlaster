@@ -2,7 +2,7 @@
 
 #include <string>
 
-static class Shader
+class Shader
 {
 private:
 	inline static unsigned int m_shaderID = 0;

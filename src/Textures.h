@@ -3,7 +3,7 @@
 #include "defines.h"
 #include <string>
 
-static class Textures {
+class Textures {
 private:
 	inline static int m_width = 0;
 	inline static int m_height = 0;

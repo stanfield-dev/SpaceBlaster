@@ -12,4 +12,7 @@ private:
 public:
 	Explosion(int, float, float, float, EntityManager*);
 	~Explosion();
+
+	void animateExplosion() override;
+	int getExplosionFrame() const override;
 };

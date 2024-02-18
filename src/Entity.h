@@ -34,10 +34,15 @@ protected:
 	int m_type;
 
 	int m_projectileSource;
-	float m_projectileVelocity = 0.025f;
+	//float m_projectileVelocity = 0.025f;
+	float m_projectileVelocity = 0.001f;
 	float m_projectileSourceCoordinates[2] = { 0.0f, 0.0f };
 	float m_projectileTargetCoordinates[2] = { 0.0f, 0.0f };
 	float m_vectorSourceToTarget[2] = { 0.0f, 0.0f };
+
+	float m_radiansSourceToTarget;
+
+	glm::mat4 m_modelMatrix = glm::mat4(1.0f);
 
 	int m_explosionFrame = 0;
 
@@ -83,10 +88,11 @@ public:
 
 	int getType() const;
 
-	float getPositionX() const;
-	float getPositionY() const;
-	float getPositionZ() const;
+	// Animation functions
+	virtual void scrollBackground();
+	void fireEngines();
 
+	// Combat and Collision functions
 
 	float getRightEdge() const;
 	float getLeftEdge() const;
@@ -96,25 +102,34 @@ public:
 	float getGunPositionX() const;
 	float getGunPositionY() const;
 
-	int getExplosionFrame() const;
+	// Explosion functions
+	virtual void animateExplosion();
+	virtual int getExplosionFrame() const;
 
+	// Positioning functions
 	void setPositionX(float);
 	void setPositionY(float);
 
-	void updatePositionX(float);
+	float getPositionX() const;
+	float getPositionY() const;
+	float getPositionZ() const;
+	
 	void updatePositionY(float);
+	void updatePositionX(float);
 
-	void fireEngines();
-
+	// Projectile functions
 	int getProjectileSource() const;
 
 	float* getProjectileTargetPosition();
 	float* getProjectileSourcePosition();
 
-	void moveProjectile();
+	virtual void moveProjectile();
 
-	void animateExplosion();
+	// Transformation functions
+	glm::mat4 getModelMatrix();
 
+
+	// Vertex functions
 	float* updateVertexArray();
 	void updateVertexBuffer();
 

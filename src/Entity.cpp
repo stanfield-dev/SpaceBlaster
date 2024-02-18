@@ -40,20 +40,6 @@ float Entity::getPositionZ() const
 float* Entity::getProjectileTargetPosition() 
 {
 	if (this->m_type == PLAYER) {
-		m_projectileSourceCoordinates[0] = m_positionX + m_positionXOffset;
-		m_projectileSourceCoordinates[1] = m_positionY + (m_positionYOffset / 2);
-		return m_projectileSourceCoordinates;
-	}
-	else {
-		m_projectileSourceCoordinates[0] = m_positionX;
-		m_projectileSourceCoordinates[1] = m_positionY + (m_positionYOffset / 2);
-		return m_projectileSourceCoordinates;
-	}
-}
-
-float* Entity::getProjectileSourcePosition() 
-{
-	if (this->m_type == PLAYER) {
 		m_projectileTargetCoordinates[0] = m_positionX + m_positionXOffset;
 		m_projectileTargetCoordinates[1] = m_positionY + (m_positionYOffset / 2);
 		return m_projectileTargetCoordinates;
@@ -62,6 +48,20 @@ float* Entity::getProjectileSourcePosition()
 		m_projectileTargetCoordinates[0] = m_positionX;
 		m_projectileTargetCoordinates[1] = m_positionY + (m_positionYOffset / 2);
 		return m_projectileTargetCoordinates;
+	}
+}
+
+float* Entity::getProjectileSourcePosition() 
+{
+	if (this->m_type == PLAYER) {
+		m_projectileSourceCoordinates[0] = m_positionX + m_positionXOffset;
+		m_projectileSourceCoordinates[1] = m_positionY + (m_positionYOffset / 2);
+		return m_projectileSourceCoordinates;
+	}
+	else {
+		m_projectileSourceCoordinates[0] = m_positionX;
+		m_projectileSourceCoordinates[1] = m_positionY + (m_positionYOffset / 2);
+		return m_projectileSourceCoordinates;
 	}
 }
 
@@ -100,10 +100,7 @@ float Entity::getGunPositionY() const
 	return m_positionY + (m_positionYOffset / 2);
 }
 
-int Entity::getExplosionFrame() const
-{
-	return m_explosionFrame;
-}
+int Entity::getExplosionFrame() const { return 0; }
 
 void Entity::setPositionX(float x)
 {
@@ -141,6 +138,8 @@ void Entity::updatePositionY(float y)
 	updateVertexArray();
 }
 
+void Entity::scrollBackground() {}
+
 void Entity::fireEngines()
 {
 	if (m_spriteX + m_spriteXOffset >= 1.0f) {
@@ -163,40 +162,14 @@ int Entity::getProjectileSource() const
 	return m_projectileSource;
 }
 
-void Entity::moveProjectile() 
-{	
-	m_positionX += (m_vectorSourceToTarget[0] * m_projectileVelocity);
-	m_positionY += (m_vectorSourceToTarget[1] * m_projectileVelocity);
-
-	updateVertexArray();
-}
+void Entity::moveProjectile() {}
 
 glm::mat4 Entity::getModelMatrix()
 {
-	//return glm::translate(m_rotationMatrix, glm::vec3(m_positionX, m_positionY, m_positionZ)); 
-	return m_rotationMatrix;
+	return m_modelMatrix;
 }
 
-}
-
-void Entity::animateExplosion()
-{
-	m_explosionFrame++;
-
-	if (m_spriteX + m_spriteXOffset >= 1.0f) {
-		m_spriteX = 0.0f;
-	}
-	else {
-		m_spriteX += m_spriteXOffset;
-	}
-
-	m_vertexArray[3] = m_spriteX;						// LLx
-	m_vertexArray[9] = m_spriteX + m_spriteXOffset;		// LRx
-	m_vertexArray[15] = m_spriteX + m_spriteXOffset;	// URx
-	m_vertexArray[21] = m_spriteX;						// ULx
-
-	updateVertexArray();
-}
+void Entity::animateExplosion() {}
 
 float* Entity::updateVertexArray()
 {

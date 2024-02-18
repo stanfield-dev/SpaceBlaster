@@ -1,9 +1,11 @@
 #include "EntityManager.h"
+#include "Background.h"
 #include "Entity.h"
 #include "Enemy.h"
 #include "Explosion.h"
 #include "Player.h"
 #include "Projectile.h"
+#include "Terrain.h"
 
 #include <iostream>
 #include <iterator>
@@ -23,6 +25,8 @@ Entity* EntityManager::spawnEntity(int type, float x, float y, float z, int proj
 	Entity* newEntity = nullptr;
 
 	switch (type) {
+		case BACKGROUND	:	newEntity = new Background(type, x, y, z, this);
+							break;
 		case ENEMY		:	newEntity = new Enemy(type, x, y, z, this);
 							break;
 		case EXPLOSION	:	newEntity = new Explosion(type, x, y, z, this);
@@ -37,6 +41,8 @@ Entity* EntityManager::spawnEntity(int type, float x, float y, float z, int proj
 															sourceCoordinates, targetCoordinates, this);
 							}
 							ma_engine_play_sound(m_soundEngine, PROJECTILE_SOUND.c_str(), NULL);
+							break;
+		case TERRAIN	:	newEntity = new Terrain(type, x, y, z, this);
 							break;
 	}
 	

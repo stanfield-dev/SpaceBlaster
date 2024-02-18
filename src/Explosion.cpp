@@ -24,3 +24,27 @@ Explosion::~Explosion()
 {
 }
 
+void Explosion::animateExplosion()
+{
+	m_explosionFrame++;
+
+	if (m_spriteX + m_spriteXOffset >= 1.0f) {
+		m_spriteX = 0.0f;
+	}
+	else {
+		m_spriteX += m_spriteXOffset;
+	}
+
+	m_vertexArray[3] = m_spriteX;						// LLx
+	m_vertexArray[9] = m_spriteX + m_spriteXOffset;		// LRx
+	m_vertexArray[15] = m_spriteX + m_spriteXOffset;	// URx
+	m_vertexArray[21] = m_spriteX;						// ULx
+
+	updateVertexArray();
+}
+
+int Explosion::getExplosionFrame() const
+{
+	return m_explosionFrame;
+}
+
