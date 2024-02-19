@@ -34,8 +34,7 @@ protected:
 	int m_type;
 
 	int m_projectileSource;
-	//float m_projectileVelocity = 0.025f;
-	float m_projectileVelocity = 0.001f;
+	float m_projectileVelocity = 0.025f;
 	float m_projectileSourceCoordinates[2] = { 0.0f, 0.0f };
 	float m_projectileTargetCoordinates[2] = { 0.0f, 0.0f };
 	float m_vectorSourceToTarget[2] = { 0.0f, 0.0f };
@@ -124,10 +123,6 @@ public:
 	float* getProjectileSourcePosition();
 
 	virtual void moveProjectile();
-
-	// Transformation functions
-	glm::mat4 getModelMatrix();
-
 
 	// Vertex functions
 	float* updateVertexArray();

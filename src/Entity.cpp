@@ -39,30 +39,18 @@ float Entity::getPositionZ() const
 
 float* Entity::getProjectileTargetPosition() 
 {
-	if (this->m_type == PLAYER) {
-		m_projectileTargetCoordinates[0] = m_positionX + m_positionXOffset;
-		m_projectileTargetCoordinates[1] = m_positionY + (m_positionYOffset / 2);
-		return m_projectileTargetCoordinates;
-	}
-	else {
-		m_projectileTargetCoordinates[0] = m_positionX;
-		m_projectileTargetCoordinates[1] = m_positionY + (m_positionYOffset / 2);
-		return m_projectileTargetCoordinates;
-	}
+	m_projectileTargetCoordinates[0] = getGunPositionX();
+	m_projectileTargetCoordinates[1] = getGunPositionY();
+
+	return m_projectileTargetCoordinates;
 }
 
 float* Entity::getProjectileSourcePosition() 
 {
-	if (this->m_type == PLAYER) {
-		m_projectileSourceCoordinates[0] = m_positionX + m_positionXOffset;
-		m_projectileSourceCoordinates[1] = m_positionY + (m_positionYOffset / 2);
-		return m_projectileSourceCoordinates;
-	}
-	else {
-		m_projectileSourceCoordinates[0] = m_positionX;
-		m_projectileSourceCoordinates[1] = m_positionY + (m_positionYOffset / 2);
-		return m_projectileSourceCoordinates;
-	}
+	m_projectileSourceCoordinates[0] = getGunPositionX();
+	m_projectileSourceCoordinates[1] = getGunPositionY();
+
+	return m_projectileSourceCoordinates;
 }
 
 float Entity::getRightEdge() const
@@ -163,11 +151,6 @@ int Entity::getProjectileSource() const
 }
 
 void Entity::moveProjectile() {}
-
-glm::mat4 Entity::getModelMatrix()
-{
-	return m_modelMatrix;
-}
 
 void Entity::animateExplosion() {}
 
