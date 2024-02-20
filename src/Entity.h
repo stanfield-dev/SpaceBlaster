@@ -33,13 +33,12 @@ protected:
 
 	int m_type;
 
-	int m_projectileSource;
-	float m_projectileVelocity = 0.025f;
+	int m_projectileSource = 2;
 	float m_projectileSourceCoordinates[2] = { 0.0f, 0.0f };
 	float m_projectileTargetCoordinates[2] = { 0.0f, 0.0f };
 	float m_vectorSourceToTarget[2] = { 0.0f, 0.0f };
 
-	float m_radiansSourceToTarget;
+	float m_radiansSourceToTarget = 0.0f;
 
 	glm::mat4 m_modelMatrix = glm::mat4(1.0f);
 
@@ -88,6 +87,7 @@ public:
 	int getType() const;
 
 	// Animation functions
+	virtual void animateMenu();
 	virtual void scrollBackground();
 	void fireEngines();
 
@@ -125,6 +125,7 @@ public:
 	virtual void moveProjectile();
 
 	// Vertex functions
+	virtual void generateBuffers();
 	float* updateVertexArray();
 	void updateVertexBuffer();
 

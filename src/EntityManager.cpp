@@ -3,6 +3,7 @@
 #include "Entity.h"
 #include "Enemy.h"
 #include "Explosion.h"
+#include "GameMenu.h"
 #include "Player.h"
 #include "Projectile.h"
 #include "Terrain.h"
@@ -25,22 +26,24 @@ Entity* EntityManager::spawnEntity(int type, float x, float y, float z, int proj
 	Entity* newEntity = nullptr;
 
 	switch (type) {
-		case BACKGROUND	:	newEntity = new Background(type, x, y, z, this);
-							break;
-		case ENEMY		:	newEntity = new Enemy(type, x, y, z, this);
-							break;
-		case EXPLOSION	:	newEntity = new Explosion(type, x, y, z, this);
-							break;
-		case PLAYER		:	newEntity = new Player(type, x, y, z, this);
-							break;
-		case PROJECTILE:	if (projectileSource == PLAYER) {
+		case PROJECTILE	:	if (projectileSource == PLAYER) {
 								newEntity = new Projectile(type, x, y, z, projectileSource, this);
 							}
 							else {
 								newEntity = new Projectile(type, x, y, z, projectileSource,
-															sourceCoordinates, targetCoordinates, this);
+														sourceCoordinates, targetCoordinates, this);
 							}
 							ma_engine_play_sound(m_soundEngine, PROJECTILE_SOUND.c_str(), NULL);
+							break;
+		case EXPLOSION	:	newEntity = new Explosion(type, x, y, z, this);
+							break;
+		case ENEMY		:	newEntity = new Enemy(type, x, y, z, this);
+							break;
+		case PLAYER		:	newEntity = new Player(type, x, y, z, this);
+							break;
+		case GAME_MENU	:	newEntity = new GameMenu(type, x, y, z, this);
+							break;
+		case BACKGROUND	:	newEntity = new Background(type, x, y, z, this);
 							break;
 		case TERRAIN	:	newEntity = new Terrain(type, x, y, z, this);
 							break;

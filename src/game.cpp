@@ -18,8 +18,13 @@
 #include <stdlib.h>
 #include <time.h>
 
+bool newGame = true;
+
 std::map<int, bool> keyIsPressed 
 {
+	{GLFW_KEY_ENTER, false},
+	{GLFW_KEY_ESCAPE, false},
+
 	{GLFW_KEY_W, false},
 	{GLFW_KEY_UP, false},
 
@@ -33,9 +38,9 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 
 	if (action == GLFW_PRESS) {
 		switch (key) {
-			case GLFW_KEY_ESCAPE	:	glfwSetWindowShouldClose(window, 1);
+			case GLFW_KEY_ESCAPE	:	keyIsPressed[GLFW_KEY_ESCAPE] = true;
 										break;
-			case GLFW_KEY_Q			:	glfwSetWindowShouldClose(window, 1);
+			case GLFW_KEY_ENTER		:	keyIsPressed[GLFW_KEY_ENTER] = true;
 										break;
 
 			case GLFW_KEY_W			:	keyIsPressed[GLFW_KEY_W] = true;
@@ -46,7 +51,11 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 										break;
 			case GLFW_KEY_S			:	keyIsPressed[GLFW_KEY_S] = true;
 										break;
+
 			case GLFW_KEY_SPACE		:	keyIsPressed[GLFW_KEY_SPACE] = true;
+										break;
+
+			case GLFW_KEY_Q			:	glfwSetWindowShouldClose(window, 1);
 										break;
 		}
 	}
@@ -63,9 +72,34 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 										break;
 			case GLFW_KEY_SPACE		:	keyIsPressed[GLFW_KEY_SPACE] = false;
 										break;
+
+			case GLFW_KEY_ESCAPE	:	keyIsPressed[GLFW_KEY_ESCAPE] = false;
+										break;
+			case GLFW_KEY_ENTER		:	keyIsPressed[GLFW_KEY_ENTER] = false;
+										break;
 		}
 	}
 
+}
+
+void loadGameMenu(EntityManager* entityManager, GLFWwindow* window, unsigned int shaderProgram)
+{
+	Entity* gameMenu = entityManager->spawnEntity(GAME_MENU, -1.0f, -1.0f, 0.0f, GAME_MENU, nullptr, nullptr);
+
+	while (keyIsPressed[GLFW_KEY_ENTER] == false) {
+		entityManager->updateVertexBuffers();
+		Renderer::drawGameMenu(shaderProgram, entityManager);
+		glfwSwapBuffers(window);
+		glfwPollEvents();
+	}
+
+	entityManager->removeEntityFromRegistry(gameMenu);
+	gameMenu->~Entity();
+	delete gameMenu;
+
+	keyIsPressed[GLFW_KEY_ESCAPE] == false;
+	keyIsPressed[GLFW_KEY_ENTER] == false;
+	newGame = false;
 }
 
 int main(void) {
@@ -134,35 +168,44 @@ int main(void) {
 	srand(time(0));
 
 	while (!glfwWindowShouldClose(window)) {
-
-		if (keyIsPressed[GLFW_KEY_W] == true || keyIsPressed[GLFW_KEY_UP] == true) {
-			player->updatePositionY((1.0f / SCREENHEIGHT) * 8.0f);
+		if (newGame) {
+			loadGameMenu(entityManager, window, shaderProgram);
 		}
+		else {
 
-		if (keyIsPressed[GLFW_KEY_S] == true || keyIsPressed[GLFW_KEY_DOWN] == true) {
-			player->updatePositionY(-(1.0f / SCREENHEIGHT) * 8.0f);
+			if (keyIsPressed[GLFW_KEY_W] == true || keyIsPressed[GLFW_KEY_UP] == true) {
+				player->updatePositionY((1.0f / SCREENHEIGHT) * 8.0f);
+			}
+
+			if (keyIsPressed[GLFW_KEY_S] == true || keyIsPressed[GLFW_KEY_DOWN] == true) {
+				player->updatePositionY(-(1.0f / SCREENHEIGHT) * 8.0f);
+			}
+
+			if (keyIsPressed[GLFW_KEY_SPACE] == true) {
+				entityManager->spawnEntity(PROJECTILE, player->getGunPositionX(), player->getGunPositionY(), 0.0f,
+					PLAYER, nullptr, nullptr);
+				keyIsPressed[GLFW_KEY_SPACE] = false; // prevent bullet spam
+			}
+
+			if (keyIsPressed[GLFW_KEY_ESCAPE] == true) {
+				loadGameMenu(entityManager, window, shaderProgram);
+			}
+
+			// TODO move this into the enemy entity somehow and call from manager(?)
+			if (rand() % 1000 < 10) {
+				entityManager->spawnEntity(PROJECTILE, enemy->getGunPositionX(), enemy->getGunPositionY(), 0.0f, ENEMY,
+					enemy->getProjectileSourcePosition(), player->getProjectileTargetPosition());
+			}
+
+			entityManager->updateVertexBuffers();
+			entityManager->checkCollisions();
+		
+			Renderer::drawEntities(shaderProgram, entityManager);
+
+			glfwSwapBuffers(window);
+
+			glfwPollEvents();
 		}
-
-		if (keyIsPressed[GLFW_KEY_SPACE] == true) {
-			entityManager->spawnEntity(PROJECTILE, player->getGunPositionX(), player->getGunPositionY(), 0.0f, 
-										PLAYER, nullptr, nullptr);
-			keyIsPressed[GLFW_KEY_SPACE] = false; // prevent bullet spam
-		}
-
-		// TODO move this into the enemy entity somehow and call from manager(?)
-		if (rand() % 1000 < 10) {
-			entityManager->spawnEntity(PROJECTILE, enemy->getGunPositionX(), enemy->getGunPositionY(), 0.0f, ENEMY,
-				enemy->getProjectileSourcePosition(), player->getProjectileTargetPosition());
-		}
-
-		entityManager->updateVertexBuffers();
-		entityManager->checkCollisions();
-
-		Renderer::drawEntities(shaderProgram, entityManager);
-
-		glfwSwapBuffers(window);
-
-		glfwPollEvents();
 	}
 
 	Shader::deleteShader(shaderProgram);

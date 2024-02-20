@@ -5,9 +5,7 @@
 Entity::Entity(int type, float x, float y, float z)
 	: m_type(type), m_positionX(x), m_positionY(y), m_positionZ(z)
 {
-	glGenVertexArrays(1, &m_VAO);
-	glGenBuffers(1, &m_vertexbufferID);
-	glGenBuffers(1, &m_indexbufferID);
+	generateBuffers();
 }
 
 Entity::~Entity()
@@ -15,6 +13,13 @@ Entity::~Entity()
 	unbindVAO();
 	glDeleteBuffers(1, &m_indexbufferID);
 	glDeleteBuffers(1, &m_vertexbufferID);
+}
+
+void Entity::generateBuffers()
+{
+	glGenVertexArrays(1, &m_VAO);
+	glGenBuffers(1, &m_vertexbufferID);
+	glGenBuffers(1, &m_indexbufferID);
 }
 
 int Entity::getType() const
@@ -125,6 +130,8 @@ void Entity::updatePositionY(float y)
 
 	updateVertexArray();
 }
+
+void Entity::animateMenu() {}
 
 void Entity::scrollBackground() {}
 

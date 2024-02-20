@@ -64,3 +64,22 @@ void Renderer::drawEntities(unsigned int shaderProgram, EntityManager* entityMan
 		entity->unbindVAO();
 	}
 }
+
+void Renderer::drawGameMenu(unsigned int shaderProgram, EntityManager* entityManager)
+{
+	glClear(GL_COLOR_BUFFER_BIT);
+
+	for (auto entity : entityManager->getEntityRegistry()) {
+		entity->bindVAO();
+		entity->bindIBO();
+
+		// game menu animation
+		if (entity->getType() == GAME_MENU) {
+			entity->animateMenu();
+		}
+
+		entity->updateVertexBuffer();
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		entity->unbindVAO();
+	}
+}

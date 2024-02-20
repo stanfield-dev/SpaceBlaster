@@ -25,12 +25,13 @@ void Textures::init(unsigned int shaderProgram)
 	loadTexture(ENEMY);
 	loadTexture(PROJECTILE);
 	loadTexture(EXPLOSION);
+	loadTexture(GAME_MENU);
 	loadTexture(TERRAIN);
 	loadTexture(BACKGROUND);
 
 	loc0 = glGetUniformLocation(shaderProgram, "u_textures");
-	int samplers[6] = { 0, 1, 2, 3, 4, 5 }; 
-	glUniform1iv(loc0, 6, samplers);
+	int samplers[7] = { 0, 1, 2, 3, 4, 5, 6 }; 
+	glUniform1iv(loc0, 7, samplers);
 }
 
 void Textures::loadTexture(int type)
@@ -103,8 +104,8 @@ void Textures::loadTexture(int type)
 
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_textureData);
 
 		glBindTextureUnit(4, m_projectileTextureID);
@@ -118,11 +119,26 @@ void Textures::loadTexture(int type)
 
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_textureData);
 
 		glBindTextureUnit(5, m_explosionTextureID);
+	}
+
+	if (type == GAME_MENU) {
+		glCreateTextures(GL_TEXTURE_2D, 1, &m_menubackgroundTextureID);
+		glBindTexture(GL_TEXTURE_2D, m_menubackgroundTextureID);
+
+		loadImage(MENUBACKGROUND_IMAGE);
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_textureData);
+
+		glBindTextureUnit(6, m_menubackgroundTextureID);
 	}
 
 	if (m_textureData) {
