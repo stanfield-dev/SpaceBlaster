@@ -19,9 +19,7 @@ Projectile::Projectile(int type, float x, float y, float z, int projectileSource
 
 	m_projectileSource = projectileSource;
 
-	if (projectileSource == ENEMY) {
-		m_spriteX = m_spriteXOffset;
-	}
+	m_spriteX = m_spriteXOffset;
 
 	updateVertexArray();
 
@@ -58,10 +56,7 @@ Projectile::Projectile(int type, float x, float y, float z, int projectileSource
 
 	m_radiansSourceToTarget = glm::atan((m_vectorSourceToTarget[1]) / m_vectorSourceToTarget[0]);
 
-	if (projectileSource == ENEMY) {
-		m_spriteX = m_spriteXOffset;
-		rotateProjectile();
-	}
+	m_spriteX = m_spriteXOffset;
 
 	updateVertexArray();
 
@@ -80,20 +75,6 @@ void Projectile::moveProjectile()
 	updateVertexArray();
 }
 
-void Projectile::rotateProjectile()
-{
-	m_modelMatrix = glm::mat4(1.0f);
 
-	glm::mat4 fwdTranslate = glm::translate(glm::mat4(1.0f), glm::vec3(m_positionX + (m_positionXOffset / 2), m_positionY + (m_positionYOffset /2), 0.0f));
-	glm::mat4 inverseTranslate = glm::inverse(fwdTranslate);
-	glm::mat4 rotationMatrix = glm::rotate(glm::mat4(1.0f), m_radiansSourceToTarget, glm::vec3(0.0f, 0.0f, 1.0f));
-	
-	m_modelMatrix = fwdTranslate * rotationMatrix * inverseTranslate;
-
-	glm::vec4 result = m_modelMatrix * glm::vec4(m_positionX, m_positionY, 0.0f, 1.0f);
-
-	m_positionX = result.x;
-	m_positionY = result.y;
-}
 
 

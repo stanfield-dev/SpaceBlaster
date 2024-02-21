@@ -97,8 +97,6 @@ void loadGameMenu(EntityManager* entityManager, GLFWwindow* window, unsigned int
 	gameMenu->~Entity();
 	delete gameMenu;
 
-	keyIsPressed[GLFW_KEY_ESCAPE] == false;
-	keyIsPressed[GLFW_KEY_ENTER] == false;
 	newGame = false;
 }
 
