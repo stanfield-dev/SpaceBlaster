@@ -152,12 +152,15 @@ void Entity::fireEngines()
 	updateVertexArray();
 }
 
+void Entity::moveEnemy() {}
+
+void Entity::moveProjectile() {}
+
 int Entity::getProjectileSource() const
 {
 	return m_projectileSource;
 }
 
-void Entity::moveProjectile() {}
 
 void Entity::animateExplosion() {}
 

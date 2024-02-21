@@ -90,9 +90,10 @@ public:
 	virtual void animateMenu();
 	virtual void scrollBackground();
 	void fireEngines();
+	virtual void moveEnemy();
+	virtual void moveProjectile();
 
 	// Combat and Collision functions
-
 	float getRightEdge() const;
 	float getLeftEdge() const;
 	float getTopEdge() const;
@@ -121,8 +122,6 @@ public:
 
 	float* getProjectileTargetPosition();
 	float* getProjectileSourcePosition();
-
-	virtual void moveProjectile();
 
 	// Vertex functions
 	virtual void generateBuffers();

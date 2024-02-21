@@ -38,6 +38,21 @@ void Renderer::drawEntities(unsigned int shaderProgram, EntityManager* entityMan
 			entity->fireEngines();
 		}
 
+		// move enemy ship
+		if (entity->getType() == ENEMY) {
+			entity->moveEnemy();
+		}
+
+		// enemy fire at player
+		if (entity->getType() == ENEMY && entityManager->getPlayerEntity() != nullptr) {
+			Entity* player = entityManager->getPlayerEntity();
+
+			if (rand() % 1000 < 10) {
+				entityManager->spawnEntity(PROJECTILE, entity->getGunPositionX(), entity->getGunPositionY(), 0.0f, ENEMY,
+					entity->getProjectileSourcePosition(), player->getProjectileTargetPosition());
+			}
+		}
+
 		// move projectile across screen
 		if (entity->getType() == PROJECTILE) {
 			if (entity->getProjectileSource() == PLAYER) { // horizontal only

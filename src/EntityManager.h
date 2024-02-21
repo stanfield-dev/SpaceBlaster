@@ -12,6 +12,7 @@ class EntityManager
 private:
 	ma_engine* m_soundEngine;
 	std::vector<Entity*> m_entityRegistry;
+	Entity* playerEntity = nullptr;
 
 public:
 	EntityManager(ma_engine*);
@@ -23,6 +24,8 @@ public:
 	void removeEntityFromRegistry(Entity*);
 
 	std::vector<Entity*> getEntityRegistry();
+
+	Entity* getPlayerEntity();
 
 	void updateVertexBuffers();
 

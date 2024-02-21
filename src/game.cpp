@@ -112,7 +112,7 @@ int main(void) {
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	/* Create a windowed mode window and its OpenGL context */
-	window = glfwCreateWindow((int)SCREENWIDTH, (int)SCREENHEIGHT, "Test Game", NULL, NULL);
+	window = glfwCreateWindow((int)SCREENWIDTH, (int)SCREENHEIGHT, "Space Battle!", NULL, NULL);
 	if (!window) {
 		glfwTerminate();
 		return -1;
@@ -187,12 +187,6 @@ int main(void) {
 
 			if (keyIsPressed[GLFW_KEY_ESCAPE] == true) {
 				loadGameMenu(entityManager, window, shaderProgram);
-			}
-
-			// TODO move this into the enemy entity somehow and call from manager(?)
-			if (rand() % 1000 < 10) {
-				entityManager->spawnEntity(PROJECTILE, enemy->getGunPositionX(), enemy->getGunPositionY(), 0.0f, ENEMY,
-					enemy->getProjectileSourcePosition(), player->getProjectileTargetPosition());
 			}
 
 			entityManager->updateVertexBuffers();

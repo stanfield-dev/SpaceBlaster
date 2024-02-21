@@ -70,6 +70,18 @@ std::vector<Entity*> EntityManager::getEntityRegistry()
 	return m_entityRegistry;
 }
 
+Entity* EntityManager::getPlayerEntity()
+{
+	if (playerEntity == nullptr) {
+		for (auto entity : m_entityRegistry) {
+			if (entity->getType() == PLAYER) {
+				playerEntity = entity;
+			}
+		}
+	}
+	return playerEntity;
+}
+
 void EntityManager::updateVertexBuffers()
 {
 	for (auto entity : m_entityRegistry) {

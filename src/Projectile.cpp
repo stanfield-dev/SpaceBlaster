@@ -19,8 +19,6 @@ Projectile::Projectile(int type, float x, float y, float z, int projectileSource
 
 	m_projectileSource = projectileSource;
 
-	m_spriteX = m_spriteXOffset;
-
 	updateVertexArray();
 
 	entityManager->addEntityToRegistry(this);
@@ -59,6 +57,7 @@ Projectile::Projectile(int type, float x, float y, float z, int projectileSource
 	m_spriteX = m_spriteXOffset;
 
 	updateVertexArray();
+	rotateProjectile();
 
 	entityManager->addEntityToRegistry(this);
 }
@@ -73,8 +72,28 @@ void Projectile::moveProjectile()
 	m_positionY += (m_vectorSourceToTarget[1] * m_projectileVelocity);
 
 	updateVertexArray();
+
+	if (this->getProjectileSource() == ENEMY) {
+		rotateProjectile();
+	}
 }
 
+void Projectile::rotateProjectile()
+{
+	float c, s, originX, originY;
 
+	c = cos(m_radiansSourceToTarget);
+	s = sin(m_radiansSourceToTarget);
+
+	originX = m_positionX + (m_positionXOffset / 2);
+	originY = m_positionY + (m_positionYOffset / 2);
+
+	for (int x = 0; x < 20; x += 6)
+	{
+		m_vertexArray[x]	= c * (m_vertexArray[x] - originX) - s * (m_vertexArray[x + 1] - originY) + originX;
+		m_vertexArray[x + 1] = s * (m_vertexArray[x] - originX) + c * (m_vertexArray[x + 1] - originY) + originY;
+
+	}
+}
 
 
