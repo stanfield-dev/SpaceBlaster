@@ -170,7 +170,6 @@
     <ClCompile Include="src\Textures.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ClassDiagram.cd" />
     <None Include="src\resources\shaders\fragmentShader.frag" />
   </ItemGroup>
   <ItemGroup>
