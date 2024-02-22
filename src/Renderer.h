@@ -22,5 +22,6 @@ public:
 	static void init(unsigned int);
 	static void drawEntities(unsigned int, EntityManager*);
 	static void drawGameMenu(unsigned int, EntityManager*);
+	static void drawHelpMenu(unsigned int, EntityManager*);
 };
 

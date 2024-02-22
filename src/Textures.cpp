@@ -26,12 +26,14 @@ void Textures::init(unsigned int shaderProgram)
 	loadTexture(PROJECTILE);
 	loadTexture(EXPLOSION);
 	loadTexture(GAME_MENU);
+	loadTexture(HELP_MENU);
+	loadTexture(COUNTDOWN);
 	loadTexture(TERRAIN);
 	loadTexture(BACKGROUND);
 
 	loc0 = glGetUniformLocation(shaderProgram, "u_textures");
-	int samplers[7] = { 0, 1, 2, 3, 4, 5, 6 }; 
-	glUniform1iv(loc0, 7, samplers);
+	int samplers[9] = { 0, 1, 2, 3, 4, 5, 6, 7, 8 }; 
+	glUniform1iv(loc0, 9, samplers);
 }
 
 void Textures::loadTexture(int type)
@@ -127,10 +129,10 @@ void Textures::loadTexture(int type)
 	}
 
 	if (type == GAME_MENU) {
-		glCreateTextures(GL_TEXTURE_2D, 1, &m_menubackgroundTextureID);
-		glBindTexture(GL_TEXTURE_2D, m_menubackgroundTextureID);
+		glCreateTextures(GL_TEXTURE_2D, 1, &m_menuTextureID);
+		glBindTexture(GL_TEXTURE_2D, m_menuTextureID);
 
-		loadImage(MENUBACKGROUND_IMAGE);
+		loadImage(MENU_IMAGE);
 
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -138,7 +140,37 @@ void Textures::loadTexture(int type)
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_textureData);
 
-		glBindTextureUnit(6, m_menubackgroundTextureID);
+		glBindTextureUnit(6, m_menuTextureID);
+	}
+
+	if (type == HELP_MENU) {
+		glCreateTextures(GL_TEXTURE_2D, 1, &m_helpTextureID);
+		glBindTexture(GL_TEXTURE_2D, m_helpTextureID);
+
+		loadImage(HELP_IMAGE);
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_textureData);
+
+		glBindTextureUnit(7, m_helpTextureID);
+	}
+
+	if (type == COUNTDOWN) {
+		glCreateTextures(GL_TEXTURE_2D, 1, &m_countdownTextureID);
+		glBindTexture(GL_TEXTURE_2D, m_countdownTextureID);
+
+		loadImage(COUNTDOWN_IMAGE);
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_textureData);
+
+		glBindTextureUnit(8, m_countdownTextureID);
 	}
 
 	if (m_textureData) {

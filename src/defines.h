@@ -6,17 +6,21 @@ const float SCREENWIDTH = 1024.0f;
 const float SCREENHEIGHT = 768.0f;
 
 // dimensions of game objects in screen pixels
-const float PLAYERWIDTH = 192.0f;
-const float PLAYERHEIGHT = 192.0f;
+const float COUNTDOWNWIDTH = 192.0f;
+const float COUNTDOWNHEIGHT = 192.0f;
 
 const float ENEMYWIDTH = 192.0f;
 const float ENEMYHEIGHT = 192.0f;
 
+const float EXPLOSIONWIDTH = 192.0f;
+const float EXPLOSIONHEIGHT = 192.0f;
+
+const float PLAYERWIDTH = 192.0f;
+const float PLAYERHEIGHT = 192.0f;
+
 const float PROJECTILEWIDTH = 128.0f;
 const float PROJECTILEHEIGHT = 64.0f;
 
-const float EXPLOSIONWIDTH = 192.0f;
-const float EXPLOSIONHEIGHT = 192.0f;
 
 // shader paths
 const std::string VSHADER_PATH = "src/resources/shaders/vertexShader.vert";
@@ -24,10 +28,12 @@ const std::string FSHADER_PATH = "src/resources/shaders/fragmentShader.frag";
 
 // spritesheet sources
 const std::string BACKGROUND_IMAGE =		"src/resources/textures/background.png";
+const std::string COUNTDOWN_IMAGE =			"src/resources/textures/countdown.png";
 const std::string ENEMY_SPRITE =			"src/resources/textures/enemy-ship-spritesheet.png";
 const std::string EXPLOSION_SPRITE =		"src/resources/textures/explosion.png";
 const std::string FONT_ATLAS =				"src/resources/textures/fontatlas.png";
-const std::string MENUBACKGROUND_IMAGE =	"src/resources/textures/menu-background.jpg";
+const std::string HELP_IMAGE =				"src/resources/textures/help.jpg";
+const std::string MENU_IMAGE =				"src/resources/textures/menu.jpg";
 const std::string PLAYER_SPRITE =			"src/resources/textures/player-ship-spritesheet.png";
 const std::string PROJECTILE_SPRITE =		"src/resources/textures/projectiles.png";
 const std::string TERRAIN_SPRITE =			"src/resources/textures/terrain.png";
@@ -46,5 +52,7 @@ enum objectType : int
 	TERRAIN,
 	PROJECTILE,
 	EXPLOSION,
-	GAME_MENU
+	GAME_MENU,
+	HELP_MENU,
+	COUNTDOWN
 };

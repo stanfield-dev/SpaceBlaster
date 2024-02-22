@@ -22,64 +22,80 @@ bool newGame = true;
 
 std::map<int, bool> keyIsPressed 
 {
+	{GLFW_KEY_DOWN, false},
 	{GLFW_KEY_ENTER, false},
 	{GLFW_KEY_ESCAPE, false},
-
-	{GLFW_KEY_W, false},
-	{GLFW_KEY_UP, false},
-
-	{GLFW_KEY_DOWN, false},
+	{GLFW_KEY_F1, false},
 	{GLFW_KEY_S, false},
-
-	{GLFW_KEY_SPACE, false}
+	{GLFW_KEY_SPACE, false},
+	{GLFW_KEY_UP, false},
+	{GLFW_KEY_W, false}
 };
 
 static void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods) {
 
 	if (action == GLFW_PRESS) {
 		switch (key) {
-			case GLFW_KEY_ESCAPE	:	keyIsPressed[GLFW_KEY_ESCAPE] = true;
+			case GLFW_KEY_DOWN		:	keyIsPressed[GLFW_KEY_DOWN] = true;
 										break;
 			case GLFW_KEY_ENTER		:	keyIsPressed[GLFW_KEY_ENTER] = true;
 										break;
-
-			case GLFW_KEY_W			:	keyIsPressed[GLFW_KEY_W] = true;
+			case GLFW_KEY_ESCAPE	:	keyIsPressed[GLFW_KEY_ESCAPE] = true;
 										break;
-			case GLFW_KEY_UP		:	keyIsPressed[GLFW_KEY_UP] = true;			
+			case GLFW_KEY_F1:			keyIsPressed[GLFW_KEY_F1] = true;
 										break;
-			case GLFW_KEY_DOWN		:	keyIsPressed[GLFW_KEY_DOWN] = true;
+			case GLFW_KEY_Q			:	glfwSetWindowShouldClose(window, 1);
 										break;
 			case GLFW_KEY_S			:	keyIsPressed[GLFW_KEY_S] = true;
 										break;
-
 			case GLFW_KEY_SPACE		:	keyIsPressed[GLFW_KEY_SPACE] = true;
 										break;
-
-			case GLFW_KEY_Q			:	glfwSetWindowShouldClose(window, 1);
+			case GLFW_KEY_UP		:	keyIsPressed[GLFW_KEY_UP] = true;			
+										break;
+			case GLFW_KEY_W			:	keyIsPressed[GLFW_KEY_W] = true;
 										break;
 		}
 	}
 
 	if (action == GLFW_RELEASE) {
 		switch (key) {
-			case GLFW_KEY_W			:	keyIsPressed[GLFW_KEY_W] = false;
-										break;
-			case GLFW_KEY_UP		:	keyIsPressed[GLFW_KEY_UP] = false;
-										break;
 			case GLFW_KEY_DOWN		:	keyIsPressed[GLFW_KEY_DOWN] = false;
+										break;
+			case GLFW_KEY_ENTER		:	keyIsPressed[GLFW_KEY_ENTER] = false;
+										break;
+			case GLFW_KEY_ESCAPE	:	keyIsPressed[GLFW_KEY_ESCAPE] = false;
+										break;
+			case GLFW_KEY_F1		:	keyIsPressed[GLFW_KEY_F1] = false;
 										break;
 			case GLFW_KEY_S			:	keyIsPressed[GLFW_KEY_S] = false;
 										break;
 			case GLFW_KEY_SPACE		:	keyIsPressed[GLFW_KEY_SPACE] = false;
 										break;
-
-			case GLFW_KEY_ESCAPE	:	keyIsPressed[GLFW_KEY_ESCAPE] = false;
+			case GLFW_KEY_UP		:	keyIsPressed[GLFW_KEY_UP] = false;
 										break;
-			case GLFW_KEY_ENTER		:	keyIsPressed[GLFW_KEY_ENTER] = false;
+			case GLFW_KEY_W			:	keyIsPressed[GLFW_KEY_W] = false;
 										break;
 		}
 	}
 
+}
+
+void loadHelpMenu(EntityManager* entityManager, GLFWwindow* window, unsigned int shaderProgram)
+{
+	Entity* helpMenu = entityManager->spawnEntity(HELP_MENU, -1.0f, -1.0f, 0.0f, HELP_MENU, nullptr, nullptr);
+
+	while (keyIsPressed[GLFW_KEY_ENTER] == false) {
+		entityManager->updateVertexBuffers();
+		Renderer::drawHelpMenu(shaderProgram, entityManager);
+		glfwSwapBuffers(window);
+		glfwPollEvents();
+	}
+
+	entityManager->removeEntityFromRegistry(helpMenu);
+	helpMenu->~Entity();
+	delete helpMenu;
+
+	newGame = false;
 }
 
 void loadGameMenu(EntityManager* entityManager, GLFWwindow* window, unsigned int shaderProgram)
@@ -87,6 +103,9 @@ void loadGameMenu(EntityManager* entityManager, GLFWwindow* window, unsigned int
 	Entity* gameMenu = entityManager->spawnEntity(GAME_MENU, -1.0f, -1.0f, 0.0f, GAME_MENU, nullptr, nullptr);
 
 	while (keyIsPressed[GLFW_KEY_ENTER] == false) {
+		if (keyIsPressed[GLFW_KEY_F1] == true) {
+			loadHelpMenu(entityManager, window, shaderProgram);
+		}
 		entityManager->updateVertexBuffers();
 		Renderer::drawGameMenu(shaderProgram, entityManager);
 		glfwSwapBuffers(window);
@@ -163,30 +182,41 @@ int main(void) {
 	Entity* player = entityManager->spawnEntity(PLAYER, -0.9f, 0.0f, 0.0f, PLAYER, nullptr, nullptr);
 	Entity* enemy = entityManager->spawnEntity(ENEMY, 0.7f, 0.0f, 0.0f, ENEMY, nullptr, nullptr);
 
-	srand(time(0));
+	srand((unsigned int)time(0));
 
 	while (!glfwWindowShouldClose(window)) {
+		if ( (entityManager->getPlayerEntity() == 0) && (entityManager->getCountdownEntity() == 0)) {
+			player = entityManager->respawnPlayer();
+		}
+
 		if (newGame) {
 			loadGameMenu(entityManager, window, shaderProgram);
 		}
+
 		else {
+			if (entityManager->getPlayerEntity() != 0) {
 
-			if (keyIsPressed[GLFW_KEY_W] == true || keyIsPressed[GLFW_KEY_UP] == true) {
-				player->updatePositionY((1.0f / SCREENHEIGHT) * 8.0f);
-			}
+				if (keyIsPressed[GLFW_KEY_W] == true || keyIsPressed[GLFW_KEY_UP] == true) {
+					entityManager->getPlayerEntity()->updatePositionY((1.0f / SCREENHEIGHT) * 8.0f);
+				}
 
-			if (keyIsPressed[GLFW_KEY_S] == true || keyIsPressed[GLFW_KEY_DOWN] == true) {
-				player->updatePositionY(-(1.0f / SCREENHEIGHT) * 8.0f);
-			}
+				if (keyIsPressed[GLFW_KEY_S] == true || keyIsPressed[GLFW_KEY_DOWN] == true) {
+					entityManager->getPlayerEntity()->updatePositionY(-(1.0f / SCREENHEIGHT) * 8.0f);
+				}
 
-			if (keyIsPressed[GLFW_KEY_SPACE] == true) {
-				entityManager->spawnEntity(PROJECTILE, player->getGunPositionX(), player->getGunPositionY(), 0.0f,
-					PLAYER, nullptr, nullptr);
-				keyIsPressed[GLFW_KEY_SPACE] = false; // prevent bullet spam
+				if (keyIsPressed[GLFW_KEY_SPACE] == true) {
+					entityManager->spawnEntity(PROJECTILE, player->getGunPositionX(), player->getGunPositionY(), 0.0f,
+						PLAYER, nullptr, nullptr);
+					keyIsPressed[GLFW_KEY_SPACE] = false; // prevent bullet spam
+				}
 			}
 
 			if (keyIsPressed[GLFW_KEY_ESCAPE] == true) {
 				loadGameMenu(entityManager, window, shaderProgram);
+			}
+
+			if (keyIsPressed[GLFW_KEY_F1] == true) {
+				loadHelpMenu(entityManager, window, shaderProgram);
 			}
 
 			entityManager->updateVertexBuffers();

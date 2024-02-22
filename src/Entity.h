@@ -33,6 +33,7 @@ protected:
 
 	int m_type;
 
+	int m_countdownSource = 2;
 	int m_projectileSource = 2;
 	float m_projectileSourceCoordinates[2] = { 0.0f, 0.0f };
 	float m_projectileTargetCoordinates[2] = { 0.0f, 0.0f };
@@ -42,6 +43,7 @@ protected:
 
 	glm::mat4 m_modelMatrix = glm::mat4(1.0f);
 
+	int m_countdownFrame = 0;
 	int m_explosionFrame = 0;
 
 	unsigned int m_VAO, m_vertexbufferID, m_indexbufferID;
@@ -88,10 +90,17 @@ public:
 
 	// Animation functions
 	virtual void animateMenu();
+
+	int getCountdownSource() const;
+	virtual void animateCountdown();
+	virtual int getCountdownFrame() const;
+
+	virtual void animateExplosion();
+	virtual int getExplosionFrame() const;
+
 	virtual void scrollBackground();
+
 	void fireEngines();
-	virtual void moveEnemy();
-	virtual void moveProjectile();
 
 	// Combat and Collision functions
 	float getRightEdge() const;
@@ -103,8 +112,6 @@ public:
 	float getGunPositionY() const;
 
 	// Explosion functions
-	virtual void animateExplosion();
-	virtual int getExplosionFrame() const;
 
 	// Positioning functions
 	void setPositionX(float);
@@ -117,8 +124,11 @@ public:
 	void updatePositionY(float);
 	void updatePositionX(float);
 
+	virtual void moveEnemy();
+
 	// Projectile functions
 	int getProjectileSource() const;
+	virtual void moveProjectile();
 
 	float* getProjectileTargetPosition();
 	float* getProjectileSourcePosition();

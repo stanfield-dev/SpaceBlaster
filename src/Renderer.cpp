@@ -12,7 +12,7 @@ void Renderer::init(unsigned int shaderProgram)
 	glEnable(GL_BLEND);
 
 	m_projectionMatrix = glm::ortho(-1.0f, 1.0f, -1.0f, 1.0f, -1.0f, 1.0f);
-	
+
 	m_projectionMatrixLoc = glGetUniformLocation(shaderProgram, "projectionMatrix");
 	m_viewMatrixLoc = glGetUniformLocation(shaderProgram, "viewMatrix");
 
@@ -74,6 +74,20 @@ void Renderer::drawEntities(unsigned int shaderProgram, EntityManager* entityMan
 			}
 		}
 
+		// countdown animation
+		if (entity->getType() == COUNTDOWN) {
+			if (entity->getCountdownFrame() > 400) {
+				if (entity->getCountdownSource() == ENEMY) {
+					entityManager->respawnEnemy();
+				}
+				entityManager->removeEntityFromRegistry(entity);
+				entity->~Entity();
+			}
+			else {
+				entity->animateCountdown();
+			}
+		}
+
 		entity->updateVertexBuffer();
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 		entity->unbindVAO();
@@ -90,6 +104,25 @@ void Renderer::drawGameMenu(unsigned int shaderProgram, EntityManager* entityMan
 
 		// game menu animation
 		if (entity->getType() == GAME_MENU) {
+			entity->animateMenu();
+		}
+
+		entity->updateVertexBuffer();
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+		entity->unbindVAO();
+	}
+}
+
+void Renderer::drawHelpMenu(unsigned int shaderProgram, EntityManager* entityManager)
+{
+	glClear(GL_COLOR_BUFFER_BIT);
+
+	for (auto entity : entityManager->getEntityRegistry()) {
+		entity->bindVAO();
+		entity->bindIBO();
+
+		// help menu animation
+		if (entity->getType() == HELP_MENU) {
 			entity->animateMenu();
 		}
 

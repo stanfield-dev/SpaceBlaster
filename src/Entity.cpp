@@ -93,7 +93,6 @@ float Entity::getGunPositionY() const
 	return m_positionY + (m_positionYOffset / 2);
 }
 
-int Entity::getExplosionFrame() const { return 0; }
 
 void Entity::setPositionX(float x)
 {
@@ -133,6 +132,12 @@ void Entity::updatePositionY(float y)
 
 void Entity::animateMenu() {}
 
+void Entity::animateExplosion() {}
+int Entity::getExplosionFrame() const { return 0; }
+
+void Entity::animateCountdown() {}
+int Entity::getCountdownFrame() const { return 0; }
+
 void Entity::scrollBackground() {}
 
 void Entity::fireEngines()
@@ -152,6 +157,7 @@ void Entity::fireEngines()
 	updateVertexArray();
 }
 
+
 void Entity::moveEnemy() {}
 
 void Entity::moveProjectile() {}
@@ -161,8 +167,11 @@ int Entity::getProjectileSource() const
 	return m_projectileSource;
 }
 
+int Entity::getCountdownSource() const
+{
+	return m_countdownSource;
+}
 
-void Entity::animateExplosion() {}
 
 float* Entity::updateVertexArray()
 {

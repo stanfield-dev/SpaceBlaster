@@ -22,7 +22,7 @@ Enemy::Enemy(int type, float x, float y, float z, EntityManager* entityManager)
 	m_spriteXOffset = m_spriteWidth / m_spriteSheetWidth;
 	m_spriteYOffset = m_spriteHeight / m_spriteSheetHeight;
 
-	srand(time(0));
+	srand((unsigned int)time(0));
 	int randomDest = rand() % m_destinations.size();
 
 	m_destinationX = m_destinations[randomDest].x;
@@ -46,7 +46,7 @@ void Enemy::moveEnemy()
 	float approxEqualY = std::abs(m_positionY - m_destinationY);
 
 	if ((approxEqualX < 0.0001f) && (approxEqualY < 0.0001f)) {
-		srand(time(0));
+		srand((unsigned int)time(0));
 		int randomDest = rand() % m_destinations.size();
 
 		m_destinationX = m_destinations[randomDest].x;

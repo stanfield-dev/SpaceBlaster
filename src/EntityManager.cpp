@@ -1,9 +1,11 @@
 #include "EntityManager.h"
 #include "Background.h"
+#include "Countdown.h"
 #include "Entity.h"
 #include "Enemy.h"
 #include "Explosion.h"
 #include "GameMenu.h"
+#include "HelpMenu.h"
 #include "Player.h"
 #include "Projectile.h"
 #include "Terrain.h"
@@ -20,17 +22,17 @@ EntityManager::~EntityManager()
 {
 }
 
-Entity* EntityManager::spawnEntity(int type, float x, float y, float z, int projectileSource,
+Entity* EntityManager::spawnEntity(int type, float x, float y, float z, int source,
 	float* sourceCoordinates, float* targetCoordinates)
 {
 	Entity* newEntity = nullptr;
 
 	switch (type) {
-		case PROJECTILE	:	if (projectileSource == PLAYER) {
-								newEntity = new Projectile(type, x, y, z, projectileSource, this);
+		case PROJECTILE	:	if (source == PLAYER) {
+								newEntity = new Projectile(type, x, y, z, source, this);
 							}
 							else {
-								newEntity = new Projectile(type, x, y, z, projectileSource,
+								newEntity = new Projectile(type, x, y, z, source,
 														sourceCoordinates, targetCoordinates, this);
 							}
 							ma_engine_play_sound(m_soundEngine, PROJECTILE_SOUND.c_str(), NULL);
@@ -41,7 +43,11 @@ Entity* EntityManager::spawnEntity(int type, float x, float y, float z, int proj
 							break;
 		case PLAYER		:	newEntity = new Player(type, x, y, z, this);
 							break;
+		case COUNTDOWN	:	newEntity = new Countdown(type, x, y, z, source, this);
+							break;
 		case GAME_MENU	:	newEntity = new GameMenu(type, x, y, z, this);
+							break;
+		case HELP_MENU	:	newEntity = new HelpMenu(type, x, y, z, this);
 							break;
 		case BACKGROUND	:	newEntity = new Background(type, x, y, z, this);
 							break;
@@ -70,16 +76,28 @@ std::vector<Entity*> EntityManager::getEntityRegistry()
 	return m_entityRegistry;
 }
 
+Entity* EntityManager::getCountdownEntity()
+{
+	if (countdownEntity == nullptr) {
+		for (auto entity : m_entityRegistry) {
+			if (entity->getType() == COUNTDOWN) {
+				return entity;
+			}
+		}
+	}
+	return 0;
+}
+
 Entity* EntityManager::getPlayerEntity()
 {
 	if (playerEntity == nullptr) {
 		for (auto entity : m_entityRegistry) {
 			if (entity->getType() == PLAYER) {
-				playerEntity = entity;
+				return entity;
 			}
 		}
 	}
-	return playerEntity;
+	return 0;
 }
 
 void EntityManager::updateVertexBuffers()
@@ -113,10 +131,16 @@ void EntityManager::checkCollisions()
 											removeEntityFromRegistry(target);
 											target->~Entity();
 											delete target;
+											spawnEntity(COUNTDOWN,
+												0.0f - ((COUNTDOWNWIDTH/SCREENWIDTH) / 2),
+												0.0f,
+												0.0f,
+												ENEMY, nullptr, nullptr);
 											return;
 										}
 									}
 								}
+								[[fallthrough]]; // never end up here, but tired of seeing the compiler warning
 				case ENEMY	:	for (auto target : m_entityRegistry) {
 									if (target->getType() == PLAYER) {
 										if ((entity->getLeftEdge() < target->getRightEdge()) &&
@@ -133,10 +157,19 @@ void EntityManager::checkCollisions()
 											removeEntityFromRegistry(entity);
 											entity->~Entity();
 											delete entity;
+											removeEntityFromRegistry(target);
+											target->~Entity();
+											delete target;
+											spawnEntity(COUNTDOWN,
+												0.0f - ((COUNTDOWNWIDTH / SCREENWIDTH) / 2),
+												0.0f,
+												0.0f,
+												PLAYER, nullptr, nullptr);
 											return;
 										}
 									}
 								}
+								[[fallthrough]]; // never end up here, but tired of seeing the compiler warning
 				default		:	if (entity->getPositionX() < -1.0f || entity->getPositionX() > 1.0f) {
 									removeEntityFromRegistry(entity);
 									entity->~Entity();
@@ -144,6 +177,38 @@ void EntityManager::checkCollisions()
 								}
 			}
 		}
+	}
+}
+
+Entity* EntityManager::respawnEnemy()
+{
+	int e = 0;
+
+	for (auto entity : m_entityRegistry) {
+		if (entity->getType() == ENEMY) {
+			e = 1;
+		}
+	}
+	
+	if (!e) {
+		Entity* enemy = spawnEntity(ENEMY, 0.7f, 0.0f, 0.0f, ENEMY, nullptr, nullptr);
+		return enemy;
+	}
+}
+
+Entity* EntityManager::respawnPlayer()
+{
+	int p = 0;
+
+	for (auto entity : m_entityRegistry) {
+		if (entity->getType() == PLAYER) {
+			p = 1;
+		}
+	}
+
+	if (!p) {
+		Entity* player = spawnEntity(PLAYER, -0.9f, 0.0f, 0.0f, PLAYER, nullptr, nullptr);
+		return player;
 	}
 }
 
