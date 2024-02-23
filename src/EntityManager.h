@@ -18,6 +18,8 @@ private:
 
 	int m_playerLivesRemaining = 3;
 
+	float m_enemyDifficulty = 0.0f;
+
 public:
 	EntityManager(ma_engine*);
 	~EntityManager();

@@ -20,6 +20,8 @@ Enemy::Enemy(int type, float x, float y, float z, EntityManager* entityManager)
 
 	srand((unsigned int)time(0));
 	int randomStart = rand() % m_destinations.size();
+	
+	srand((unsigned int)time(0));
 	int randomDest  = rand() % m_destinations.size();
 
 	m_positionX = m_destinations[randomStart].x;
@@ -30,6 +32,8 @@ Enemy::Enemy(int type, float x, float y, float z, EntityManager* entityManager)
 
 	// avoid having the enemy start without a remote destination to move to
 	while ((m_positionX == m_destinationX) && (m_positionY == m_destinationY)) {
+		randomDest = rand() % m_destinations.size();
+
 		m_destinationX = m_destinations[randomDest].x;
 		m_destinationY = m_destinations[randomDest].y;
 	}
@@ -51,7 +55,20 @@ void Enemy::moveEnemy()
 	float approxEqualX = std::abs(m_positionX - m_destinationX);
 	float approxEqualY = std::abs(m_positionY - m_destinationY);
 
-	if ((approxEqualX < 0.0001f) && (approxEqualY < 0.0001f)) {
+	// close enough to destination so pick a new one
+	if ((approxEqualX < 0.01f) && (approxEqualY < 0.01f)) {
+		srand((unsigned int)time(0));
+		int randomDest = rand() % m_destinations.size();
+
+		m_destinationX = m_destinations[randomDest].x;
+		m_destinationY = m_destinations[randomDest].y;
+
+		m_vectorSourceToTarget[0] = m_destinationX - m_positionX;
+		m_vectorSourceToTarget[1] = m_destinationY - m_positionY;
+	}
+
+	// heading out of bounds, so pick a new destination and change course
+	if ((m_positionY + m_positionYOffset > 1.0f) || (m_positionY - m_positionYOffset < -0.9f)) {
 		srand((unsigned int)time(0));
 		int randomDest = rand() % m_destinations.size();
 
@@ -66,6 +83,16 @@ void Enemy::moveEnemy()
 	m_positionY += (m_vectorSourceToTarget[1] * m_enemyVelocity);
 
 	updateVertexArray();
+}
+
+void Enemy::increaseDifficulty(float difficulty)
+{
+	m_enemyVelocity += difficulty;
+}
+
+float Enemy::getDifficultyLevel()
+{
+	return m_enemyVelocity;
 }
 
 

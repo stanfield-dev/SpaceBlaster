@@ -109,6 +109,9 @@ public:
 	float getGunPositionX() const;
 	float getGunPositionY() const;
 
+	virtual void increaseDifficulty(float);
+	virtual float getDifficultyLevel();
+
 	// Health Bar functions
 	virtual void updateLives(int);
 

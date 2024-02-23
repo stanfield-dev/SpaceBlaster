@@ -93,6 +93,10 @@ float Entity::getGunPositionY() const
 	return m_positionY + (m_positionYOffset / 2);
 }
 
+void Entity::increaseDifficulty(float) {}
+
+float Entity::getDifficultyLevel() { return 0.0f; }
+
 void Entity::setPositionX(float x)
 {
 	m_positionX = x;

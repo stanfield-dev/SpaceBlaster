@@ -40,7 +40,13 @@ void Renderer::drawEntities(unsigned int shaderProgram, EntityManager* entityMan
 			if (entity->getType() == ENEMY && entityManager->getPlayerEntity() != nullptr) {
 				Entity* player = entityManager->getPlayerEntity();
 
-				if (rand() % 1000 < 10) {
+				float firingFrequency = entity->getDifficultyLevel();
+
+				if (firingFrequency > 0.5f) {
+					firingFrequency = 0.5f;
+				}
+
+				if (rand() % 1000 < (1000 * firingFrequency)) {
 					entityManager->spawnEntity(PROJECTILE, entity->getGunPositionX(), entity->getGunPositionY(), 0.0f, ENEMY,
 						entity->getProjectileSourcePosition(), player->getProjectileTargetPosition());
 				}

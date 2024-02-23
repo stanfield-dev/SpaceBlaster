@@ -234,7 +234,9 @@ Entity* EntityManager::respawnEnemy()
 	}
 	
 	if (!e) {
+		m_enemyDifficulty += 0.001f;
 		Entity* enemy = spawnEntity(ENEMY, 0.7f, 0.0f, 0.0f, ENEMY, nullptr, nullptr);
+		enemy->increaseDifficulty(m_enemyDifficulty);
 		return enemy;
 	}
 }
