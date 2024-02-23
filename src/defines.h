@@ -24,8 +24,9 @@ const float PLAYERHEIGHT = 192.0f;
 const float PROJECTILEWIDTH = 128.0f;
 const float PROJECTILEHEIGHT = 64.0f;
 
-const float SCOREWIDTH = 192.0f;
-const float SCOREHEIGHT = 192.0f;
+const float SCOREWIDTH = 96.0f;
+const float SCOREHEIGHT = 96.0f;
+const float SCORETOTALWIDTH = 3 * SCOREWIDTH;
 
 
 // shader paths

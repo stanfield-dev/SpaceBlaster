@@ -20,7 +20,7 @@ HelpMenu::HelpMenu(int type, float x, float y, float z, EntityManager* entityMan
 
 	updateVertexArray();
 
-	entityManager->addEntityToRegistry(this);
+	entityManager->addEntityToRegistry(this);  // TODO: do i need to be an entity?
 }
 
 HelpMenu::~HelpMenu()

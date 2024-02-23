@@ -19,10 +19,20 @@ Enemy::Enemy(int type, float x, float y, float z, EntityManager* entityManager)
 	m_spriteYOffset = m_spriteHeight / m_spriteSheetHeight;
 
 	srand((unsigned int)time(0));
-	int randomDest = rand() % m_destinations.size();
+	int randomStart = rand() % m_destinations.size();
+	int randomDest  = rand() % m_destinations.size();
+
+	m_positionX = m_destinations[randomStart].x;
+	m_positionY = m_destinations[randomStart].y;
 
 	m_destinationX = m_destinations[randomDest].x;
 	m_destinationY = m_destinations[randomDest].y;
+
+	// avoid having the enemy start without a remote destination to move to
+	while ((m_positionX == m_destinationX) && (m_positionY == m_destinationY)) {
+		m_destinationX = m_destinations[randomDest].x;
+		m_destinationY = m_destinations[randomDest].y;
+	}
 
 	m_vectorSourceToTarget[0] = m_destinationX - m_positionX;
 	m_vectorSourceToTarget[1] = m_destinationY - m_positionY;

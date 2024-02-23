@@ -8,6 +8,13 @@ class Score : public Entity
 private:
 	int m_score = 0;
 
+	struct
+	{
+		float digit100s = 0.0f;
+		float digit10s	= 0.0f;
+		float digit1s	= 0.0f;
+	} m_scoreStruct;
+
 	float m_positionX1 = 0.0f; 
 	float m_positionX2 = 0.0f;
 

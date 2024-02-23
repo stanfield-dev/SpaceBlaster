@@ -75,6 +75,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="src\resources\shaders\fragmentShader.frag" />
+    <None Include="src\resources\shaders\vertexShader.vert" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Player.h">
@@ -142,5 +143,40 @@
     <Image Include="Debug\image.jpg">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="src\resources\textures\background.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="src\resources\textures\countdown.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="src\resources\textures\enemy-ship-spritesheet.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="src\resources\textures\explosion.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="src\resources\textures\healthbar.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="src\resources\textures\help.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="src\resources\textures\menu.jpg">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="src\resources\textures\numbers.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="src\resources\textures\player-ship-spritesheet.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="src\resources\textures\projectiles.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="src\resources\sounds\explosion.mp3" />
+    <Media Include="src\resources\sounds\gamemusic.mp3" />
+    <Media Include="src\resources\sounds\projectile.mp3" />
   </ItemGroup>
 </Project>
