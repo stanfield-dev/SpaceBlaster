@@ -178,7 +178,8 @@ int main(void) {
 	Textures::init(shaderProgram);
 
 	Entity* background = entityManager->spawnEntity(BACKGROUND, -1.0f, -1.0f, 0.0f, BACKGROUND, nullptr, nullptr);
-	Entity* terrain = entityManager->spawnEntity(TERRAIN, -1.0f, -1.0f, 0.0f, TERRAIN, nullptr, nullptr);
+	Entity* healthbar = entityManager->spawnEntity(HEALTHBAR, -(HEALTHBARWIDTH/SCREENWIDTH), -1.0f, 0.0f, HEALTHBAR, nullptr, nullptr);
+	Entity* score = entityManager->spawnEntity(SCORE, -0.25f, -0.9f, 0.0f, SCORE, nullptr, nullptr);
 	Entity* player = entityManager->spawnEntity(PLAYER, -0.9f, 0.0f, 0.0f, PLAYER, nullptr, nullptr);
 	Entity* enemy = entityManager->spawnEntity(ENEMY, 0.7f, 0.0f, 0.0f, ENEMY, nullptr, nullptr);
 
@@ -223,6 +224,7 @@ int main(void) {
 			entityManager->checkCollisions();
 		
 			Renderer::drawEntities(shaderProgram, entityManager);
+			Renderer::drawScore(shaderProgram, entityManager);
 
 			glfwSwapBuffers(window);
 

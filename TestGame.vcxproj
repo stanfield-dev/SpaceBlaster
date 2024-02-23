@@ -159,7 +159,9 @@
     <ClCompile Include="src\game.cpp" />
     <ClCompile Include="src\EntityManager.cpp" />
     <ClCompile Include="src\GameMenu.cpp" />
+    <ClCompile Include="src\HealthBar.cpp" />
     <ClCompile Include="src\HelpMenu.cpp" />
+    <ClCompile Include="src\Score.cpp" />
     <ClCompile Include="src\SoundEngine.cpp" />
     <ClCompile Include="src\Player.cpp" />
     <ClCompile Include="src\Projectile.cpp" />
@@ -170,7 +172,6 @@
     <ClCompile Include="src\Textures.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ClassDiagram.cd" />
     <None Include="src\resources\shaders\fragmentShader.frag" />
   </ItemGroup>
   <ItemGroup>
@@ -182,11 +183,13 @@
     <ClInclude Include="src\EntityManager.h" />
     <ClInclude Include="src\Explosion.h" />
     <ClInclude Include="src\GameMenu.h" />
+    <ClInclude Include="src\HealthBar.h" />
     <ClInclude Include="src\HelpMenu.h" />
     <ClInclude Include="src\Player.h" />
     <ClInclude Include="dependencies\stb_image\stb_image.h" />
     <ClInclude Include="src\Projectile.h" />
     <ClInclude Include="src\Renderer.h" />
+    <ClInclude Include="src\Score.h" />
     <ClInclude Include="src\Shader.h" />
     <ClInclude Include="src\Terrain.h" />
     <ClInclude Include="src\Textures.h" />

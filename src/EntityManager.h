@@ -16,6 +16,8 @@ private:
 	Entity* countdownEntity = nullptr;
 	Entity* playerEntity = nullptr;
 
+	int m_playerLivesRemaining = 3;
+
 public:
 	EntityManager(ma_engine*);
 	~EntityManager();
@@ -29,6 +31,11 @@ public:
 
 	Entity* getCountdownEntity();
 	Entity* getPlayerEntity();
+
+	void setLivesRemaining(int);
+	int getLivesRemaining() const;
+
+	void updateScore();
 
 	void updateVertexBuffers();
 

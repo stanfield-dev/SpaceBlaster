@@ -41,8 +41,6 @@ protected:
 
 	float m_radiansSourceToTarget = 0.0f;
 
-	glm::mat4 m_modelMatrix = glm::mat4(1.0f);
-
 	int m_countdownFrame = 0;
 	int m_explosionFrame = 0;
 
@@ -111,7 +109,8 @@ public:
 	float getGunPositionX() const;
 	float getGunPositionY() const;
 
-	// Explosion functions
+	// Health Bar functions
+	virtual void updateLives(int);
 
 	// Positioning functions
 	void setPositionX(float);
@@ -133,12 +132,15 @@ public:
 	float* getProjectileTargetPosition();
 	float* getProjectileSourcePosition();
 
+	// Score functions
+	virtual void updateScore();
+
 	// Vertex functions
 	virtual void generateBuffers();
-	float* updateVertexArray();
-	void updateVertexBuffer();
+	virtual float* updateVertexArray();
+	virtual void updateVertexBuffer();
 
 	void bindVAO();
 	void unbindVAO();
-	void bindIBO();
+	virtual void bindIBO();
 };

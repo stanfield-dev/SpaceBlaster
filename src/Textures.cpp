@@ -28,12 +28,13 @@ void Textures::init(unsigned int shaderProgram)
 	loadTexture(GAME_MENU);
 	loadTexture(HELP_MENU);
 	loadTexture(COUNTDOWN);
-	loadTexture(TERRAIN);
+	loadTexture(SCORE);
+	loadTexture(HEALTHBAR);
 	loadTexture(BACKGROUND);
 
 	loc0 = glGetUniformLocation(shaderProgram, "u_textures");
-	int samplers[9] = { 0, 1, 2, 3, 4, 5, 6, 7, 8 }; 
-	glUniform1iv(loc0, 9, samplers);
+	int samplers[10] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }; 
+	glUniform1iv(loc0, 11, samplers);
 }
 
 void Textures::loadTexture(int type)
@@ -83,21 +84,6 @@ void Textures::loadTexture(int type)
 		glBindTextureUnit(2, m_enemyTextureID);
 	}
 
-	if (type == TERRAIN) {
-		glCreateTextures(GL_TEXTURE_2D, 1, &m_terrainTextureID);
-		glBindTexture(GL_TEXTURE_2D, m_terrainTextureID);
-
-		loadImage(TERRAIN_SPRITE);
-
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_textureData);
-
-		glBindTextureUnit(3, m_terrainTextureID);
-	}
-
 	if (type == PROJECTILE) {
 		glCreateTextures(GL_TEXTURE_2D, 1, &m_projectileTextureID);
 		glBindTexture(GL_TEXTURE_2D, m_projectileTextureID);
@@ -110,7 +96,7 @@ void Textures::loadTexture(int type)
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_textureData);
 
-		glBindTextureUnit(4, m_projectileTextureID);
+		glBindTextureUnit(3, m_projectileTextureID);
 	}
 
 	if (type == EXPLOSION) {
@@ -125,7 +111,7 @@ void Textures::loadTexture(int type)
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_textureData);
 
-		glBindTextureUnit(5, m_explosionTextureID);
+		glBindTextureUnit(4, m_explosionTextureID);
 	}
 
 	if (type == GAME_MENU) {
@@ -140,7 +126,7 @@ void Textures::loadTexture(int type)
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_textureData);
 
-		glBindTextureUnit(6, m_menuTextureID);
+		glBindTextureUnit(5, m_menuTextureID);
 	}
 
 	if (type == HELP_MENU) {
@@ -155,7 +141,7 @@ void Textures::loadTexture(int type)
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_textureData);
 
-		glBindTextureUnit(7, m_helpTextureID);
+		glBindTextureUnit(6, m_helpTextureID);
 	}
 
 	if (type == COUNTDOWN) {
@@ -170,7 +156,37 @@ void Textures::loadTexture(int type)
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_textureData);
 
-		glBindTextureUnit(8, m_countdownTextureID);
+		glBindTextureUnit(7, m_countdownTextureID);
+	}
+
+	if (type == SCORE) {
+		glCreateTextures(GL_TEXTURE_2D, 1, &m_numbersTextureID);
+		glBindTexture(GL_TEXTURE_2D, m_numbersTextureID);
+
+		loadImage(NUMBERS_IMAGE);
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_textureData);
+
+		glBindTextureUnit(8, m_numbersTextureID);
+	}
+
+	if (type == HEALTHBAR) {
+		glCreateTextures(GL_TEXTURE_2D, 1, &m_healthbarTextureID);
+		glBindTexture(GL_TEXTURE_2D, m_healthbarTextureID);
+
+		loadImage(HEALTHBAR_IMAGE);
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_textureData);
+
+		glBindTextureUnit(9, m_healthbarTextureID);
 	}
 
 	if (m_textureData) {

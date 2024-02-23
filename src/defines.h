@@ -15,11 +15,17 @@ const float ENEMYHEIGHT = 192.0f;
 const float EXPLOSIONWIDTH = 192.0f;
 const float EXPLOSIONHEIGHT = 192.0f;
 
+const float HEALTHBARWIDTH = 700.0f;
+const float HEALTHBARHEIGHT = 81.2f;
+
 const float PLAYERWIDTH = 192.0f;
 const float PLAYERHEIGHT = 192.0f;
 
 const float PROJECTILEWIDTH = 128.0f;
 const float PROJECTILEHEIGHT = 64.0f;
+
+const float SCOREWIDTH = 192.0f;
+const float SCOREHEIGHT = 192.0f;
 
 
 // shader paths
@@ -31,12 +37,12 @@ const std::string BACKGROUND_IMAGE =		"src/resources/textures/background.png";
 const std::string COUNTDOWN_IMAGE =			"src/resources/textures/countdown.png";
 const std::string ENEMY_SPRITE =			"src/resources/textures/enemy-ship-spritesheet.png";
 const std::string EXPLOSION_SPRITE =		"src/resources/textures/explosion.png";
-const std::string FONT_ATLAS =				"src/resources/textures/fontatlas.png";
+const std::string HEALTHBAR_IMAGE =			"src/resources/textures/healthbar.png";
 const std::string HELP_IMAGE =				"src/resources/textures/help.jpg";
 const std::string MENU_IMAGE =				"src/resources/textures/menu.jpg";
+const std::string NUMBERS_IMAGE =			"src/resources/textures/numbers.png";
 const std::string PLAYER_SPRITE =			"src/resources/textures/player-ship-spritesheet.png";
 const std::string PROJECTILE_SPRITE =		"src/resources/textures/projectiles.png";
-const std::string TERRAIN_SPRITE =			"src/resources/textures/terrain.png";
 
 // audio sources
 const std::string EXPLOSION_SOUND =		"src/resources/sounds/explosion.mp3";
@@ -49,10 +55,11 @@ enum objectType : int
 	BACKGROUND = 0,
 	PLAYER,
 	ENEMY,
-	TERRAIN,
 	PROJECTILE,
 	EXPLOSION,
 	GAME_MENU,
 	HELP_MENU,
-	COUNTDOWN
+	COUNTDOWN,
+	SCORE,
+	HEALTHBAR
 };

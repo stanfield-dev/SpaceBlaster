@@ -1,4 +1,5 @@
 #pragma once
+
 #include "EntityManager.h"
 #include "Entity.h"
 
@@ -13,5 +14,6 @@ public:
 	~GameMenu();
 
 	void generateBuffers() override;
+
 	void animateMenu() override;
 };

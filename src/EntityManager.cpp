@@ -5,10 +5,11 @@
 #include "Enemy.h"
 #include "Explosion.h"
 #include "GameMenu.h"
+#include "HealthBar.h"
 #include "HelpMenu.h"
 #include "Player.h"
 #include "Projectile.h"
-#include "Terrain.h"
+#include "Score.h"
 
 #include <iostream>
 #include <iterator>
@@ -45,13 +46,15 @@ Entity* EntityManager::spawnEntity(int type, float x, float y, float z, int sour
 							break;
 		case COUNTDOWN	:	newEntity = new Countdown(type, x, y, z, source, this);
 							break;
+		case SCORE		:	newEntity = new Score(type, x, y, z, this);
+							break;
 		case GAME_MENU	:	newEntity = new GameMenu(type, x, y, z, this);
 							break;
 		case HELP_MENU	:	newEntity = new HelpMenu(type, x, y, z, this);
 							break;
 		case BACKGROUND	:	newEntity = new Background(type, x, y, z, this);
 							break;
-		case TERRAIN	:	newEntity = new Terrain(type, x, y, z, this);
+		case HEALTHBAR	:	newEntity = new HealthBar(type, x, y, z, this);
 							break;
 	}
 	
@@ -100,6 +103,42 @@ Entity* EntityManager::getPlayerEntity()
 	return 0;
 }
 
+void EntityManager::setLivesRemaining(int x)
+{
+	m_playerLivesRemaining += x;
+
+	if (m_playerLivesRemaining == 0) {
+		// TODO game over, but for now...
+		m_playerLivesRemaining = 3;
+		for (auto entity : m_entityRegistry) {
+			if (entity->getType() == HEALTHBAR) {
+				entity->updateLives(-2);
+			}
+		}
+	}
+	else {
+		for (auto entity : m_entityRegistry) {
+			if (entity->getType() == HEALTHBAR) {
+				entity->updateLives(x);
+			}
+		}
+	}
+}
+
+int EntityManager::getLivesRemaining() const
+{
+	return m_playerLivesRemaining;
+}
+
+void EntityManager::updateScore()
+{
+	for (auto entity : m_entityRegistry) {
+		if (entity->getType() == SCORE) {
+			entity->updateScore();
+		}
+	}
+}
+
 void EntityManager::updateVertexBuffers()
 {
 	for (auto entity : m_entityRegistry) {
@@ -113,7 +152,7 @@ void EntityManager::checkCollisions()
 		if (entity->getType() == PROJECTILE) {
 			switch (entity->getProjectileSource()) {
 				case PLAYER	:	for (auto target : m_entityRegistry) {
-									if (target->getType() == ENEMY) {
+									if (target->getType() == ENEMY) { // enemy is destroyed
 										if ((entity->getRightEdge() > target->getLeftEdge()) &&
 											(entity->getRightEdge() < target->getRightEdge()) &&
 											(entity->getTopEdge() > target->getBottomEdge()) &&
@@ -131,6 +170,7 @@ void EntityManager::checkCollisions()
 											removeEntityFromRegistry(target);
 											target->~Entity();
 											delete target;
+											updateScore();
 											spawnEntity(COUNTDOWN,
 												0.0f - ((COUNTDOWNWIDTH/SCREENWIDTH) / 2),
 												0.0f,
@@ -141,8 +181,9 @@ void EntityManager::checkCollisions()
 									}
 								}
 								[[fallthrough]]; // never end up here, but tired of seeing the compiler warning
+
 				case ENEMY	:	for (auto target : m_entityRegistry) {
-									if (target->getType() == PLAYER) {
+									if (target->getType() == PLAYER) { // player is destroyed
 										if ((entity->getLeftEdge() < target->getRightEdge()) &&
 											(entity->getLeftEdge() > target->getLeftEdge()) &&
 											(entity->getTopEdge() > target->getBottomEdge()) &&
@@ -160,6 +201,7 @@ void EntityManager::checkCollisions()
 											removeEntityFromRegistry(target);
 											target->~Entity();
 											delete target;
+											setLivesRemaining(-1);
 											spawnEntity(COUNTDOWN,
 												0.0f - ((COUNTDOWNWIDTH / SCREENWIDTH) / 2),
 												0.0f,
@@ -170,10 +212,11 @@ void EntityManager::checkCollisions()
 									}
 								}
 								[[fallthrough]]; // never end up here, but tired of seeing the compiler warning
+
 				default		:	if (entity->getPositionX() < -1.0f || entity->getPositionX() > 1.0f) {
 									removeEntityFromRegistry(entity);
 									entity->~Entity();
-									delete entity;
+									delete entity;  // projectile moved offscreen and is destroyed
 								}
 			}
 		}

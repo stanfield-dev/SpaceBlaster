@@ -1,6 +1,3 @@
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-
 #include "Player.h"
 
 Player::Player(int type, float x, float y, float z, EntityManager* entityManager)

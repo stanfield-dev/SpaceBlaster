@@ -1,8 +1,4 @@
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-
 #include "Enemy.h"
-#include "EntityManager.h"
 
 #include <math.h>
 #include <time.h>
