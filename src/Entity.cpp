@@ -93,7 +93,6 @@ float Entity::getGunPositionY() const
 	return m_positionY + (m_positionYOffset / 2);
 }
 
-
 void Entity::setPositionX(float x)
 {
 	m_positionX = x;
@@ -138,6 +137,9 @@ int Entity::getExplosionFrame() const { return 0; }
 void Entity::animateCountdown() {}
 int Entity::getCountdownFrame() const { return 0; }
 
+void Entity::updateLives(int) {}
+void Entity::updateScore() {}
+
 void Entity::scrollBackground() {}
 
 void Entity::fireEngines()
@@ -157,7 +159,6 @@ void Entity::fireEngines()
 	updateVertexArray();
 }
 
-
 void Entity::moveEnemy() {}
 
 void Entity::moveProjectile() {}
@@ -171,7 +172,6 @@ int Entity::getCountdownSource() const
 {
 	return m_countdownSource;
 }
-
 
 float* Entity::updateVertexArray()
 {

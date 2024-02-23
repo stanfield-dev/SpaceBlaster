@@ -7,12 +7,9 @@ layout(location = 2) in float a_textureID;
 out vec2 v_textureCoord; 
 out float v_textureID;
 
-uniform mat4 projectionMatrix;
-uniform mat4 viewMatrix;
-
 void main()
 {
-    gl_Position = projectionMatrix * viewMatrix * vec4(a_objectCoord, 1.0);
+    gl_Position = vec4(a_objectCoord, 1.0);
     v_textureCoord = a_textureCoord;
     v_textureID = a_textureID;
 }

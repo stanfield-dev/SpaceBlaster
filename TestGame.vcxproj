@@ -159,7 +159,9 @@
     <ClCompile Include="src\game.cpp" />
     <ClCompile Include="src\EntityManager.cpp" />
     <ClCompile Include="src\GameMenu.cpp" />
+    <ClCompile Include="src\HealthBar.cpp" />
     <ClCompile Include="src\HelpMenu.cpp" />
+    <ClCompile Include="src\Score.cpp" />
     <ClCompile Include="src\SoundEngine.cpp" />
     <ClCompile Include="src\Player.cpp" />
     <ClCompile Include="src\Projectile.cpp" />
@@ -171,6 +173,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="src\resources\shaders\fragmentShader.frag" />
+    <None Include="src\resources\shaders\vertexShader.vert" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Countdown.h" />
@@ -181,11 +184,13 @@
     <ClInclude Include="src\EntityManager.h" />
     <ClInclude Include="src\Explosion.h" />
     <ClInclude Include="src\GameMenu.h" />
+    <ClInclude Include="src\HealthBar.h" />
     <ClInclude Include="src\HelpMenu.h" />
     <ClInclude Include="src\Player.h" />
     <ClInclude Include="dependencies\stb_image\stb_image.h" />
     <ClInclude Include="src\Projectile.h" />
     <ClInclude Include="src\Renderer.h" />
+    <ClInclude Include="src\Score.h" />
     <ClInclude Include="src\Shader.h" />
     <ClInclude Include="src\Terrain.h" />
     <ClInclude Include="src\Textures.h" />
@@ -194,6 +199,21 @@
     <Image Include="Debug\image.jpg" />
     <Image Include="src\image.jpg" />
     <Image Include="src\image.png" />
+    <Image Include="src\resources\textures\background.png" />
+    <Image Include="src\resources\textures\countdown.png" />
+    <Image Include="src\resources\textures\enemy-ship-spritesheet.png" />
+    <Image Include="src\resources\textures\explosion.png" />
+    <Image Include="src\resources\textures\healthbar.png" />
+    <Image Include="src\resources\textures\help.jpg" />
+    <Image Include="src\resources\textures\menu.jpg" />
+    <Image Include="src\resources\textures\numbers.png" />
+    <Image Include="src\resources\textures\player-ship-spritesheet.png" />
+    <Image Include="src\resources\textures\projectiles.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="src\resources\sounds\explosion.mp3" />
+    <Media Include="src\resources\sounds\gamemusic.mp3" />
+    <Media Include="src\resources\sounds\projectile.mp3" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

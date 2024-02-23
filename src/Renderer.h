@@ -23,5 +23,6 @@ public:
 	static void drawEntities(unsigned int, EntityManager*);
 	static void drawGameMenu(unsigned int, EntityManager*);
 	static void drawHelpMenu(unsigned int, EntityManager*);
+	static void drawScore(unsigned int, EntityManager*);
 };
 

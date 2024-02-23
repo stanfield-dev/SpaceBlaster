@@ -19,13 +19,16 @@
 #include <time.h>
 
 bool newGame = true;
+float musicVolume = 0.5f;
 
 std::map<int, bool> keyIsPressed 
 {
 	{GLFW_KEY_DOWN, false},
 	{GLFW_KEY_ENTER, false},
 	{GLFW_KEY_ESCAPE, false},
+	{GLFW_KEY_EQUAL, false},
 	{GLFW_KEY_F1, false},
+	{GLFW_KEY_MINUS, false},
 	{GLFW_KEY_S, false},
 	{GLFW_KEY_SPACE, false},
 	{GLFW_KEY_UP, false},
@@ -42,7 +45,11 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 										break;
 			case GLFW_KEY_ESCAPE	:	keyIsPressed[GLFW_KEY_ESCAPE] = true;
 										break;
+			case GLFW_KEY_EQUAL		:	keyIsPressed[GLFW_KEY_EQUAL] = true;
+										break;
 			case GLFW_KEY_F1:			keyIsPressed[GLFW_KEY_F1] = true;
+										break;
+			case GLFW_KEY_MINUS		:	keyIsPressed[GLFW_KEY_MINUS] = true;
 										break;
 			case GLFW_KEY_Q			:	glfwSetWindowShouldClose(window, 1);
 										break;
@@ -65,7 +72,11 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 										break;
 			case GLFW_KEY_ESCAPE	:	keyIsPressed[GLFW_KEY_ESCAPE] = false;
 										break;
+			case GLFW_KEY_EQUAL		:	keyIsPressed[GLFW_KEY_EQUAL] = false;
+										break;
 			case GLFW_KEY_F1		:	keyIsPressed[GLFW_KEY_F1] = false;
+										break;
+			case GLFW_KEY_MINUS		:	keyIsPressed[GLFW_KEY_MINUS] = false;
 										break;
 			case GLFW_KEY_S			:	keyIsPressed[GLFW_KEY_S] = false;
 										break;
@@ -164,8 +175,8 @@ int main(void) {
 		return result;
 	}
 
-	// TODO add volume controls
 	ma_sound_set_looping(&backgroundMusic, true);
+	ma_sound_set_volume(&backgroundMusic, musicVolume);
 	ma_sound_start(&backgroundMusic);
 
 	EntityManager *entityManager = new EntityManager(&soundEngine);
@@ -178,13 +189,29 @@ int main(void) {
 	Textures::init(shaderProgram);
 
 	Entity* background = entityManager->spawnEntity(BACKGROUND, -1.0f, -1.0f, 0.0f, BACKGROUND, nullptr, nullptr);
-	Entity* terrain = entityManager->spawnEntity(TERRAIN, -1.0f, -1.0f, 0.0f, TERRAIN, nullptr, nullptr);
+	Entity* healthbar = entityManager->spawnEntity(HEALTHBAR, -(HEALTHBARWIDTH/SCREENWIDTH), -1.0f, 0.0f, HEALTHBAR, nullptr, nullptr);
+	Entity* score = entityManager->spawnEntity(SCORE, -((SCORETOTALWIDTH / 2) / SCREENWIDTH), -0.955f, 0.0f, SCORE, nullptr, nullptr);
 	Entity* player = entityManager->spawnEntity(PLAYER, -0.9f, 0.0f, 0.0f, PLAYER, nullptr, nullptr);
 	Entity* enemy = entityManager->spawnEntity(ENEMY, 0.7f, 0.0f, 0.0f, ENEMY, nullptr, nullptr);
 
 	srand((unsigned int)time(0));
 
 	while (!glfwWindowShouldClose(window)) {
+
+		if (keyIsPressed[GLFW_KEY_MINUS] == true) {
+			if (musicVolume > 0.0) {
+				musicVolume -= 0.05f;
+				ma_sound_set_volume(&backgroundMusic, musicVolume);
+			}
+		}
+
+		if (keyIsPressed[GLFW_KEY_EQUAL] == true) {
+			if (musicVolume < 1.0) {
+				musicVolume += 0.05f;
+				ma_sound_set_volume(&backgroundMusic, musicVolume);
+			}
+		}
+
 		if ( (entityManager->getPlayerEntity() == 0) && (entityManager->getCountdownEntity() == 0)) {
 			player = entityManager->respawnPlayer();
 		}
@@ -223,6 +250,7 @@ int main(void) {
 			entityManager->checkCollisions();
 		
 			Renderer::drawEntities(shaderProgram, entityManager);
+			Renderer::drawScore(shaderProgram, entityManager);
 
 			glfwSwapBuffers(window);
 
