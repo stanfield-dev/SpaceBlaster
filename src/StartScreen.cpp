@@ -1,7 +1,7 @@
-#include "GameMenu.h"
+#include "StartScreen.h"
 #include "EntityManager.h"
 
-GameMenu::GameMenu(int type, float x, float y, float z, EntityManager* entityManager)
+StartScreen::StartScreen(int type, float x, float y, float z, EntityManager* entityManager)
 	: Entity(type, x, y, z)
 {
 	generateBuffers();
@@ -23,18 +23,18 @@ GameMenu::GameMenu(int type, float x, float y, float z, EntityManager* entityMan
 	entityManager->addEntityToRegistry(this); // TODO: do i need to be an entity?
 }
 
-GameMenu::~GameMenu()
+StartScreen::~StartScreen()
 {
 }
 
-void GameMenu::generateBuffers()
+void StartScreen::generateBuffers()
 {
 	glGenVertexArrays(1, &m_VAO);
 	glGenBuffers(1, &m_vertexbufferID);
 	glGenBuffers(1, &m_indexbufferID);
 }
 
-void GameMenu::animateMenu()
+void StartScreen::animateMenu()
 {
 	if (m_frame > 20) {
 		if (m_spriteX + m_spriteXOffset >= 1.0f) {

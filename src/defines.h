@@ -15,6 +15,9 @@ const float ENEMYHEIGHT = 192.0f;
 const float EXPLOSIONWIDTH = 192.0f;
 const float EXPLOSIONHEIGHT = 192.0f;
 
+const float GAMEOVERWIDTH = 900.0f;
+const float GAMEOVERHEIGHT = 123.0f;
+
 const float HEALTHBARWIDTH = 700.0f;
 const float HEALTHBARHEIGHT = 81.2f;
 
@@ -39,8 +42,8 @@ const std::string COUNTDOWN_IMAGE =			"src/resources/textures/countdown.png";
 const std::string ENEMY_SPRITE =			"src/resources/textures/enemy-ship-spritesheet.png";
 const std::string EXPLOSION_SPRITE =		"src/resources/textures/explosion.png";
 const std::string HEALTHBAR_IMAGE =			"src/resources/textures/healthbar.png";
-const std::string HELP_IMAGE =				"src/resources/textures/help.jpg";
-const std::string MENU_IMAGE =				"src/resources/textures/menu.jpg";
+const std::string HELPSCREEN_IMAGE =		"src/resources/textures/help.jpg";
+const std::string STARTSCREEN_IMAGE =		"src/resources/textures/menu.jpg";
 const std::string NUMBERS_IMAGE =			"src/resources/textures/numbers.png";
 const std::string PLAYER_SPRITE =			"src/resources/textures/player-ship-spritesheet.png";
 const std::string PROJECTILE_SPRITE =		"src/resources/textures/projectiles.png";
@@ -58,8 +61,8 @@ enum objectType : int
 	ENEMY,
 	PROJECTILE,
 	EXPLOSION,
-	GAME_MENU,
-	HELP_MENU,
+	STARTSCREEN,
+	HELPSCREEN,
 	COUNTDOWN,
 	SCORE,
 	HEALTHBAR

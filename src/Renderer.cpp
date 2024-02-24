@@ -17,7 +17,7 @@ void Renderer::drawEntities(unsigned int shaderProgram, EntityManager* entityMan
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	for (auto entity : entityManager->getEntityRegistry()) {
-		if ((entity->getType() != GAME_MENU) && (entity->getType() != HELP_MENU) && (entity->getType() != SCORE)) {
+		if ((entity->getType() != STARTSCREEN) && (entity->getType() != HELPSCREEN) && (entity->getType() != SCORE)) {
 			entity->bindVAO();
 			entity->bindIBO();
 
@@ -99,7 +99,7 @@ void Renderer::drawGameMenu(unsigned int shaderProgram, EntityManager* entityMan
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	for (auto entity : entityManager->getEntityRegistry()) {
-		if (entity->getType() == GAME_MENU) {
+		if (entity->getType() == STARTSCREEN) {
 			entity->bindVAO();
 			entity->bindIBO();
 
@@ -118,7 +118,7 @@ void Renderer::drawHelpMenu(unsigned int shaderProgram, EntityManager* entityMan
 	glClear(GL_COLOR_BUFFER_BIT);
 
 	for (auto entity : entityManager->getEntityRegistry()) {
-		if (entity->getType() == HELP_MENU) {
+		if (entity->getType() == HELPSCREEN) {
 			entity->bindVAO();
 			entity->bindIBO();
 

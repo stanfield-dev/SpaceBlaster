@@ -4,9 +4,9 @@
 #include "Entity.h"
 #include "Enemy.h"
 #include "Explosion.h"
-#include "GameMenu.h"
+#include "StartScreen.h"
 #include "HealthBar.h"
-#include "HelpMenu.h"
+#include "HelpScreen.h"
 #include "Player.h"
 #include "Projectile.h"
 #include "Score.h"
@@ -48,9 +48,9 @@ Entity* EntityManager::spawnEntity(int type, float x, float y, float z, int sour
 							break;
 		case SCORE		:	newEntity = new Score(type, x, y, z, this);
 							break;
-		case GAME_MENU	:	newEntity = new GameMenu(type, x, y, z, this);
+		case STARTSCREEN	:	newEntity = new StartScreen(type, x, y, z, this);
 							break;
-		case HELP_MENU	:	newEntity = new HelpMenu(type, x, y, z, this);
+		case HELPSCREEN	:	newEntity = new HelpScreen(type, x, y, z, this);
 							break;
 		case BACKGROUND	:	newEntity = new Background(type, x, y, z, this);
 							break;

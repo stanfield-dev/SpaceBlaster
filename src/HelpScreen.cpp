@@ -1,7 +1,7 @@
-#include "HelpMenu.h"
+#include "HelpScreen.h"
 #include "EntityManager.h"
 
-HelpMenu::HelpMenu(int type, float x, float y, float z, EntityManager* entityManager)
+HelpScreen::HelpScreen(int type, float x, float y, float z, EntityManager* entityManager)
 	: Entity(type, x, y, z)
 {
 	generateBuffers();
@@ -23,18 +23,18 @@ HelpMenu::HelpMenu(int type, float x, float y, float z, EntityManager* entityMan
 	entityManager->addEntityToRegistry(this);  // TODO: do i need to be an entity?
 }
 
-HelpMenu::~HelpMenu()
+HelpScreen::~HelpScreen()
 {
 }
 
-void HelpMenu::generateBuffers()
+void HelpScreen::generateBuffers()
 {
 	glGenVertexArrays(1, &m_VAO);
 	glGenBuffers(1, &m_vertexbufferID);
 	glGenBuffers(1, &m_indexbufferID);
 }
 
-void HelpMenu::animateMenu()
+void HelpScreen::animateMenu()
 {
 	if (m_frame > 20) {
 		if (m_spriteX + m_spriteXOffset >= 1.0f) {

@@ -93,7 +93,7 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 
 void loadHelpMenu(EntityManager* entityManager, GLFWwindow* window, unsigned int shaderProgram)
 {
-	Entity* helpMenu = entityManager->spawnEntity(HELP_MENU, -1.0f, -1.0f, 0.0f, HELP_MENU, nullptr, nullptr);
+	Entity* helpMenu = entityManager->spawnEntity(HELPSCREEN, -1.0f, -1.0f, 0.0f, HELPSCREEN, nullptr, nullptr);
 
 	while (keyIsPressed[GLFW_KEY_ENTER] == false) {
 		entityManager->updateVertexBuffers();
@@ -111,7 +111,7 @@ void loadHelpMenu(EntityManager* entityManager, GLFWwindow* window, unsigned int
 
 void loadGameMenu(EntityManager* entityManager, GLFWwindow* window, unsigned int shaderProgram)
 {
-	Entity* gameMenu = entityManager->spawnEntity(GAME_MENU, -1.0f, -1.0f, 0.0f, GAME_MENU, nullptr, nullptr);
+	Entity* gameMenu = entityManager->spawnEntity(STARTSCREEN, -1.0f, -1.0f, 0.0f, STARTSCREEN, nullptr, nullptr);
 
 	while (keyIsPressed[GLFW_KEY_ENTER] == false) {
 		if (keyIsPressed[GLFW_KEY_F1] == true) {
