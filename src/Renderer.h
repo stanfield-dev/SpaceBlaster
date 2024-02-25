@@ -12,17 +12,23 @@
 class Renderer 
 {
 private:
-	static inline unsigned int m_projectionMatrixLoc = 0;
-	static inline unsigned int m_viewMatrixLoc = 0;
-
-	static inline glm::mat4 m_projectionMatrix = glm::mat4(1.0f);
-	static inline glm::mat4 m_viewMatrix = glm::mat4(1.0f);
+	enum m_gameState : int
+	{
+		NEW = 0,
+		RUNNING,
+		STARTSCREEN,
+		HELPSCREEN,
+		INTERMISSION,
+		NEWROUND,
+		GAMEOVER
+	};
 
 public:
 	static void init(unsigned int);
-	static void drawEntities(unsigned int, EntityManager*);
-	static void drawGameMenu(unsigned int, EntityManager*);
-	static void drawHelpMenu(unsigned int, EntityManager*);
-	static void drawScore(unsigned int, EntityManager*);
+
+	static void drawEntities(int, unsigned int, EntityManager*);
+
+	static void drawInfoScreen(Entity*, unsigned int);
+	static void drawGameScreen(EntityManager*, unsigned int);
 };
 

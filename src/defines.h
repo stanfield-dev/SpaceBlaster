@@ -41,12 +41,13 @@ const std::string BACKGROUND_IMAGE =		"src/resources/textures/background.png";
 const std::string COUNTDOWN_IMAGE =			"src/resources/textures/countdown.png";
 const std::string ENEMY_SPRITE =			"src/resources/textures/enemy-ship-spritesheet.png";
 const std::string EXPLOSION_SPRITE =		"src/resources/textures/explosion.png";
+const std::string GAMEOVER_IMAGE =			"src/resources/textures/gameover.png";
 const std::string HEALTHBAR_IMAGE =			"src/resources/textures/healthbar.png";
 const std::string HELPSCREEN_IMAGE =		"src/resources/textures/help.jpg";
-const std::string STARTSCREEN_IMAGE =		"src/resources/textures/menu.jpg";
 const std::string NUMBERS_IMAGE =			"src/resources/textures/numbers.png";
 const std::string PLAYER_SPRITE =			"src/resources/textures/player-ship-spritesheet.png";
 const std::string PROJECTILE_SPRITE =		"src/resources/textures/projectiles.png";
+const std::string STARTSCREEN_IMAGE =		"src/resources/textures/menu.jpg";
 
 // audio sources
 const std::string EXPLOSION_SOUND =		"src/resources/sounds/explosion.mp3";
@@ -65,5 +66,6 @@ enum objectType : int
 	HELPSCREEN,
 	COUNTDOWN,
 	SCORE,
-	HEALTHBAR
+	HEALTHBAR,
+	GAMEOVER
 };

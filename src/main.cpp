@@ -5,6 +5,7 @@
 
 #include "defines.h"
 #include "Background.h"
+#include "Game.h"
 #include "EntityManager.h"
 #include "Renderer.h"
 #include "Shader.h"
@@ -18,7 +19,6 @@
 #include <stdlib.h>
 #include <time.h>
 
-bool newGame = true;
 float musicVolume = 0.5f;
 
 std::map<int, bool> keyIsPressed 
@@ -91,45 +91,6 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 
 }
 
-void loadHelpMenu(EntityManager* entityManager, GLFWwindow* window, unsigned int shaderProgram)
-{
-	Entity* helpMenu = entityManager->spawnEntity(HELPSCREEN, -1.0f, -1.0f, 0.0f, HELPSCREEN, nullptr, nullptr);
-
-	while (keyIsPressed[GLFW_KEY_ENTER] == false) {
-		entityManager->updateVertexBuffers();
-		Renderer::drawHelpMenu(shaderProgram, entityManager);
-		glfwSwapBuffers(window);
-		glfwPollEvents();
-	}
-
-	entityManager->removeEntityFromRegistry(helpMenu);
-	helpMenu->~Entity();
-	delete helpMenu;
-
-	newGame = false;
-}
-
-void loadGameMenu(EntityManager* entityManager, GLFWwindow* window, unsigned int shaderProgram)
-{
-	Entity* gameMenu = entityManager->spawnEntity(STARTSCREEN, -1.0f, -1.0f, 0.0f, STARTSCREEN, nullptr, nullptr);
-
-	while (keyIsPressed[GLFW_KEY_ENTER] == false) {
-		if (keyIsPressed[GLFW_KEY_F1] == true) {
-			loadHelpMenu(entityManager, window, shaderProgram);
-		}
-		entityManager->updateVertexBuffers();
-		Renderer::drawGameMenu(shaderProgram, entityManager);
-		glfwSwapBuffers(window);
-		glfwPollEvents();
-	}
-
-	entityManager->removeEntityFromRegistry(gameMenu);
-	gameMenu->~Entity();
-	delete gameMenu;
-
-	newGame = false;
-}
-
 int main(void) {
 	GLFWwindow* window;
 
@@ -157,7 +118,7 @@ int main(void) {
 		std::cout << "GLEW initialization failure!" << std::endl;
 	}
 
-	// miniaudio setup
+	//============ MINIAUDIO SOUND SETUP ============
 	ma_result result;
 	ma_engine soundEngine;
 	ma_engine_config soundEngineConfig;
@@ -178,21 +139,18 @@ int main(void) {
 	ma_sound_set_looping(&backgroundMusic, true);
 	ma_sound_set_volume(&backgroundMusic, musicVolume);
 	ma_sound_start(&backgroundMusic);
-
-	EntityManager *entityManager = new EntityManager(&soundEngine);
+	//===============================================
 
 	unsigned int shaderProgram = Shader::createShader(Shader::getVertexShader(), Shader::getFragmentShader());
 	Shader::useShader(shaderProgram); 
-	
-	Renderer::init(shaderProgram);
 
 	Textures::init(shaderProgram);
+	Renderer::init(shaderProgram);
 
-	Entity* background = entityManager->spawnEntity(BACKGROUND, -1.0f, -1.0f, 0.0f, BACKGROUND, nullptr, nullptr);
-	Entity* healthbar = entityManager->spawnEntity(HEALTHBAR, -(HEALTHBARWIDTH/SCREENWIDTH), -1.0f, 0.0f, HEALTHBAR, nullptr, nullptr);
-	Entity* score = entityManager->spawnEntity(SCORE, -((SCORETOTALWIDTH / 2) / SCREENWIDTH), -0.955f, 0.0f, SCORE, nullptr, nullptr);
-	Entity* player = entityManager->spawnEntity(PLAYER, -0.9f, 0.0f, 0.0f, PLAYER, nullptr, nullptr);
-	Entity* enemy = entityManager->spawnEntity(ENEMY, 0.7f, 0.0f, 0.0f, ENEMY, nullptr, nullptr);
+	EntityManager *entityManager = new EntityManager(&soundEngine);
+	Game* game = new Game(entityManager, &soundEngine);
+
+	Entity* player = entityManager->getEntity(PLAYER);
 
 	srand((unsigned int)time(0));
 
@@ -212,54 +170,52 @@ int main(void) {
 			}
 		}
 
-		if ( (entityManager->getPlayerEntity() == 0) && (entityManager->getCountdownEntity() == 0)) {
-			player = entityManager->respawnPlayer();
+		if (player != nullptr) {
+
+			if (keyIsPressed[GLFW_KEY_W] == true || keyIsPressed[GLFW_KEY_UP] == true) {
+				player->updatePositionY((1.0f / SCREENHEIGHT) * 8.0f);
+			}
+
+			if (keyIsPressed[GLFW_KEY_S] == true || keyIsPressed[GLFW_KEY_DOWN] == true) {
+				player->updatePositionY(-(1.0f / SCREENHEIGHT) * 8.0f);
+			}
+
+			if (keyIsPressed[GLFW_KEY_SPACE] == true) {
+				entityManager->spawnEntity(
+					PROJECTILE, 
+					player->getGunPositionX(), // TODO return a vector and reference .x .y
+					player->getGunPositionY(), 
+					0.0f,
+					PLAYER, 
+					nullptr, 
+					nullptr
+				);
+				keyIsPressed[GLFW_KEY_SPACE] = false; // prevent bullet spam
+			}
 		}
 
-		if (newGame) {
-			loadGameMenu(entityManager, window, shaderProgram);
+		if (keyIsPressed[GLFW_KEY_ESCAPE] == true) {
+			game->setGameState(STARTSCREEN);
 		}
 
-		else {
-			if (entityManager->getPlayerEntity() != 0) {
+		if (keyIsPressed[GLFW_KEY_F1] == true) {
+			game->setGameState(HELPSCREEN);
+		}
 
-				if (keyIsPressed[GLFW_KEY_W] == true || keyIsPressed[GLFW_KEY_UP] == true) {
-					entityManager->getPlayerEntity()->updatePositionY((1.0f / SCREENHEIGHT) * 8.0f);
-				}
-
-				if (keyIsPressed[GLFW_KEY_S] == true || keyIsPressed[GLFW_KEY_DOWN] == true) {
-					entityManager->getPlayerEntity()->updatePositionY(-(1.0f / SCREENHEIGHT) * 8.0f);
-				}
-
-				if (keyIsPressed[GLFW_KEY_SPACE] == true) {
-					entityManager->spawnEntity(PROJECTILE, player->getGunPositionX(), player->getGunPositionY(), 0.0f,
-						PLAYER, nullptr, nullptr);
-					keyIsPressed[GLFW_KEY_SPACE] = false; // prevent bullet spam
-				}
-			}
-
-			if (keyIsPressed[GLFW_KEY_ESCAPE] == true) {
-				loadGameMenu(entityManager, window, shaderProgram);
-			}
-
-			if (keyIsPressed[GLFW_KEY_F1] == true) {
-				loadHelpMenu(entityManager, window, shaderProgram);
-			}
-
-			entityManager->updateVertexBuffers();
-			entityManager->checkCollisions();
+		game->update(game->gameState(), entityManager);
 		
-			Renderer::drawEntities(shaderProgram, entityManager);
-			Renderer::drawScore(shaderProgram, entityManager);
+		glClear(GL_COLOR_BUFFER_BIT);
 
-			glfwSwapBuffers(window);
+		Renderer::drawEntities(game->gameState(), shaderProgram, entityManager);
 
-			glfwPollEvents();
-		}
+		glfwSwapBuffers(window);
+
+		glfwPollEvents();
 	}
 
 	Shader::deleteShader(shaderProgram);
 
 	glfwTerminate();
+
 	return 0;
 }

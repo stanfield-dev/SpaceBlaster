@@ -13,6 +13,7 @@ private:
 	inline static unsigned int m_countdownTextureID;
 	inline static unsigned int m_enemyTextureID;
 	inline static unsigned int m_explosionTextureID;
+	inline static unsigned int m_gameoverTextureID;
 	inline static unsigned int m_healthbarTextureID;
 	inline static unsigned int m_helpTextureID;
 	inline static unsigned int m_menuTextureID;

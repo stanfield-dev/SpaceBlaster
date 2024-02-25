@@ -87,7 +87,7 @@ public:
 	int getType() const;
 
 	// Animation functions
-	virtual void animateMenu();
+	virtual void animateScreen();
 
 	int getCountdownSource() const;
 	virtual void animateCountdown();
@@ -96,9 +96,7 @@ public:
 	virtual void animateExplosion();
 	virtual int getExplosionFrame() const;
 
-	virtual void scrollBackground();
-
-	void fireEngines();
+	void animateShip();
 
 	// Combat and Collision functions
 	float getRightEdge() const;

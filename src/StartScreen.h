@@ -15,5 +15,5 @@ public:
 
 	void generateBuffers() override;
 
-	void animateMenu() override;
+	void animateScreen() override;
 };

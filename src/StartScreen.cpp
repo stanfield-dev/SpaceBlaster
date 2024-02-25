@@ -34,7 +34,7 @@ void StartScreen::generateBuffers()
 	glGenBuffers(1, &m_indexbufferID);
 }
 
-void StartScreen::animateMenu()
+void StartScreen::animateScreen()
 {
 	if (m_frame > 20) {
 		if (m_spriteX + m_spriteXOffset >= 1.0f) {

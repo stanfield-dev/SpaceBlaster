@@ -133,7 +133,7 @@ void Entity::updatePositionY(float y)
 	updateVertexArray();
 }
 
-void Entity::animateMenu() {}
+void Entity::animateScreen() {}
 
 void Entity::animateExplosion() {}
 int Entity::getExplosionFrame() const { return 0; }
@@ -142,11 +142,10 @@ void Entity::animateCountdown() {}
 int Entity::getCountdownFrame() const { return 0; }
 
 void Entity::updateLives(int) {}
+
 void Entity::updateScore() {}
 
-void Entity::scrollBackground() {}
-
-void Entity::fireEngines()
+void Entity::animateShip()
 {
 	if (m_spriteX + m_spriteXOffset >= 1.0f) {
 		m_spriteX = 0.0f;

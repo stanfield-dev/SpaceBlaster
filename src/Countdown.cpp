@@ -50,6 +50,8 @@ void Countdown::animateCountdown()
 	m_vertexArray[21] = m_spriteX;						// ULx
 
 	updateVertexArray();
+
+	// TODO respawn enemy/player when countdown expires
 }
 
 int Countdown::getCountdownFrame() const

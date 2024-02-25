@@ -11,10 +11,8 @@ class EntityManager
 {
 private:
 	ma_engine* m_soundEngine;
-	std::vector<Entity*> m_entityRegistry;
 
-	Entity* countdownEntity = nullptr;
-	Entity* playerEntity = nullptr;
+	std::vector<Entity*> m_entityRegistry;
 
 	int m_playerLivesRemaining = 3;
 
@@ -31,17 +29,12 @@ public:
 
 	std::vector<Entity*> getEntityRegistry();
 
-	Entity* getCountdownEntity();
-	Entity* getPlayerEntity();
+	Entity* getEntity(int);
 
-	void setLivesRemaining(int);
+	void updateLivesRemaining(int);
 	int getLivesRemaining() const;
 
-	void updateScore();
-
 	void updateVertexBuffers();
-
-	void checkCollisions();
 
 	Entity* respawnEnemy();
 

@@ -30,10 +30,11 @@ void Textures::init(unsigned int shaderProgram)
 	loadTexture(COUNTDOWN);
 	loadTexture(SCORE);
 	loadTexture(HEALTHBAR);
+	loadTexture(GAMEOVER);
 	loadTexture(BACKGROUND);
 
 	loc0 = glGetUniformLocation(shaderProgram, "u_textures");
-	int samplers[10] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }; 
+	int samplers[11] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }; 
 	glUniform1iv(loc0, 11, samplers);
 }
 
@@ -187,6 +188,21 @@ void Textures::loadTexture(int type)
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_textureData);
 
 		glBindTextureUnit(HEALTHBAR, m_healthbarTextureID);
+	}
+
+	if (type == GAMEOVER) {
+		glCreateTextures(GL_TEXTURE_2D, 1, &m_gameoverTextureID);
+		glBindTexture(GL_TEXTURE_2D, m_gameoverTextureID);
+
+		loadImage(GAMEOVER_IMAGE);
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_textureData);
+
+		glBindTextureUnit(GAMEOVER, m_gameoverTextureID);
 	}
 
 	if (m_textureData) {

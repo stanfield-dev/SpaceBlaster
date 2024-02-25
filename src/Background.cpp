@@ -25,7 +25,7 @@ Background::~Background()
 {
 }
 
-void Background::scrollBackground()
+void Background::animateScreen()
 {
 	m_vertexArray[3]  += 0.002f;				// LLx
 	m_vertexArray[9]  += 0.002f;				// LRx
