@@ -131,18 +131,17 @@ Entity* EntityManager::getEntity(int entityType)
 	return nullptr;
 }
 
+void EntityManager::resetPlayerLivesRemaining()
+{
+	m_playerLivesRemaining = 3;
+}
+
 void EntityManager::updatePlayerLivesRemaining(int x)
 {
 	m_playerLivesRemaining += x;
 
-	if (m_playerLivesRemaining > -1) {
-		for (auto entity : m_entityRegistry) {
-			if (entity->getType() == HEALTHBAR) {
-				entity->updateLives(x);
-				return;
-			}
-		}
-	}
+	Entity* healthBar = getEntity(HEALTHBAR);
+	healthBar->updateHealthBarLives(x);
 }
 
 int EntityManager::getPlayerLivesRemaining() const
@@ -155,6 +154,11 @@ void EntityManager::updateVertexBuffers()
 	for (auto entity : m_entityRegistry) {
 		entity->updateVertexBuffer();
 	}
+}
+
+void EntityManager::resetEnemyDifficulty()
+{
+	m_enemyDifficulty = 0.0f;
 }
 
 Entity* EntityManager::respawnEnemy()

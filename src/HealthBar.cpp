@@ -24,14 +24,14 @@ HealthBar::~HealthBar()
 {
 }
 
-void HealthBar::updateLives(int x)
+void HealthBar::updateHealthBarLives(int x)
 {
 	m_livesRemaining += x;
 
-	m_spriteX = (1 - ((m_livesRemaining + 1) * m_spriteXOffset));
+	m_spriteX = (3 - m_livesRemaining) * m_spriteXOffset;
 
 	m_vertexArray[3] =  m_spriteX;						// LLx
-	m_vertexArray[9] =  m_spriteX + m_spriteXOffset;		// LRx
+	m_vertexArray[9] =  m_spriteX + m_spriteXOffset;	// LRx
 	m_vertexArray[15] = m_spriteX + m_spriteXOffset;	// URx
 	m_vertexArray[21] = m_spriteX;						// ULx
 

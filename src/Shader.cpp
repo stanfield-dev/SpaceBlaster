@@ -1,6 +1,6 @@
 #include <GL/glew.h>
 
-#include "defines.h"
+#include "sb_defines.h"
 #include "Shader.h"
 
 #include <iostream>

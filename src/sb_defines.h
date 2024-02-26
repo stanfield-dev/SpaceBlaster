@@ -18,8 +18,8 @@ const float ENEMYHEIGHT = 192.0f;
 const float EXPLOSIONWIDTH = 192.0f;
 const float EXPLOSIONHEIGHT = 192.0f;
 
-const float GAMEOVERWIDTH = 900.0f;
-const float GAMEOVERHEIGHT = 123.0f;
+const float GAMEOVERWIDTH = 1000.0f;
+const float GAMEOVERHEIGHT = 400.0f;
 
 const float HEALTHBARWIDTH = 700.0f;
 const float HEALTHBARHEIGHT = 81.2f;
@@ -46,11 +46,11 @@ const std::string ENEMY_SPRITE =			"src/resources/textures/enemy-ship-spriteshee
 const std::string EXPLOSION_SPRITE =		"src/resources/textures/explosion.png";
 const std::string GAMEOVER_IMAGE =			"src/resources/textures/gameover.png";
 const std::string HEALTHBAR_IMAGE =			"src/resources/textures/healthbar.png";
-const std::string HELPSCREEN_IMAGE =		"src/resources/textures/help.jpg";
+const std::string HELPSCREEN_IMAGE =		"src/resources/textures/helpscreen.png";
 const std::string NUMBERS_IMAGE =			"src/resources/textures/numbers.png";
 const std::string PLAYER_SPRITE =			"src/resources/textures/player-ship-spritesheet.png";
 const std::string PROJECTILE_SPRITE =		"src/resources/textures/projectiles.png";
-const std::string STARTSCREEN_IMAGE =		"src/resources/textures/menu.jpg";
+const std::string STARTSCREEN_IMAGE =		"src/resources/textures/startscreen.png";
 
 // audio sources
 const std::string EXPLOSION_SOUND =		"src/resources/sounds/explosion.mp3";

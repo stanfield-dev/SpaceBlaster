@@ -11,7 +11,6 @@ private:
 
 public:
 	std::chrono::steady_clock::time_point m_startTime, m_endTime;
-	std::chrono::duration<double> m_elapsedTime;
 
 	int m_frame = 3;
 

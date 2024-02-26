@@ -3,7 +3,7 @@
 
 #include "miniaudio.h"
 
-#include "defines.h"
+#include "sb_defines.h"
 #include "Background.h"
 #include "Game.h"
 #include "EntityManager.h"
@@ -150,6 +150,7 @@ int main(void) {
 
 	while (!glfwWindowShouldClose(window)) {
 
+		int gameState = game->gameState();
 		int lastState = game->lastGameState();
 
 		if (keyIsPressed[GLFW_KEY_MINUS] == true) {
@@ -192,32 +193,47 @@ int main(void) {
 		}
 
 		if (keyIsPressed[GLFW_KEY_ESCAPE] == true) {
-			game->setGameState(STARTSCREENst, lastState);
-		}
-
-		if (keyIsPressed[GLFW_KEY_F1] == true) {
-			game->setGameState(HELPSCREENst, lastState);
-		}
-
-		if (keyIsPressed[GLFW_KEY_ENTER] == true) {
-			int state = game->gameState();
-
-			if ((state == STARTSCREENst) || (state == HELPSCREENst))
-			{
-				if (lastState == NEWGAMEst) {
-					game->setGameState(COMBATst, state);
-				}
-				else {
-					game->setGameState(lastState, state);
-				}
+			if (gameState == COMBATst) {
+				game->setGameState(STARTSCREENst, COMBATst);
+				gameState = STARTSCREENst;
 			}
 		}
 
-		game->update(game->gameState(), entityManager);
+		if (keyIsPressed[GLFW_KEY_F1] == true && gameState != GAMEOVERst) {
+			game->setGameState(HELPSCREENst, lastState);
+			gameState = HELPSCREENst;
+		}
+
+		if (keyIsPressed[GLFW_KEY_ENTER] == true) {
+			if (gameState == STARTSCREENst) {
+				if (lastState == NEWGAMEst) {
+					game->setGameState(COMBATst, gameState);
+					gameState = COMBATst;
+				}
+				else if (lastState == COMBATst) {
+					game->setGameState(lastState, gameState);
+					gameState = COMBATst;
+				}
+			}
+
+			if (gameState == HELPSCREENst) {
+				game->setGameState(lastState, gameState);
+				gameState = lastState;
+			}
+
+			if (gameState == GAMEOVERst) {
+				game->setGameState(NEWGAMEst, gameState);
+				gameState = NEWGAMEst;
+			}
+			// some weird quirk with Enter sending more than once, bypassing the startscreen
+			keyIsPressed[GLFW_KEY_ENTER] = false;
+		}
+
+		game->update(gameState, entityManager);
 		
 		glClear(GL_COLOR_BUFFER_BIT);
 
-		Renderer::drawEntities(game->gameState(), shaderProgram, entityManager);
+		Renderer::drawEntities(gameState, shaderProgram, entityManager);
 
 		glfwSwapBuffers(window);
 

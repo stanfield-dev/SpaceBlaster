@@ -90,7 +90,7 @@
     <ClInclude Include="dependencies\stb_image\stb_image.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\defines.h">
+    <ClInclude Include="src\sb_defines.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Shader.h">

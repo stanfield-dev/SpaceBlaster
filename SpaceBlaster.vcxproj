@@ -198,7 +198,7 @@
     <ClInclude Include="src\Countdown.h" />
     <ClInclude Include="src\Entity.h" />
     <ClInclude Include="src\Background.h" />
-    <ClInclude Include="src\defines.h" />
+    <ClInclude Include="src\sb_defines.h" />
     <ClInclude Include="src\Enemy.h" />
     <ClInclude Include="src\EntityManager.h" />
     <ClInclude Include="src\Explosion.h" />

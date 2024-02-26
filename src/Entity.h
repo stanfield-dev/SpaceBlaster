@@ -5,7 +5,7 @@
 #include "glm/glm.hpp"
 #include <glm/gtc/matrix_transform.hpp>
 
-#include "defines.h"
+#include "sb_defines.h"
 
 class Entity
 {
@@ -111,7 +111,7 @@ public:
 	virtual float getDifficultyLevel();
 
 	// Health Bar functions
-	virtual void updateLives(int);
+	virtual void updateHealthBarLives(int);
 
 	// Positioning functions
 	void setPositionX(float);

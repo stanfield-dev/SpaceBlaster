@@ -22,7 +22,7 @@ int Entity::getExplosionFrame() const { return 0; }
 void Entity::animateScreen() {}
 void Entity::animateShip() {}
 
-void Entity::updateLives(int) {}
+void Entity::updateHealthBarLives(int) {}
 
 void Entity::updateScore() {}
 

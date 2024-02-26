@@ -1,6 +1,6 @@
 #pragma once
 
-#include "defines.h"
+#include "sb_defines.h"
 #include "EntityManager.h"
 
 #include "miniaudio.h"
@@ -34,6 +34,8 @@ public:
 	int gameState() const;
 	int lastGameState() const;
 	void setGameState(int, int);
+
+	void newGame(EntityManager*);
 
 	void update(int, EntityManager*);
 

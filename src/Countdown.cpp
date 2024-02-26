@@ -30,10 +30,12 @@ Countdown::~Countdown()
 
 void Countdown::animateCountdown()
 {
-	m_endTime = std::chrono::steady_clock::now();
-	m_elapsedTime = (m_endTime - m_startTime);
+	std::chrono::duration<double> elapsedTime;
 
-	if (m_elapsedTime.count() > 1.0) {
+	m_endTime = std::chrono::steady_clock::now();
+	elapsedTime = (m_endTime - m_startTime);
+
+	if (elapsedTime.count() > 1.0) {
 		m_startTime = std::chrono::steady_clock::now();
 		m_frame--;
 		switch (m_frame) {

@@ -2,7 +2,7 @@
 
 #include <GL/glew.h>
 
-#include "defines.h"
+#include "sb_defines.h"
 
 #include "EntityManager.h"
 #include "Entity.h"

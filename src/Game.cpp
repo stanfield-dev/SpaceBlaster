@@ -67,6 +67,7 @@ void Game::update(int state, EntityManager* entityManager)
 			{
 				//std::cout << "GAMEOVER STATE" << std::endl;
 				animateBackground(entityManager);
+				animateExplosions(entityManager);
 				animateProjectiles(entityManager);
 				animateEnemy(entityManager);
 				animateGameover(entityManager);
@@ -82,8 +83,7 @@ void Game::update(int state, EntityManager* entityManager)
 		case NEWGAMEst:
 			{
 				//std::cout << "NEWGAME STATE" << std::endl;
-				Entity* startscreen = entityManager->getEntity(STARTSCREEN);
-				startscreen->animateScreen();
+				newGame(entityManager);
 			}
 			break;
 		case RESPAWNst:
@@ -100,6 +100,42 @@ void Game::update(int state, EntityManager* entityManager)
 			}
 			break;
 	}
+}
+
+void Game::newGame(EntityManager* entityManager)
+{
+	// clean up any dynamic objects just in case
+	std::vector<Entity*> entityRegistry = entityManager->getEntityRegistry();
+
+	for (auto entity : entityRegistry) {
+		if ((entity->getType() == ENEMY) || (entity->getType() == EXPLOSION) ||
+			(entity->getType() == PROJECTILE) || (entity->getType() == PLAYER) ||
+			(entity->getType() == HEALTHBAR) || (entity->getType() == SCORE)) {
+			entityManager->removeEntityFromRegistry(entity);
+			entity->~Entity();
+			delete entity;
+		}
+	}
+
+	// reset the score sprite
+	entityManager->spawnEntity(SCORE, -((SCORETOTALWIDTH / 2) / SCREENWIDTH), -0.955f, 0.0f, SCORE, nullptr, nullptr);
+	m_scoreEntity = entityManager->getEntity(SCORE);
+
+	// reset the healthbar sprite
+	entityManager->spawnEntity(HEALTHBAR, -(HEALTHBARWIDTH / SCREENWIDTH), -1.0f, 0.0f, HEALTHBAR, nullptr, nullptr);
+	m_healthbarEntity = entityManager->getEntity(HEALTHBAR);
+
+	// spawn new contestants
+	entityManager->resetPlayerLivesRemaining();
+	entityManager->spawnEntity(PLAYER, -0.9f, 0.0f, 0.0f, PLAYER, nullptr, nullptr);
+	m_playerEntity = entityManager->getEntity(PLAYER);
+
+	entityManager->resetEnemyDifficulty();
+	entityManager->spawnEntity(ENEMY, 0.7f, 0.0f, 0.0f, ENEMY, nullptr, nullptr);
+	m_playerEntity = entityManager->getEntity(PLAYER);
+
+	// start the game
+	setGameState(STARTSCREENst, NEWGAMEst);
 }
 
 void Game::animateBackground(EntityManager* entityManager)

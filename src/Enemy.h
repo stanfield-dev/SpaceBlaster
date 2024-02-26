@@ -52,7 +52,6 @@ public:
 	void moveEnemy();
 
 	void increaseDifficulty(float) override;
-
 	float getDifficultyLevel() override;
 };
 

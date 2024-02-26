@@ -2,7 +2,7 @@
 
 #include <vector>
 
-#include "defines.h"
+#include "sb_defines.h"
 #include "Entity.h"
 
 #include "miniaudio.h"
@@ -31,12 +31,14 @@ public:
 
 	Entity* getEntity(int);
 
+	void resetPlayerLivesRemaining();
 	void updatePlayerLivesRemaining(int);
 	int getPlayerLivesRemaining() const;
 
 	void updateVertexBuffers();
 
 	Entity* respawnEnemy();
-
 	Entity* respawnPlayer();
+
+	void resetEnemyDifficulty();
 };
