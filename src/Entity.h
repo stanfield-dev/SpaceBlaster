@@ -12,6 +12,12 @@ class Entity
 private:
 
 protected:
+	typedef struct
+	{
+		float x;
+		float y;
+	} m_gunPosition;
+
 	float m_spriteSheetWidth = 0.0f;
 	float m_spriteSheetHeight = 0.0f;
 	float m_spriteWidth = 0.0f;
@@ -88,6 +94,7 @@ public:
 
 	// Animation functions
 	virtual void animateScreen();
+	virtual void animateShip();
 
 	int getCountdownSource() const;
 	virtual void animateCountdown();
@@ -96,16 +103,9 @@ public:
 	virtual void animateExplosion();
 	virtual int getExplosionFrame() const;
 
-	void animateShip();
 
 	// Combat and Collision functions
-	float getRightEdge() const;
-	float getLeftEdge() const;
-	float getTopEdge() const;
-	float getBottomEdge() const;
-
-	float getGunPositionX() const;
-	float getGunPositionY() const;
+	m_boundingBox boundingBox() const;
 
 	virtual void increaseDifficulty(float);
 	virtual float getDifficultyLevel();
@@ -129,6 +129,8 @@ public:
 	// Projectile functions
 	int getProjectileSource() const;
 	virtual void moveProjectile();
+
+	m_gunPosition getGunPosition() const;
 
 	float* getProjectileTargetPosition();
 	float* getProjectileSourcePosition();

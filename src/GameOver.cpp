@@ -24,14 +24,26 @@ GameOver::~GameOver()
 {
 }
 
-void GameOver::incrementTimer()
-{
-	m_timer++;
-}
+void GameOver::animateScreen() {
+	if (m_frame > 20) {
+		if (m_spriteY + m_spriteYOffset >= 1.0f) {
+			m_spriteY = 0.0f;
+		}
+		else {
+			m_spriteY += m_spriteYOffset;
+		}
 
-int GameOver::getTimer() const
-{
-	return m_timer;
+		m_vertexArray[4]  = m_spriteY;						// LLx
+		m_vertexArray[10] = m_spriteY + m_spriteYOffset;	// LRx
+		m_vertexArray[16] = m_spriteY + m_spriteYOffset;	// URx
+		m_vertexArray[22] = m_spriteY;						// ULx
+
+		updateVertexArray();
+
+		m_frame = 0;
+	}
+
+	m_frame++;
 }
 
 

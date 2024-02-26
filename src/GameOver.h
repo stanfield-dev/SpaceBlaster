@@ -6,12 +6,11 @@
 class GameOver : public Entity
 {
 private:
-	int m_timer = 0;
+	int m_frame = 0;
 
 public:
 	GameOver(int, float, float, float, EntityManager*);
 	~GameOver();
 
-	void incrementTimer();
-	int getTimer() const;
+	void animateScreen() override;
 };

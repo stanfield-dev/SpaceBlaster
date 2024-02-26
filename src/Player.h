@@ -10,5 +10,7 @@ private:
 public:
 	Player(int, float, float, float, EntityManager*);
 	~Player();
+
+	void animateShip() override;
 };
 

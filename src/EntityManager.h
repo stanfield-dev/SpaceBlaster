@@ -31,8 +31,8 @@ public:
 
 	Entity* getEntity(int);
 
-	void updateLivesRemaining(int);
-	int getLivesRemaining() const;
+	void updatePlayerLivesRemaining(int);
+	int getPlayerLivesRemaining() const;
 
 	void updateVertexBuffers();
 

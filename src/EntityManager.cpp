@@ -4,6 +4,7 @@
 #include "Entity.h"
 #include "Enemy.h"
 #include "Explosion.h"
+#include "GameOver.h"
 #include "StartScreen.h"
 #include "HealthBar.h"
 #include "HelpScreen.h"
@@ -29,33 +30,68 @@ Entity* EntityManager::spawnEntity(int type, float x, float y, float z, int sour
 	Entity* newEntity = nullptr;
 
 	switch (type) {
-		case PROJECTILE:	if (source == PLAYER) {
-								newEntity = new Projectile(type, x, y, z, source, this);
-							}
-							else {
-								newEntity = new Projectile(type, x, y, z, source,
-															sourceCoordinates, targetCoordinates, this);
-							}
-							ma_engine_play_sound(m_soundEngine, PROJECTILE_SOUND.c_str(), NULL);
-							break;
-		case EXPLOSION	:	newEntity = new Explosion(type, x, y, z, this);
-							break;
-		case ENEMY		:	newEntity = new Enemy(type, x, y, z, this);
-							break;
-		case PLAYER		:	newEntity = new Player(type, x, y, z, this);
-							break;
-		case COUNTDOWN	:	newEntity = new Countdown(type, x, y, z, source, this);
-							break;
-		case SCORE		:	newEntity = new Score(type, x, y, z, this);
-							break;
-		case STARTSCREEN:	newEntity = new StartScreen(type, x, y, z, this);
-							break;
-		case HELPSCREEN	:	newEntity = new HelpScreen(type, x, y, z, this);
-							break;
-		case BACKGROUND	:	newEntity = new Background(type, x, y, z, this);
-							break;
-		case HEALTHBAR	:	newEntity = new HealthBar(type, x, y, z, this);
-							break;
+		case PROJECTILE: 
+			{
+				if (source == PLAYER) {
+					newEntity = new Projectile(type, x, y, z, source, this);
+				}
+				else {
+					newEntity = new Projectile(type, x, y, z, source,
+						sourceCoordinates, targetCoordinates, this);
+				}
+				ma_engine_play_sound(m_soundEngine, PROJECTILE_SOUND.c_str(), NULL);
+			}
+			break;
+		case EXPLOSION:
+			{
+				newEntity = new Explosion(type, x, y, z, this);
+			}
+			break;
+		case ENEMY:	
+			{
+				newEntity = new Enemy(type, x, y, z, this);
+			}
+			break;
+		case PLAYER:	
+			{
+				newEntity = new Player(type, x, y, z, this);
+			}
+			break;
+		case COUNTDOWN:	
+			{
+				newEntity = new Countdown(type, x, y, z, source, this);
+			}
+			break;
+		case SCORE:	
+			{
+				newEntity = new Score(type, x, y, z, this);
+			}
+			break;
+		case STARTSCREEN:	
+			{
+				newEntity = new StartScreen(type, x, y, z, this);
+			}
+			break;
+		case HELPSCREEN:	
+			{
+				newEntity = new HelpScreen(type, x, y, z, this);
+			}
+			break;
+		case BACKGROUND:	
+			{
+				newEntity = new Background(type, x, y, z, this);
+			}
+			break;
+		case HEALTHBAR:	
+			{
+				newEntity = new HealthBar(type, x, y, z, this);
+			}
+			break;
+		case GAMEOVER:	
+			{
+				newEntity = new GameOver(type, x, y, z, this);
+			}
+			break;
 	}
 
 	return newEntity;
@@ -91,31 +127,25 @@ Entity* EntityManager::getEntity(int entityType)
 			return entity;
 		}
 	}
+
+	return nullptr;
 }
 
-void EntityManager::updateLivesRemaining(int x)
+void EntityManager::updatePlayerLivesRemaining(int x)
 {
 	m_playerLivesRemaining += x;
 
-	if (m_playerLivesRemaining == 0) {
-		// TODO game over, but for now...
-		m_playerLivesRemaining = 3;
-		for (auto entity : m_entityRegistry) {
-			if (entity->getType() == HEALTHBAR) {
-				entity->updateLives(-2);
-			}
-		}
-	}
-	else {
+	if (m_playerLivesRemaining > -1) {
 		for (auto entity : m_entityRegistry) {
 			if (entity->getType() == HEALTHBAR) {
 				entity->updateLives(x);
+				return;
 			}
 		}
 	}
 }
 
-int EntityManager::getLivesRemaining() const
+int EntityManager::getPlayerLivesRemaining() const
 {
 	return m_playerLivesRemaining;
 }
@@ -138,7 +168,7 @@ Entity* EntityManager::respawnEnemy()
 	}
 	
 	if (!e) {
-		m_enemyDifficulty += 0.001f;
+		m_enemyDifficulty += 0.0015f;
 		Entity* enemy = spawnEntity(ENEMY, 0.7f, 0.0f, 0.0f, ENEMY, nullptr, nullptr);
 		enemy->increaseDifficulty(m_enemyDifficulty);
 		return enemy;

@@ -47,6 +47,8 @@ public:
 	Enemy(int, float, float, float, EntityManager*);
 	~Enemy();
 
+	void animateShip() override;
+
 	void moveEnemy();
 
 	void increaseDifficulty(float) override;

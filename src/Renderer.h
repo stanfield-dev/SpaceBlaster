@@ -3,6 +3,7 @@
 #include <GL/glew.h>
 
 #include "defines.h"
+
 #include "EntityManager.h"
 #include "Entity.h"
 #include "Shader.h"
@@ -12,16 +13,6 @@
 class Renderer 
 {
 private:
-	enum m_gameState : int
-	{
-		NEW = 0,
-		RUNNING,
-		STARTSCREEN,
-		HELPSCREEN,
-		INTERMISSION,
-		NEWROUND,
-		GAMEOVER
-	};
 
 public:
 	static void init(unsigned int);
@@ -30,5 +21,8 @@ public:
 
 	static void drawInfoScreen(Entity*, unsigned int);
 	static void drawGameScreen(EntityManager*, unsigned int);
+	static void drawGameCountdownScreen(EntityManager*, unsigned int);
+	static void drawGameOverScreen(EntityManager*, unsigned int);
+	static void drawScore(EntityManager*, unsigned int);
 };
 

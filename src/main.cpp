@@ -12,12 +12,10 @@
 #include "Terrain.h"
 #include "Textures.h"
 
-#include <chrono>
 #include <iostream>
 #include <map>
 #include <string>
 #include <stdlib.h>
-#include <time.h>
 
 float musicVolume = 0.5f;
 
@@ -150,11 +148,9 @@ int main(void) {
 	EntityManager *entityManager = new EntityManager(&soundEngine);
 	Game* game = new Game(entityManager, &soundEngine);
 
-	Entity* player = entityManager->getEntity(PLAYER);
-
-	srand((unsigned int)time(0));
-
 	while (!glfwWindowShouldClose(window)) {
+
+		int lastState = game->lastGameState();
 
 		if (keyIsPressed[GLFW_KEY_MINUS] == true) {
 			if (musicVolume > 0.0) {
@@ -170,6 +166,7 @@ int main(void) {
 			}
 		}
 
+		Entity* player = entityManager->getEntity(PLAYER);
 		if (player != nullptr) {
 
 			if (keyIsPressed[GLFW_KEY_W] == true || keyIsPressed[GLFW_KEY_UP] == true) {
@@ -183,8 +180,8 @@ int main(void) {
 			if (keyIsPressed[GLFW_KEY_SPACE] == true) {
 				entityManager->spawnEntity(
 					PROJECTILE, 
-					player->getGunPositionX(), // TODO return a vector and reference .x .y
-					player->getGunPositionY(), 
+					player->getGunPosition().x,
+					player->getGunPosition().y, 
 					0.0f,
 					PLAYER, 
 					nullptr, 
@@ -195,11 +192,25 @@ int main(void) {
 		}
 
 		if (keyIsPressed[GLFW_KEY_ESCAPE] == true) {
-			game->setGameState(STARTSCREEN);
+			game->setGameState(STARTSCREENst, lastState);
 		}
 
 		if (keyIsPressed[GLFW_KEY_F1] == true) {
-			game->setGameState(HELPSCREEN);
+			game->setGameState(HELPSCREENst, lastState);
+		}
+
+		if (keyIsPressed[GLFW_KEY_ENTER] == true) {
+			int state = game->gameState();
+
+			if ((state == STARTSCREENst) || (state == HELPSCREENst))
+			{
+				if (lastState == NEWGAMEst) {
+					game->setGameState(COMBATst, state);
+				}
+				else {
+					game->setGameState(lastState, state);
+				}
+			}
 		}
 
 		game->update(game->gameState(), entityManager);

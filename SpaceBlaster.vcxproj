@@ -203,6 +203,7 @@
     <ClInclude Include="src\EntityManager.h" />
     <ClInclude Include="src\Explosion.h" />
     <ClInclude Include="src\Game.h" />
+    <ClInclude Include="src\sb_datatypes.h" />
     <ClInclude Include="src\StartScreen.h" />
     <ClInclude Include="src\GameOver.h" />
     <ClInclude Include="src\HealthBar.h" />

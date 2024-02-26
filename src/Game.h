@@ -10,7 +10,8 @@ class Game
 private:
 	ma_engine* m_soundEngine;
 
-	int m_gameStatus = NEW;
+	int m_gameStatus = STARTSCREENst;
+	int m_lastGameStatus = NEWGAMEst;
 
 	Entity* m_backgroundEntity	= nullptr;
 	Entity* m_countdownEntity	= nullptr;
@@ -27,28 +28,19 @@ private:
 	bool directHit(Entity*, Entity*);
 
 public:
-	enum m_gameState : int
-	{
-		NEW = 0,
-		RUNNING,
-		STARTSCREEN,
-		HELPSCREEN,
-		INTERMISSION,
-		NEWROUND,
-		GAMEOVER
-	};
-
 	Game(EntityManager*, ma_engine*);
 	~Game();
 
 	int gameState() const;
-	void setGameState(int);
+	int lastGameState() const;
+	void setGameState(int, int);
 
 	void update(int, EntityManager*);
 
 	void animateBackground(EntityManager*);
 	void animateCountdown(EntityManager*);
 	void animateEnemy(EntityManager*);
+	void animateGameover(EntityManager*);
 	void animateExplosions(EntityManager*);
 	void animatePlayer(EntityManager*);
 	void animateProjectiles(EntityManager*);
@@ -59,8 +51,6 @@ public:
 
 	void updateScore(EntityManager*);
 
-	void launchCountdown(EntityManager*);
-
-	void newRound(EntityManager*);
+	void respawnContestants(EntityManager*);
 
 };

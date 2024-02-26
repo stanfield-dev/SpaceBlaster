@@ -20,7 +20,7 @@ StartScreen::StartScreen(int type, float x, float y, float z, EntityManager* ent
 
 	updateVertexArray();
 
-	entityManager->addEntityToRegistry(this); // TODO: do i need to be an entity?
+	entityManager->addEntityToRegistry(this);
 }
 
 StartScreen::~StartScreen()

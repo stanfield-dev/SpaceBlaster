@@ -1,5 +1,8 @@
 #pragma once
+
 #include <string>
+
+#include "sb_datatypes.h"
 
 // fixed window resolution
 const float SCREENWIDTH = 1024.0f;
@@ -54,18 +57,3 @@ const std::string EXPLOSION_SOUND =		"src/resources/sounds/explosion.mp3";
 const std::string GAME_MUSIC =			"src/resources/sounds/gamemusic.mp3";
 const std::string PROJECTILE_SOUND =	"src/resources/sounds/projectile.mp3";
 
-// friendly names
-enum objectType : int
-{
-	BACKGROUND = 0,
-	PLAYER,
-	ENEMY,
-	PROJECTILE,
-	EXPLOSION,
-	STARTSCREEN,
-	HELPSCREEN,
-	COUNTDOWN,
-	SCORE,
-	HEALTHBAR,
-	GAMEOVER
-};

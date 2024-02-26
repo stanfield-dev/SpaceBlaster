@@ -22,7 +22,7 @@ Score::Score(int type, float x, float y, float z, EntityManager* entityManager)
 
 	updateVertexArray();
 
-	entityManager->addEntityToRegistry(this); // TODO: do i need to be an entity?
+	entityManager->addEntityToRegistry(this);
 }
 
 Score::~Score()

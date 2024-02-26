@@ -20,7 +20,7 @@ HelpScreen::HelpScreen(int type, float x, float y, float z, EntityManager* entit
 
 	updateVertexArray();
 
-	entityManager->addEntityToRegistry(this);  // TODO: do i need to be an entity?
+	entityManager->addEntityToRegistry(this);
 }
 
 HelpScreen::~HelpScreen()
