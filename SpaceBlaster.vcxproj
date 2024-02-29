@@ -87,6 +87,15 @@
     <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
     <IntDir>$(Configuration)\</IntDir>
   </PropertyGroup>
+  <PropertyGroup Label="Vcpkg">
+    <VcpkgEnableManifest>true</VcpkgEnableManifest>
+  </PropertyGroup>
+  <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <VcpkgUseStatic>true</VcpkgUseStatic>
+  </PropertyGroup>
+  <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <VcpkgUseStatic>true</VcpkgUseStatic>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -94,12 +103,12 @@
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;GLEW_STATIC;WIN32;_CRT_SECURE_NO_WARNINGS;GLEW_STATIC;WIN32;DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)src\resources;$(SolutionDir)dependencies\GLFW\include;$(SolutionDir)dependencies\GLEW\include;$(SolutionDir)dependencies\stb_image;$(SolutionDir)dependencies\miniaudio;$(SolutionDir)dependencies\glm;$(SolutionDir)dependencies</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)vcpkg_installed\x86-windows-static\x86-windows-static\include\libzippp;$(SolutionDir)vcpkg_installed\x86-windows-static\x86-windows-static\include;$(SolutionDir)src\resources;$(SolutionDir)dependencies\GLFW\include;$(SolutionDir)dependencies\GLEW\include;$(SolutionDir)dependencies\stb_image;$(SolutionDir)dependencies\miniaudio;$(SolutionDir)dependencies\glm;$(SolutionDir)dependencies</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)dependencies\GLFW\lib-vc2022;$(SolutionDir)dependencies\GLEW\lib\Release\Win32</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)dependencies\GLFW\lib-vc2022;$(SolutionDir)dependencies\GLEW\lib\Release\Win32;$(SolutionDir)vcpkg_installed\x86-windows-static\x86-windows-static\lib</AdditionalLibraryDirectories>
       <AdditionalDependencies>glfw3.lib;opengl32.lib;glew32s.lib;user32.lib;gdi32.lib;shell32.lib</AdditionalDependencies>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
       <IgnoreSpecificDefaultLibraries>MSVCRT;LIBCMT</IgnoreSpecificDefaultLibraries>
@@ -114,17 +123,19 @@
       <PreprocessorDefinitions>_CRT_SECURE_NO_WARNINGS;GLEW_STATIC;WIN32;_CRT_SECURE_NO_WARNINGS;GLEW_STATIC;WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp20</LanguageStandard>
-      <AdditionalIncludeDirectories>$(SolutionDir)src\resources;$(SolutionDir)dependencies\GLFW\include;$(SolutionDir)dependencies\GLEW\include;$(SolutionDir)dependencies\stb_image;$(SolutionDir)dependencies\miniaudio;$(SolutionDir)dependencies\glm;$(SolutionDir)dependencies</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)vcpkg_installed\x86-windows-static\x86-windows-static\include;$(SolutionDir)vcpkg_installed\x86-windows-static\x86-windows-static\include\libzippp;$(SolutionDir)src\resources;$(SolutionDir)dependencies\GLFW\include;$(SolutionDir)dependencies\GLEW\include;$(SolutionDir)dependencies\stb_image;$(SolutionDir)dependencies\miniaudio;$(SolutionDir)dependencies\glm;$(SolutionDir)dependencies</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(SolutionDir)dependencies\GLFW\lib-vc2022;$(SolutionDir)dependencies\GLEW\lib\Release\Win32</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(SolutionDir)vcpkg_installed\x86-windows-static\x86-windows-static\lib;$(SolutionDir)dependencies\GLFW\lib-vc2022;$(SolutionDir)dependencies\GLEW\lib\Release\Win32</AdditionalLibraryDirectories>
       <AdditionalDependencies>glfw3.lib;opengl32.lib;glew32s.lib;user32.lib;gdi32.lib;shell32.lib</AdditionalDependencies>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
-      <IgnoreSpecificDefaultLibraries>MSVCRT;LIBCMT</IgnoreSpecificDefaultLibraries>
+      <IgnoreSpecificDefaultLibraries>
+      </IgnoreSpecificDefaultLibraries>
+      <EntryPointSymbol>mainCRTStartup</EntryPointSymbol>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -164,7 +175,8 @@
       <AdditionalLibraryDirectories>$(SolutionDir)dependencies\GLFW\lib-vc2022;$(SolutionDir)dependencies\GLEW\lib\Release\Win32</AdditionalLibraryDirectories>
       <AdditionalDependencies>glfw3.lib;opengl32.lib;glew32s.lib;user32.lib;gdi32.lib;shell32.lib</AdditionalDependencies>
       <IgnoreAllDefaultLibraries>false</IgnoreAllDefaultLibraries>
-      <IgnoreSpecificDefaultLibraries>MSVCRT;LIBCMT</IgnoreSpecificDefaultLibraries>
+      <IgnoreSpecificDefaultLibraries>
+      </IgnoreSpecificDefaultLibraries>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -209,7 +221,6 @@
     <ClInclude Include="src\HealthBar.h" />
     <ClInclude Include="src\HelpScreen.h" />
     <ClInclude Include="src\Player.h" />
-    <ClInclude Include="dependencies\stb_image\stb_image.h" />
     <ClInclude Include="src\Projectile.h" />
     <ClInclude Include="src\Renderer.h" />
     <ClInclude Include="src\Score.h" />

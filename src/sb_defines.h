@@ -36,24 +36,24 @@ const float SCORETOTALWIDTH = 3 * SCOREWIDTH;
 
 
 // shader paths
-const std::string VSHADER_PATH = "src/resources/shaders/vertexShader.vert";
-const std::string FSHADER_PATH = "src/resources/shaders/fragmentShader.frag";
+const std::string VSHADER_PATH = "resources/shaders/vertexShader.vert";
+const std::string FSHADER_PATH = "resources/shaders/fragmentShader.frag";
 
 // spritesheet sources
-const std::string BACKGROUND_IMAGE =		"src/resources/textures/background.png";
-const std::string COUNTDOWN_IMAGE =			"src/resources/textures/countdown.png";
-const std::string ENEMY_SPRITE =			"src/resources/textures/enemy-ship-spritesheet.png";
-const std::string EXPLOSION_SPRITE =		"src/resources/textures/explosion.png";
-const std::string GAMEOVER_IMAGE =			"src/resources/textures/gameover.png";
-const std::string HEALTHBAR_IMAGE =			"src/resources/textures/healthbar.png";
-const std::string HELPSCREEN_IMAGE =		"src/resources/textures/helpscreen.png";
-const std::string NUMBERS_IMAGE =			"src/resources/textures/numbers.png";
-const std::string PLAYER_SPRITE =			"src/resources/textures/player-ship-spritesheet.png";
-const std::string PROJECTILE_SPRITE =		"src/resources/textures/projectiles.png";
-const std::string STARTSCREEN_IMAGE =		"src/resources/textures/startscreen.png";
+const std::string BACKGROUND_IMAGE =		"resources/textures/background.png";
+const std::string COUNTDOWN_IMAGE =			"resources/textures/countdown.png";
+const std::string ENEMY_SPRITE =			"resources/textures/enemy-ship-spritesheet.png";
+const std::string EXPLOSION_SPRITE =		"resources/textures/explosion.png";
+const std::string GAMEOVER_IMAGE =			"resources/textures/gameover.png";
+const std::string HEALTHBAR_IMAGE =			"resources/textures/healthbar.png";
+const std::string HELPSCREEN_IMAGE =		"resources/textures/helpscreen.png";
+const std::string NUMBERS_IMAGE =			"resources/textures/numbers.png";
+const std::string PLAYER_SPRITE =			"resources/textures/player-ship-spritesheet.png";
+const std::string PROJECTILE_SPRITE =		"resources/textures/projectiles.png";
+const std::string STARTSCREEN_IMAGE =		"resources/textures/startscreen.png";
 
 // audio sources
-const std::string EXPLOSION_SOUND =		"src/resources/sounds/explosion.mp3";
-const std::string GAME_MUSIC =			"src/resources/sounds/gamemusic.mp3";
-const std::string PROJECTILE_SOUND =	"src/resources/sounds/projectile.mp3";
+const std::string EXPLOSION_SOUND =		"resources/sounds/explosion.mp3";
+const std::string GAME_MUSIC =			"resources/sounds/gamemusic.mp3";
+const std::string PROJECTILE_SOUND =	"resources/sounds/projectile.mp3";
 

@@ -37,7 +37,7 @@ private:
 		{0.6f, -0.63f},
 	};
 
-	float m_enemyVelocity = 0.005f;
+	float m_enemyVelocity = 0.02f;
 
 	float m_destinationX = 0.0f;
 	float m_destinationY = 0.0f;

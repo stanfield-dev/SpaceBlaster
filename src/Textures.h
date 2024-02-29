@@ -15,8 +15,8 @@ private:
 	inline static unsigned int m_explosionTextureID;
 	inline static unsigned int m_gameoverTextureID;
 	inline static unsigned int m_healthbarTextureID;
-	inline static unsigned int m_helpTextureID;
-	inline static unsigned int m_menuTextureID;
+	inline static unsigned int m_helpscreenTextureID;
+	inline static unsigned int m_startscreenTextureID;
 	inline static unsigned int m_numbersTextureID;
 	inline static unsigned int m_playerTextureID;
 	inline static unsigned int m_projectileTextureID;

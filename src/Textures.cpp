@@ -4,6 +4,7 @@
 #include <GL/glew.h>
 
 #include "stb_image.h"
+#include "libzippp.h"
 
 #include "Textures.h"
 #include "Shader.h"
@@ -116,8 +117,8 @@ void Textures::loadTexture(int type)
 	}
 
 	if (type == STARTSCREEN) {
-		glCreateTextures(GL_TEXTURE_2D, 1, &m_menuTextureID);
-		glBindTexture(GL_TEXTURE_2D, m_menuTextureID);
+		glCreateTextures(GL_TEXTURE_2D, 1, &m_startscreenTextureID);
+		glBindTexture(GL_TEXTURE_2D, m_startscreenTextureID);
 
 		loadImage(STARTSCREEN_IMAGE);
 
@@ -127,12 +128,12 @@ void Textures::loadTexture(int type)
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_textureData);
 
-		glBindTextureUnit(STARTSCREEN, m_menuTextureID);
+		glBindTextureUnit(STARTSCREEN, m_startscreenTextureID);
 	}
 
 	if (type == HELPSCREEN) {
-		glCreateTextures(GL_TEXTURE_2D, 1, &m_helpTextureID);
-		glBindTexture(GL_TEXTURE_2D, m_helpTextureID);
+		glCreateTextures(GL_TEXTURE_2D, 1, &m_helpscreenTextureID);
+		glBindTexture(GL_TEXTURE_2D, m_helpscreenTextureID);
 
 		loadImage(HELPSCREEN_IMAGE);
 
@@ -142,7 +143,7 @@ void Textures::loadTexture(int type)
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_textureData);
 
-		glBindTextureUnit(HELPSCREEN, m_helpTextureID);
+		glBindTextureUnit(HELPSCREEN, m_helpscreenTextureID);
 	}
 
 	if (type == COUNTDOWN) {

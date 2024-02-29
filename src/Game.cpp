@@ -58,6 +58,7 @@ void Game::update(int state, EntityManager* entityManager)
 				//std::cout << "COUNTDOWN STATE" << std::endl;
 				animateBackground(entityManager);
 				animateCountdown(entityManager);
+				animateExplosions(entityManager);
 				animateProjectiles(entityManager);
 				animateEnemy(entityManager);
 				animatePlayer(entityManager);

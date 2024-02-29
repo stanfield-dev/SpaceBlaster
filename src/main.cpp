@@ -12,6 +12,7 @@
 #include "Terrain.h"
 #include "Textures.h"
 
+#include <chrono>
 #include <iostream>
 #include <map>
 #include <string>
@@ -89,6 +90,10 @@ static void key_callback(GLFWwindow* window, int key, int scancode, int action, 
 
 }
 
+// for update tick
+std::chrono::steady_clock::time_point m_startTime, m_endTime;
+std::chrono::duration<double,std::ratio<1, 1000>> elapsedTime;
+
 int main(void) {
 	GLFWwindow* window;
 
@@ -96,8 +101,8 @@ int main(void) {
 	if (!glfwInit())
 		return -1;
 
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 	/* Create a windowed mode window and its OpenGL context */
@@ -148,6 +153,8 @@ int main(void) {
 	EntityManager *entityManager = new EntityManager(&soundEngine);
 	Game* game = new Game(entityManager, &soundEngine);
 
+	m_startTime = std::chrono::steady_clock::now();
+
 	while (!glfwWindowShouldClose(window)) {
 
 		int gameState = game->gameState();
@@ -164,31 +171,6 @@ int main(void) {
 			if (musicVolume < 1.0) {
 				musicVolume += 0.05f;
 				ma_sound_set_volume(&backgroundMusic, musicVolume);
-			}
-		}
-
-		Entity* player = entityManager->getEntity(PLAYER);
-		if (player != nullptr) {
-
-			if (keyIsPressed[GLFW_KEY_W] == true || keyIsPressed[GLFW_KEY_UP] == true) {
-				player->updatePositionY((1.0f / SCREENHEIGHT) * 8.0f);
-			}
-
-			if (keyIsPressed[GLFW_KEY_S] == true || keyIsPressed[GLFW_KEY_DOWN] == true) {
-				player->updatePositionY(-(1.0f / SCREENHEIGHT) * 8.0f);
-			}
-
-			if (keyIsPressed[GLFW_KEY_SPACE] == true) {
-				entityManager->spawnEntity(
-					PROJECTILE, 
-					player->getGunPosition().x,
-					player->getGunPosition().y, 
-					0.0f,
-					PLAYER, 
-					nullptr, 
-					nullptr
-				);
-				keyIsPressed[GLFW_KEY_SPACE] = false; // prevent bullet spam
 			}
 		}
 
@@ -229,18 +211,53 @@ int main(void) {
 			keyIsPressed[GLFW_KEY_ENTER] = false;
 		}
 
-		game->update(gameState, entityManager);
-		
+		m_endTime = std::chrono::steady_clock::now();
+		elapsedTime = (m_endTime - m_startTime);
+
+		if (elapsedTime.count() > 16) {  // 16ms
+
+			Entity* player = entityManager->getEntity(PLAYER);
+			if (player != nullptr) {
+
+				if (keyIsPressed[GLFW_KEY_W] == true || keyIsPressed[GLFW_KEY_UP] == true) {
+					player->updatePositionY((1.0f / SCREENHEIGHT) * 25.0f);
+				}
+
+				if (keyIsPressed[GLFW_KEY_S] == true || keyIsPressed[GLFW_KEY_DOWN] == true) {
+					player->updatePositionY(-(1.0f / SCREENHEIGHT) * 25.0f);
+				}
+
+				if (keyIsPressed[GLFW_KEY_SPACE] == true) {
+					entityManager->spawnEntity(
+						PROJECTILE,
+						player->getGunPosition().x,
+						player->getGunPosition().y,
+						0.0f,
+						PLAYER,
+						nullptr,
+						nullptr
+					);
+					keyIsPressed[GLFW_KEY_SPACE] = false; // prevent bullet spam
+				}
+			}
+
+			game->update(gameState, entityManager);
+			glfwPollEvents();
+			m_startTime = std::chrono::steady_clock::now();
+		}
+
 		glClear(GL_COLOR_BUFFER_BIT);
 
 		Renderer::drawEntities(gameState, shaderProgram, entityManager);
 
 		glfwSwapBuffers(window);
 
-		glfwPollEvents();
 	}
 
 	Shader::deleteShader(shaderProgram);
+
+	ma_sound_uninit(&backgroundMusic);
+	ma_engine_uninit(&soundEngine);
 
 	glfwTerminate();
 

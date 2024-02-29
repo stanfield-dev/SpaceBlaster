@@ -1,0 +1,8 @@
+Package: libzippp
+Version: 6.1-1.9.2
+Depends: libzip, vcpkg-cmake:x64-windows, vcpkg-cmake-config:x64-windows, zlib
+Architecture: x86-windows-static
+Multi-Arch: same
+Abi: 9698fc1bef547017d729b69056d5ca0e1ed34e659c13e7c8bca90e21a2dd1ca8
+Description: Simple basic C++ wrapper around the libzip library. It is meant to be a portable and easy-to-use library for ZIP handling
+Status: install ok half-installed
