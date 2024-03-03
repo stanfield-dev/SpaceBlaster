@@ -163,10 +163,12 @@ void EntityManager::resetEnemyDifficulty()
 
 Entity* EntityManager::respawnEnemy()
 {
+	Entity* enemy = nullptr;
 	int e = 0;
 
 	for (auto entity : m_entityRegistry) {
 		if (entity->getType() == ENEMY) {
+			enemy = entity;
 			e = 1;
 		}
 	}
@@ -177,22 +179,31 @@ Entity* EntityManager::respawnEnemy()
 		enemy->increaseDifficulty(m_enemyDifficulty);
 		return enemy;
 	}
+	else {
+		return enemy;	// should never get here, but compiler warns w/o
+	}
 }
 
 Entity* EntityManager::respawnPlayer()
 {
+	Entity* player = nullptr;
 	int p = 0;
 
 	for (auto entity : m_entityRegistry) {
 		if (entity->getType() == PLAYER) {
+			player = entity;
 			p = 1;
 		}
 	}
 
 	if (!p) {
-		Entity* player = spawnEntity(PLAYER, -0.9f, 0.0f, 0.0f, PLAYER, nullptr, nullptr);
+		player = spawnEntity(PLAYER, -0.9f, 0.0f, 0.0f, PLAYER, nullptr, nullptr);
 		return player;
 	}
+	else {
+		return player;	// should never get here, but compiler warns w/o
+	}
+
 }
 
 
