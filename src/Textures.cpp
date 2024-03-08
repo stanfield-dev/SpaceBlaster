@@ -1,5 +1,4 @@
 #include <iostream>
-#include <string>
 
 #include <GL/glew.h>
 
@@ -21,172 +20,48 @@ void Textures::init(unsigned int shaderProgram)
 {
 	unsigned int loc0;
 
-	loadTexture(PLAYER);
-	loadTexture(ENEMY);
-	loadTexture(PROJECTILE);
-	loadTexture(EXPLOSION);
-	loadTexture(GAME_MENU);
-	loadTexture(HELP_MENU);
-	loadTexture(COUNTDOWN);
-	loadTexture(SCORE);
-	loadTexture(HEALTHBAR);
-	loadTexture(BACKGROUND);
-
 	loc0 = glGetUniformLocation(shaderProgram, "u_textures");
-	int samplers[10] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 }; 
+	int samplers[11] = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }; 
 	glUniform1iv(loc0, 11, samplers);
+
+	libzippp::ZipArchive zf("spaceblaster.dat");
+	zf.open(libzippp::ZipArchive::ReadOnly);
+
+	loadTextures(&zf);
+
+	zf.close();
 }
 
-void Textures::loadTexture(int type)
+void Textures::loadTextures(libzippp::ZipArchive *zf)
 { 
-	if (type == BACKGROUND) {
-		glCreateTextures(GL_TEXTURE_2D, 1, &m_backgroundTextureID);
-		glBindTexture(GL_TEXTURE_2D, m_backgroundTextureID);
+	for (std::vector<m_gameTexture>::iterator::value_type texture : m_gameTextures) {
+		int size = 0;
+		void* data = nullptr;
 
-		loadImage(BACKGROUND_IMAGE);
+		glCreateTextures(GL_TEXTURE_2D, 1, &m_textureID[texture.textureID]);
+		glBindTexture(GL_TEXTURE_2D, m_textureID[texture.textureID]);
 
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_textureData);
-
-		glBindTextureUnit(0, m_backgroundTextureID);
-	}
-
-	if (type == PLAYER) {
-		glCreateTextures(GL_TEXTURE_2D, 1, &m_playerTextureID);
-		glBindTexture(GL_TEXTURE_2D, m_playerTextureID);
-
-		loadImage(PLAYER_SPRITE);
+		libzippp::ZipEntry zipFile = zf->getEntry(texture.path);
+		size = zipFile.getSize();
+		data = zipFile.readAsBinary();
+		loadImage(size, data);
 
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+		if (texture.textureID == 0) { // background needs to repeat as it scrolls
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		}
+		else {
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		}
+
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_textureData);
 
-		glBindTextureUnit(1, m_playerTextureID);
-	}
+		glBindTextureUnit(texture.textureID, m_textureID[texture.textureID]);
 
-	if (type == ENEMY) {
-		glCreateTextures(GL_TEXTURE_2D, 1, &m_enemyTextureID);
-		glBindTexture(GL_TEXTURE_2D, m_enemyTextureID);
-
-		loadImage(ENEMY_SPRITE);
-
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_textureData);
-
-		glBindTextureUnit(2, m_enemyTextureID);
-	}
-
-	if (type == PROJECTILE) {
-		glCreateTextures(GL_TEXTURE_2D, 1, &m_projectileTextureID);
-		glBindTexture(GL_TEXTURE_2D, m_projectileTextureID);
-
-		loadImage(PROJECTILE_SPRITE);
-
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_textureData);
-
-		glBindTextureUnit(3, m_projectileTextureID);
-	}
-
-	if (type == EXPLOSION) {
-		glCreateTextures(GL_TEXTURE_2D, 1, &m_explosionTextureID);
-		glBindTexture(GL_TEXTURE_2D, m_explosionTextureID);
-
-		loadImage(EXPLOSION_SPRITE);
-
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_textureData);
-
-		glBindTextureUnit(4, m_explosionTextureID);
-	}
-
-	if (type == GAME_MENU) {
-		glCreateTextures(GL_TEXTURE_2D, 1, &m_menuTextureID);
-		glBindTexture(GL_TEXTURE_2D, m_menuTextureID);
-
-		loadImage(MENU_IMAGE);
-
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_textureData);
-
-		glBindTextureUnit(5, m_menuTextureID);
-	}
-
-	if (type == HELP_MENU) {
-		glCreateTextures(GL_TEXTURE_2D, 1, &m_helpTextureID);
-		glBindTexture(GL_TEXTURE_2D, m_helpTextureID);
-
-		loadImage(HELP_IMAGE);
-
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_textureData);
-
-		glBindTextureUnit(6, m_helpTextureID);
-	}
-
-	if (type == COUNTDOWN) {
-		glCreateTextures(GL_TEXTURE_2D, 1, &m_countdownTextureID);
-		glBindTexture(GL_TEXTURE_2D, m_countdownTextureID);
-
-		loadImage(COUNTDOWN_IMAGE);
-
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_textureData);
-
-		glBindTextureUnit(7, m_countdownTextureID);
-	}
-
-	if (type == SCORE) {
-		glCreateTextures(GL_TEXTURE_2D, 1, &m_numbersTextureID);
-		glBindTexture(GL_TEXTURE_2D, m_numbersTextureID);
-
-		loadImage(NUMBERS_IMAGE);
-
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_textureData);
-
-		glBindTextureUnit(8, m_numbersTextureID);
-	}
-
-	if (type == HEALTHBAR) {
-		glCreateTextures(GL_TEXTURE_2D, 1, &m_healthbarTextureID);
-		glBindTexture(GL_TEXTURE_2D, m_healthbarTextureID);
-
-		loadImage(HEALTHBAR_IMAGE);
-
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_width, m_height, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_textureData);
-
-		glBindTextureUnit(9, m_healthbarTextureID);
 	}
 
 	if (m_textureData) {
@@ -194,13 +69,14 @@ void Textures::loadTexture(int type)
 	}
 }
 
-void Textures::loadImage(const std::string& path)
+void Textures::loadImage(int size, void* data)
 {
 	stbi_set_flip_vertically_on_load(1);
-	m_textureData = stbi_load(path.c_str(), &m_width, &m_height, &m_bpp, 4);
+
+	m_textureData = (unsigned char*)stbi_load_from_memory((unsigned char*)data, size, &m_width, &m_height, &m_bpp, 4);
 
 	if (m_textureData == nullptr)
-		std::cout << "FAILED TO LOAD TEXTURE FILE: " << path << " " << stbi_failure_reason() << std::endl;
+		std::cout << "FAILED TO LOAD TEXTURE FILE!" << stbi_failure_reason() << std::endl;
 }
 
 

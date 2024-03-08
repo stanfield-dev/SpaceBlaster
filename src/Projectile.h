@@ -6,7 +6,7 @@
 class Projectile : public Entity
 {
 private:
-	float m_projectileVelocity = 0.025f;
+	float m_projectileVelocity = 0.085f;
 	void rotateProjectile();
 
 public:

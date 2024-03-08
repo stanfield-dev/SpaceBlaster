@@ -5,13 +5,19 @@
 #include "glm/glm.hpp"
 #include <glm/gtc/matrix_transform.hpp>
 
-#include "defines.h"
+#include "sb_defines.h"
 
 class Entity
 {
 private:
 
 protected:
+	typedef struct
+	{
+		float x;
+		float y;
+	} m_gunPosition;
+
 	float m_spriteSheetWidth = 0.0f;
 	float m_spriteSheetHeight = 0.0f;
 	float m_spriteWidth = 0.0f;
@@ -87,7 +93,8 @@ public:
 	int getType() const;
 
 	// Animation functions
-	virtual void animateMenu();
+	virtual void animateScreen();
+	virtual void animateShip();
 
 	int getCountdownSource() const;
 	virtual void animateCountdown();
@@ -96,21 +103,15 @@ public:
 	virtual void animateExplosion();
 	virtual int getExplosionFrame() const;
 
-	virtual void scrollBackground();
-
-	void fireEngines();
 
 	// Combat and Collision functions
-	float getRightEdge() const;
-	float getLeftEdge() const;
-	float getTopEdge() const;
-	float getBottomEdge() const;
+	m_boundingBox boundingBox() const;
 
-	float getGunPositionX() const;
-	float getGunPositionY() const;
+	virtual void increaseDifficulty(float);
+	virtual float getDifficultyLevel();
 
 	// Health Bar functions
-	virtual void updateLives(int);
+	virtual void updateHealthBarLives(int);
 
 	// Positioning functions
 	void setPositionX(float);
@@ -128,6 +129,8 @@ public:
 	// Projectile functions
 	int getProjectileSource() const;
 	virtual void moveProjectile();
+
+	m_gunPosition getGunPosition() const;
 
 	float* getProjectileTargetPosition();
 	float* getProjectileSourcePosition();

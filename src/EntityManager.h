@@ -2,24 +2,23 @@
 
 #include <vector>
 
-#include "defines.h"
+#include "sb_defines.h"
 #include "Entity.h"
-
-#include "miniaudio.h"
+#include "SoundEngine.h"
 
 class EntityManager
 {
 private:
-	ma_engine* m_soundEngine;
-	std::vector<Entity*> m_entityRegistry;
+	SoundEngine* m_soundEngine;
 
-	Entity* countdownEntity = nullptr;
-	Entity* playerEntity = nullptr;
+	std::vector<Entity*> m_entityRegistry;
 
 	int m_playerLivesRemaining = 3;
 
+	float m_enemyDifficulty = 0.0f;
+
 public:
-	EntityManager(ma_engine*);
+	EntityManager(SoundEngine*);
 	~EntityManager();
 
 	Entity* spawnEntity(int, float, float, float, int, float*, float*);
@@ -29,19 +28,16 @@ public:
 
 	std::vector<Entity*> getEntityRegistry();
 
-	Entity* getCountdownEntity();
-	Entity* getPlayerEntity();
+	Entity* getEntity(int);
 
-	void setLivesRemaining(int);
-	int getLivesRemaining() const;
-
-	void updateScore();
+	void resetPlayerLivesRemaining();
+	void updatePlayerLivesRemaining(int);
+	int getPlayerLivesRemaining() const;
 
 	void updateVertexBuffers();
 
-	void checkCollisions();
-
 	Entity* respawnEnemy();
-
 	Entity* respawnPlayer();
+
+	void resetEnemyDifficulty();
 };

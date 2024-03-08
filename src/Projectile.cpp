@@ -8,12 +8,14 @@ Projectile::Projectile(int type, float x, float y, float z, int projectileSource
 	m_positionXOffset = m_displayWidth / SCREENWIDTH;
 	m_positionYOffset = m_displayHeight / SCREENHEIGHT;
 
-	m_positionY = y - (m_positionYOffset / 2.0f);  // center projectile sprite on gun
-
 	m_spriteSheetWidth = 256.0f;
 	m_spriteSheetHeight = 64.0f;
 	m_spriteWidth = 128.0f;
 	m_spriteHeight = 64.0f;
+
+	m_positionY -= (m_positionYOffset / 2);
+	m_positionX = x - m_positionXOffset;
+
 	m_spriteXOffset = m_spriteWidth / m_spriteSheetWidth;
 	m_spriteYOffset = m_spriteHeight / m_spriteSheetHeight;
 
@@ -35,7 +37,8 @@ Projectile::Projectile(int type, float x, float y, float z, int projectileSource
 	m_positionYOffset = m_displayHeight / SCREENHEIGHT;
 
 	m_positionY = y - (m_positionYOffset / 2.0f);  // center projectile sprite on gun
-	m_positionX = x - (m_positionXOffset / 2.0f);
+	m_positionX = x + (m_positionXOffset / 2.0f);
+
 	m_spriteSheetWidth = 256.0f;
 	m_spriteSheetHeight = 64.0f;
 	m_spriteWidth = 128.0f;
@@ -68,9 +71,13 @@ Projectile::~Projectile()
 
 void Projectile::moveProjectile() 
 {
-	m_positionX += (m_vectorSourceToTarget[0] * m_projectileVelocity);
-	m_positionY += (m_vectorSourceToTarget[1] * m_projectileVelocity);
-
+	if (this->getProjectileSource() == PLAYER) {
+		m_positionX += m_projectileVelocity;
+	}
+	else {
+		m_positionX += (m_vectorSourceToTarget[0] * m_projectileVelocity);
+		m_positionY += (m_vectorSourceToTarget[1] * m_projectileVelocity);
+	}
 	updateVertexArray();
 
 	if (this->getProjectileSource() == ENEMY) {

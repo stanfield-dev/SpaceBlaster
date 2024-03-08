@@ -1,7 +1,10 @@
 #pragma once
 
-#include "defines.h"
+#include "sb_defines.h"
+
+#include "libzippp.h"
 #include <string>
+#include <vector>
 
 class Textures {
 private:
@@ -9,26 +12,37 @@ private:
 	inline static int m_height = 0;
 	inline static int m_bpp = 0;
 
-	inline static unsigned int m_backgroundTextureID;
-	inline static unsigned int m_countdownTextureID;
-	inline static unsigned int m_enemyTextureID;
-	inline static unsigned int m_explosionTextureID;
-	inline static unsigned int m_healthbarTextureID;
-	inline static unsigned int m_helpTextureID;
-	inline static unsigned int m_menuTextureID;
-	inline static unsigned int m_numbersTextureID;
-	inline static unsigned int m_playerTextureID;
-	inline static unsigned int m_projectileTextureID;
+	struct m_gameTexture
+	{
+		int textureID;
+		std::string path;
+	};
 
+	inline static std::vector<m_gameTexture> m_gameTextures =
+	{
+		{PLAYER, "textures/player-ship-spritesheet.png"},
+		{ENEMY, "textures/enemy-ship-spritesheet.png"},
+		{PROJECTILE, "textures/projectiles.png"},
+		{EXPLOSION, "textures/explosion.png"},
+		{STARTSCREEN, "textures/startscreen.png"},
+		{HELPSCREEN, "textures/helpscreen.png"},
+		{COUNTDOWN, "textures/countdown.png"},
+		{SCORE, "textures/numbers.png"},
+		{HEALTHBAR, "textures/healthbar.png"},
+		{GAMEOVER, "textures/gameover.png"},
+		{BACKGROUND, "textures/background.png"}
+	};
+
+	inline static unsigned int m_textureID[11];
 	inline static unsigned char* m_textureData = nullptr;
 
-	void static loadImage(const std::string&);
+	void static loadImage(int size, void*);
 
 public:
 	Textures();
 	~Textures();
 
 	static void init(unsigned int);
-	static void loadTexture(int);
+	static void loadTextures(libzippp::ZipArchive*);
 };
 

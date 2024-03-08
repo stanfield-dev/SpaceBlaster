@@ -15,6 +15,23 @@ Entity::~Entity()
 	glDeleteBuffers(1, &m_vertexbufferID);
 }
 
+void Entity::animateCountdown() {}
+int Entity::getCountdownFrame() const { return 0; }
+void Entity::animateExplosion() {}
+int Entity::getExplosionFrame() const { return 0; }
+void Entity::animateScreen() {}
+void Entity::animateShip() {}
+
+void Entity::updateHealthBarLives(int) {}
+
+void Entity::updateScore() {}
+
+void Entity::moveEnemy() {}
+void Entity::moveProjectile() {}
+
+void Entity::increaseDifficulty(float) {}
+float Entity::getDifficultyLevel() { return 0.0f; }
+
 void Entity::generateBuffers()
 {
 	glGenVertexArrays(1, &m_VAO);
@@ -44,53 +61,49 @@ float Entity::getPositionZ() const
 
 float* Entity::getProjectileTargetPosition() 
 {
-	m_projectileTargetCoordinates[0] = getGunPositionX();
-	m_projectileTargetCoordinates[1] = getGunPositionY();
+	Entity::m_gunPosition position = getGunPosition();
+
+	m_projectileTargetCoordinates[0] = position.x;
+	m_projectileTargetCoordinates[1] = position.y;
 
 	return m_projectileTargetCoordinates;
 }
 
 float* Entity::getProjectileSourcePosition() 
 {
-	m_projectileSourceCoordinates[0] = getGunPositionX();
-	m_projectileSourceCoordinates[1] = getGunPositionY();
+	Entity::m_gunPosition position = getGunPosition();
+
+	m_projectileSourceCoordinates[0] = position.x;
+	m_projectileSourceCoordinates[1] = position.y;
 
 	return m_projectileSourceCoordinates;
 }
 
-float Entity::getRightEdge() const
+m_boundingBox Entity::boundingBox() const
 {
-	return m_positionX + m_positionXOffset;
+	m_boundingBox box = { 0.0f, 0.0f, 0.0f, 0.0f };
+
+	box.left	= m_positionX;
+	box.right	= m_positionX + m_positionXOffset;
+	box.top		= m_positionY + m_positionYOffset;
+	box.bottom	= m_positionY;
+
+	return box;
 }
 
-float Entity::getLeftEdge() const
+Entity::m_gunPosition Entity::getGunPosition() const
 {
-	return m_positionX;
-}
-
-float Entity::getTopEdge() const
-{
-	return m_positionY + m_positionYOffset;
-}
-
-float Entity::getBottomEdge() const
-{
-	return m_positionY;
-}
-
-float Entity::getGunPositionX() const
-{
-	if(this->m_type == PLAYER) {
-		return m_positionX + m_positionXOffset;
+	m_gunPosition position = { 0.0f, 0.0f };
+	
+	if (this->m_type == PLAYER) {
+		position.x = m_positionX + m_positionXOffset;
 	}
 	else {
-		return m_positionX;
+		position.x = m_positionX;
 	}
-}
+	position.y = m_positionY + (m_positionYOffset / 2);
 
-float Entity::getGunPositionY() const
-{
-	return m_positionY + (m_positionYOffset / 2);
+	return position;
 }
 
 void Entity::setPositionX(float x)
@@ -128,40 +141,6 @@ void Entity::updatePositionY(float y)
 
 	updateVertexArray();
 }
-
-void Entity::animateMenu() {}
-
-void Entity::animateExplosion() {}
-int Entity::getExplosionFrame() const { return 0; }
-
-void Entity::animateCountdown() {}
-int Entity::getCountdownFrame() const { return 0; }
-
-void Entity::updateLives(int) {}
-void Entity::updateScore() {}
-
-void Entity::scrollBackground() {}
-
-void Entity::fireEngines()
-{
-	if (m_spriteX + m_spriteXOffset >= 1.0f) {
-		m_spriteX = 0.0f;
-	}
-	else {
-		m_spriteX += m_spriteXOffset;
-	}
-
-	m_vertexArray[3] = m_spriteX;						// LLx
-	m_vertexArray[9] = m_spriteX + m_spriteXOffset;		// LRx
-	m_vertexArray[15] = m_spriteX + m_spriteXOffset;	// URx
-	m_vertexArray[21] = m_spriteX;						// ULx
-
-	updateVertexArray();
-}
-
-void Entity::moveEnemy() {}
-
-void Entity::moveProjectile() {}
 
 int Entity::getProjectileSource() const
 {

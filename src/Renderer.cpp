@@ -1,8 +1,5 @@
 #include "Renderer.h"
 
-#include "glm/glm.hpp"
-#include "glm/gtc/type_ptr.hpp"
-
 #include <iostream>
 
 void Renderer::init(unsigned int shaderProgram)
@@ -12,131 +9,132 @@ void Renderer::init(unsigned int shaderProgram)
 	glEnable(GL_BLEND);
 }
 
-void Renderer::drawEntities(unsigned int shaderProgram, EntityManager* entityManager)
+void Renderer::drawEntities(int gameState, unsigned int shaderProgram, EntityManager* entityManager)
 {
-	glClear(GL_COLOR_BUFFER_BIT);
+	auto entityRegistry = entityManager->getEntityRegistry();
+	switch (gameState) {
 
-	for (auto entity : entityManager->getEntityRegistry()) {
-		if ((entity->getType() != GAME_MENU) && (entity->getType() != HELP_MENU) && (entity->getType() != SCORE)) {
+		case COMBATst:
+			{
+				drawGameScreen(entityManager, shaderProgram);
+			}
+			break;
+		case COUNTDOWNst:
+			{
+				drawGameCountdownScreen(entityManager, shaderProgram);
+			}
+			break;
+		case GAMEOVERst:
+			{
+				drawGameOverScreen(entityManager, shaderProgram);
+			}
+			break;
+		case HELPSCREENst:
+			{
+				Entity* helpScreen = entityManager->getEntity(HELPSCREEN);
+				drawInfoScreen(helpScreen, shaderProgram);
+			}
+			break;
+		case NEWGAMEst:
+			{
+				Entity* startScreen = entityManager->getEntity(STARTSCREEN);
+				drawInfoScreen(startScreen, shaderProgram);
+			}
+			break;
+		case RESPAWNst:
+			{
+				drawGameScreen(entityManager, shaderProgram);
+			}
+			break;
+		case STARTSCREENst:
+			{
+				Entity* gameMenu = entityManager->getEntity(STARTSCREEN);
+				drawInfoScreen(gameMenu, shaderProgram);
+			}
+			break;
+	}
+}
+
+// ====================================================================================
+//
+// Draw collections of entities based on the state of the game
+//
+// Score is handled separately due to the different index buffer size and my lazy
+// avoidance of passing it around as a parameter
+//
+// ====================================================================================
+
+void Renderer::drawInfoScreen(Entity* entity, unsigned int shaderProgram)
+{
+	entity->bindVAO();
+	entity->bindIBO();
+	entity->updateVertexBuffer();
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+	entity->unbindVAO();
+}
+
+void Renderer::drawGameScreen(EntityManager* entityManager, unsigned int shaderProgram)
+{
+	std::vector<Entity*> entityRegistry = entityManager->getEntityRegistry();
+
+	for (auto entity : entityRegistry) {  
+		if ((entity->getType() != STARTSCREEN) && (entity->getType() != HELPSCREEN) && 
+			(entity->getType() != SCORE) && (entity->getType() != COUNTDOWN) &&
+			(entity->getType() != GAMEOVER)) {
+				entity->bindVAO();
+				entity->bindIBO();
+				entity->updateVertexBuffer();
+				glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+				entity->unbindVAO();
+		}
+	}
+
+	drawScore(entityManager, shaderProgram);
+}
+
+void Renderer::drawGameCountdownScreen(EntityManager* entityManager, unsigned int shaderProgram)
+{
+	std::vector<Entity*> entityRegistry = entityManager->getEntityRegistry();
+
+	for (auto entity : entityRegistry) {
+		if ((entity->getType() != STARTSCREEN) && (entity->getType() != HELPSCREEN) &&
+			(entity->getType() != SCORE) && (entity->getType() != GAMEOVER)) {
 			entity->bindVAO();
 			entity->bindIBO();
-
-			// background animation
-			if (entity->getType() == BACKGROUND) {
-				entity->scrollBackground();
-			}
-
-			// engine animation
-			if (entity->getType() == PLAYER || entity->getType() == ENEMY) {
-				entity->fireEngines();
-			}
-
-			// move enemy ship
-			if (entity->getType() == ENEMY) {
-				entity->moveEnemy();
-			}
-
-			// enemy fire at player
-			if (entity->getType() == ENEMY && entityManager->getPlayerEntity() != nullptr) {
-				Entity* player = entityManager->getPlayerEntity();
-
-				if (rand() % 1000 < 10) {
-					entityManager->spawnEntity(PROJECTILE, entity->getGunPositionX(), entity->getGunPositionY(), 0.0f, ENEMY,
-						entity->getProjectileSourcePosition(), player->getProjectileTargetPosition());
-				}
-			}
-
-			// move projectile across screen
-			if (entity->getType() == PROJECTILE) {
-				if (entity->getProjectileSource() == PLAYER) { // horizontal only
-					entity->updatePositionX(0.03f);
-				}
-				else {
-					entity->moveProjectile();
-				}
-			}
-
-			// explosion animation
-			if (entity->getType() == EXPLOSION) {
-				if (entity->getExplosionFrame() > 24) {
-					entityManager->removeEntityFromRegistry(entity);
-					entity->~Entity();
-				}
-				else {
-					entity->animateExplosion();
-				}
-			}
-
-			// countdown animation
-			if (entity->getType() == COUNTDOWN) {
-				if (entity->getCountdownFrame() > 400) {
-					if (entity->getCountdownSource() == ENEMY) {
-						entityManager->respawnEnemy();
-					}
-					entityManager->removeEntityFromRegistry(entity);
-					entity->~Entity();
-				}
-				else {
-					entity->animateCountdown();
-				}
-			}
-
 			entity->updateVertexBuffer();
 			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 			entity->unbindVAO();
 		}
 	}
+
+	drawScore(entityManager, shaderProgram);
 }
 
-void Renderer::drawGameMenu(unsigned int shaderProgram, EntityManager* entityManager)
+void Renderer::drawGameOverScreen(EntityManager* entityManager, unsigned int shaderProgram)
 {
-	glClear(GL_COLOR_BUFFER_BIT);
+	std::vector<Entity*> entityRegistry = entityManager->getEntityRegistry();
 
-	for (auto entity : entityManager->getEntityRegistry()) {
-		if (entity->getType() == GAME_MENU) {
-			entity->bindVAO();
-			entity->bindIBO();
-
-			// game menu animation
-			entity->animateMenu();
-
-			entity->updateVertexBuffer();
-			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-			entity->unbindVAO();
+	for (auto entity : entityRegistry) {
+		if ((entity->getType() != STARTSCREEN) && (entity->getType() != HELPSCREEN) &&
+			(entity->getType() != SCORE) && (entity->getType() != COUNTDOWN) &&
+			(entity->getType() != PLAYER)) {
+				entity->bindVAO();
+				entity->bindIBO();
+				entity->updateVertexBuffer();
+				glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+				entity->unbindVAO();
 		}
 	}
+
+	drawScore(entityManager, shaderProgram);
 }
 
-void Renderer::drawHelpMenu(unsigned int shaderProgram, EntityManager* entityManager)
+void Renderer::drawScore(EntityManager* entityManager, unsigned int shaderProgram)
 {
-	glClear(GL_COLOR_BUFFER_BIT);
-
-	for (auto entity : entityManager->getEntityRegistry()) {
-		if (entity->getType() == HELP_MENU) {
-			entity->bindVAO();
-			entity->bindIBO();
-
-			// help menu animation
-			entity->animateMenu();
-
-			entity->updateVertexBuffer();
-			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-			entity->unbindVAO();
-		}
-	}
-}
-
-void Renderer::drawScore(unsigned int shaderProgram, EntityManager* entityManager)
-{
-	/*glClear(GL_COLOR_BUFFER_BIT);*/
-
-	for (auto entity : entityManager->getEntityRegistry()) {
-		if (entity->getType() == SCORE) {
-			entity->bindVAO();
-			entity->bindIBO();
-			entity->updateVertexBuffer();
-			glDrawElements(GL_TRIANGLES, 18, GL_UNSIGNED_INT, 0);
-			entity->unbindVAO();
-		}
-	}
+	Entity* score = entityManager->getEntity(SCORE);
+	score->bindVAO();
+	score->bindIBO();
+	score->updateVertexBuffer();
+	glDrawElements(GL_TRIANGLES, 18, GL_UNSIGNED_INT, 0);
+	score->unbindVAO();
 }

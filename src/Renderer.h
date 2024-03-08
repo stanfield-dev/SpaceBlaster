@@ -2,7 +2,8 @@
 
 #include <GL/glew.h>
 
-#include "defines.h"
+#include "sb_defines.h"
+
 #include "EntityManager.h"
 #include "Entity.h"
 #include "Shader.h"
@@ -12,17 +13,16 @@
 class Renderer 
 {
 private:
-	static inline unsigned int m_projectionMatrixLoc = 0;
-	static inline unsigned int m_viewMatrixLoc = 0;
-
-	static inline glm::mat4 m_projectionMatrix = glm::mat4(1.0f);
-	static inline glm::mat4 m_viewMatrix = glm::mat4(1.0f);
 
 public:
 	static void init(unsigned int);
-	static void drawEntities(unsigned int, EntityManager*);
-	static void drawGameMenu(unsigned int, EntityManager*);
-	static void drawHelpMenu(unsigned int, EntityManager*);
-	static void drawScore(unsigned int, EntityManager*);
+
+	static void drawEntities(int, unsigned int, EntityManager*);
+
+	static void drawInfoScreen(Entity*, unsigned int);
+	static void drawGameScreen(EntityManager*, unsigned int);
+	static void drawGameCountdownScreen(EntityManager*, unsigned int);
+	static void drawGameOverScreen(EntityManager*, unsigned int);
+	static void drawScore(EntityManager*, unsigned int);
 };
 

@@ -37,7 +37,7 @@ private:
 		{0.6f, -0.63f},
 	};
 
-	float m_enemyVelocity = 0.01f;
+	float m_enemyVelocity = 0.02f;
 
 	float m_destinationX = 0.0f;
 	float m_destinationY = 0.0f;
@@ -47,6 +47,11 @@ public:
 	Enemy(int, float, float, float, EntityManager*);
 	~Enemy();
 
+	void animateShip() override;
+
 	void moveEnemy();
+
+	void increaseDifficulty(float) override;
+	float getDifficultyLevel() override;
 };
 
