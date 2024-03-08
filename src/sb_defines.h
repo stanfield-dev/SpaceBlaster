@@ -39,8 +39,5 @@ const float SCORETOTALWIDTH = 3 * SCOREWIDTH;
 //const std::string VSHADER_PATH = "resources/shaders/vertexShader.vert";
 //const std::string FSHADER_PATH = "resources/shaders/fragmentShader.frag";
 
-// audio sources
-const std::string EXPLOSION_SOUND =		"resources/sounds/explosion.mp3"; // TODO make sound class
-const std::string GAME_MUSIC =			"resources/sounds/gamemusic.mp3";
-const std::string PROJECTILE_SOUND =	"resources/sounds/projectile.mp3";
+
 

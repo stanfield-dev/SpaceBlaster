@@ -4,13 +4,12 @@
 
 #include "sb_defines.h"
 #include "Entity.h"
-
-#include "miniaudio.h"
+#include "SoundEngine.h"
 
 class EntityManager
 {
 private:
-	ma_engine* m_soundEngine;
+	SoundEngine* m_soundEngine;
 
 	std::vector<Entity*> m_entityRegistry;
 
@@ -19,7 +18,7 @@ private:
 	float m_enemyDifficulty = 0.0f;
 
 public:
-	EntityManager(ma_engine*);
+	EntityManager(SoundEngine*);
 	~EntityManager();
 
 	Entity* spawnEntity(int, float, float, float, int, float*, float*);

@@ -1,12 +1,10 @@
 #include "Game.h"
 #include <iostream>
 
-Game::Game(EntityManager* entityManager, ma_engine* soundEngine)
+Game::Game(EntityManager* entityManager, SoundEngine *soundEngine)
 {
 	m_gameStatus = STARTSCREENst;
 	m_lastGameStatus = NEWGAMEst;
-
-	m_soundEngine = soundEngine;
 
 	entityManager->spawnEntity(BACKGROUND, -1.0f, -1.0f, 0.0f, BACKGROUND, nullptr, nullptr);
 	entityManager->spawnEntity(ENEMY, 0.7f, 0.0f, 0.0f, ENEMY, nullptr, nullptr);
@@ -16,6 +14,8 @@ Game::Game(EntityManager* entityManager, ma_engine* soundEngine)
 	entityManager->spawnEntity(PLAYER, -0.9f, 0.0f, 0.0f, PLAYER, nullptr, nullptr);
 	entityManager->spawnEntity(SCORE, -((SCORETOTALWIDTH / 2) / SCREENWIDTH), -0.955f, 0.0f, SCORE, nullptr, nullptr);
 	entityManager->spawnEntity(STARTSCREEN, -1.0f, -1.0f, 0.0f, STARTSCREEN, nullptr, nullptr);
+
+	m_soundEngine = soundEngine;
 }
 
 Game::~Game()
@@ -299,7 +299,7 @@ void Game::checkCollisions(EntityManager* entityManager)
 									enemy->getPositionZ(),
 									EXPLOSION, nullptr, nullptr
 								);
-								ma_engine_play_sound(m_soundEngine, EXPLOSION_SOUND.c_str(), NULL);
+								m_soundEngine->playSound(EXPLOSION_SOUND);
 
 								entityManager->removeEntityFromRegistry(enemy);
 								enemy->~Entity();
@@ -329,7 +329,7 @@ void Game::checkCollisions(EntityManager* entityManager)
 									player->getPositionZ(),
 									EXPLOSION, nullptr, nullptr
 								);
-								ma_engine_play_sound(m_soundEngine, EXPLOSION_SOUND.c_str(), NULL);
+								m_soundEngine->playSound(EXPLOSION_SOUND);
 
 								entityManager->removeEntityFromRegistry(player);
 								player->~Entity();

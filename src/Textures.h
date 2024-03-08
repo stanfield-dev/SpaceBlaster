@@ -4,6 +4,7 @@
 
 #include "libzippp.h"
 #include <string>
+#include <vector>
 
 class Textures {
 private:
@@ -17,7 +18,7 @@ private:
 		std::string path;
 	};
 
-	inline static std::vector<m_gameTexture> gameTextures =
+	inline static std::vector<m_gameTexture> m_gameTextures =
 	{
 		{PLAYER, "textures/player-ship-spritesheet.png"},
 		{ENEMY, "textures/enemy-ship-spritesheet.png"},

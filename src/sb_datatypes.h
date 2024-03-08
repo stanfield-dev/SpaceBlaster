@@ -36,3 +36,11 @@ typedef struct
 	float top;
 	float bottom;
 } m_boundingBox;
+
+// sounds
+enum gameSounds : int
+{
+	BACKGROUND_MUSIC = 0,
+	EXPLOSION_SOUND,
+	PROJECTILE_SOUND
+};

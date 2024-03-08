@@ -2,14 +2,11 @@
 
 #include "sb_defines.h"
 #include "EntityManager.h"
-
-#include "miniaudio.h"
+#include "SoundEngine.h"
 
 class Game
 {
 private:
-	ma_engine* m_soundEngine;
-
 	int m_gameStatus = STARTSCREENst;
 	int m_lastGameStatus = NEWGAMEst;
 
@@ -25,10 +22,12 @@ private:
 	Entity* m_scoreEntity		= nullptr;
 	Entity* m_startscreenEntity = nullptr;
 
+	SoundEngine* m_soundEngine = nullptr;
+
 	bool directHit(Entity*, Entity*);
 
 public:
-	Game(EntityManager*, ma_engine*);
+	Game(EntityManager*, SoundEngine*);
 	~Game();
 
 	int gameState() const;

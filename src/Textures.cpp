@@ -34,7 +34,7 @@ void Textures::init(unsigned int shaderProgram)
 
 void Textures::loadTextures(libzippp::ZipArchive *zf)
 { 
-	for (std::vector<m_gameTexture>::iterator::value_type texture : gameTextures) {
+	for (std::vector<m_gameTexture>::iterator::value_type texture : m_gameTextures) {
 		int size = 0;
 		void* data = nullptr;
 

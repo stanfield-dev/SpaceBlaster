@@ -15,7 +15,7 @@
 #include <iostream>
 #include <iterator>
 
-EntityManager::EntityManager(ma_engine* soundEngine)
+EntityManager::EntityManager(SoundEngine* soundEngine)
 {
 	m_soundEngine = soundEngine;
 }
@@ -39,7 +39,7 @@ Entity* EntityManager::spawnEntity(int type, float x, float y, float z, int sour
 					newEntity = new Projectile(type, x, y, z, source,
 						sourceCoordinates, targetCoordinates, this);
 				}
-				ma_engine_play_sound(m_soundEngine, PROJECTILE_SOUND.c_str(), NULL);
+				m_soundEngine->playSound(PROJECTILE_SOUND);
 			}
 			break;
 		case EXPLOSION:

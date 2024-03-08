@@ -1,24 +1,21 @@
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-
-#include "miniaudio.h"
-
 #include "sb_defines.h"
 #include "Background.h"
 #include "Game.h"
 #include "EntityManager.h"
 #include "Renderer.h"
 #include "Shader.h"
+#include "SoundEngine.h"
 #include "Terrain.h"
 #include "Textures.h"
+
+#include <GL/glew.h>
+#include <GLFW/glfw3.h>
 
 #include <chrono>
 #include <iostream>
 #include <map>
 #include <string>
 #include <stdlib.h>
-
-float musicVolume = 0.5f;
 
 std::map<int, bool> keyIsPressed 
 {
@@ -121,39 +118,19 @@ int main(void) {
 		std::cout << "GLEW initialization failure!" << std::endl;
 	}
 
-	//============ MINIAUDIO SOUND SETUP ============
-	ma_result result;
-	ma_engine soundEngine;
-	ma_engine_config soundEngineConfig;
-
-	soundEngineConfig = ma_engine_config_init();
-
-	result = ma_engine_init(NULL, &soundEngine);
-	if (result != MA_SUCCESS) {
-		return result;
-	}
-
-	ma_sound backgroundMusic;
-	result = ma_sound_init_from_file(&soundEngine, GAME_MUSIC.c_str(), 0, NULL, NULL, &backgroundMusic);
-	if (result != MA_SUCCESS) {
-		return result;
-	}
-
-	ma_sound_set_looping(&backgroundMusic, true);
-	ma_sound_set_volume(&backgroundMusic, musicVolume);
-	ma_sound_start(&backgroundMusic);
-	//===============================================
-
 	unsigned int shaderProgram = Shader::createShader(Shader::getVertexShader(), Shader::getFragmentShader());
 	Shader::useShader(shaderProgram); 
 
 	Textures::init(shaderProgram);
 	Renderer::init(shaderProgram);
 
-	EntityManager *entityManager = new EntityManager(&soundEngine);
-	Game* game = new Game(entityManager, &soundEngine);
+	SoundEngine* soundEngine = new SoundEngine();
+	EntityManager *entityManager = new EntityManager(soundEngine);
+	Game* game = new Game(entityManager, soundEngine);
 
 	m_startTime = std::chrono::steady_clock::now();
+
+	soundEngine->playSound(BACKGROUND_MUSIC);
 
 	while (!glfwWindowShouldClose(window)) {
 
@@ -161,17 +138,11 @@ int main(void) {
 		int lastState = game->lastGameState();
 
 		if (keyIsPressed[GLFW_KEY_MINUS] == true) {
-			if (musicVolume > 0.0) {
-				musicVolume -= 0.05f;
-				ma_sound_set_volume(&backgroundMusic, musicVolume);
-			}
+			soundEngine->changeVolume(-0.05f);
 		}
 
 		if (keyIsPressed[GLFW_KEY_EQUAL] == true) {
-			if (musicVolume < 1.0) {
-				musicVolume += 0.05f;
-				ma_sound_set_volume(&backgroundMusic, musicVolume);
-			}
+			soundEngine->changeVolume(0.05f);
 		}
 
 		if (keyIsPressed[GLFW_KEY_ESCAPE] == true) {
@@ -214,7 +185,7 @@ int main(void) {
 		m_endTime = std::chrono::steady_clock::now();
 		elapsedTime = (m_endTime - m_startTime);
 
-		if (elapsedTime.count() > 16) {  // 16ms
+		if (elapsedTime.count() > 16) {  // 16ms, 60fps
 
 			Entity* player = entityManager->getEntity(PLAYER);
 			if (player != nullptr) {
@@ -255,9 +226,6 @@ int main(void) {
 	}
 
 	Shader::deleteShader(shaderProgram);
-
-	ma_sound_uninit(&backgroundMusic);
-	ma_engine_uninit(&soundEngine);
 
 	glfwTerminate();
 
