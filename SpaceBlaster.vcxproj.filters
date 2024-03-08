@@ -82,6 +82,7 @@
   <ItemGroup>
     <None Include="src\resources\shaders\fragmentShader.frag" />
     <None Include="src\resources\shaders\vertexShader.vert" />
+    <None Include="spaceblaster.dat" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\Player.h">
@@ -196,8 +197,5 @@
     <Media Include="src\resources\sounds\explosion.mp3" />
     <Media Include="src\resources\sounds\gamemusic.mp3" />
     <Media Include="src\resources\sounds\projectile.mp3" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="C:\Users\exs\Desktop\Space Blaster\README.txt" />
   </ItemGroup>
 </Project>
