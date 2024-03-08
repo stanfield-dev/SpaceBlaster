@@ -197,4 +197,7 @@
     <Media Include="src\resources\sounds\gamemusic.mp3" />
     <Media Include="src\resources\sounds\projectile.mp3" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="C:\Users\exs\Desktop\Space Blaster\README.txt" />
+  </ItemGroup>
 </Project>
