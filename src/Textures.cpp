@@ -35,7 +35,7 @@ void Textures::init(unsigned int shaderProgram)
 void Textures::loadTextures(libzippp::ZipArchive *zf)
 { 
 	for (std::vector<m_gameTexture>::iterator::value_type texture : m_gameTextures) {
-		int size = 0;
+		uint64_t size = 0;
 		void* data = nullptr;
 
 		glCreateTextures(GL_TEXTURE_2D, 1, &m_textureID[texture.textureID]);

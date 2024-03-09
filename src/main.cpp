@@ -93,6 +93,7 @@ std::chrono::duration<double,std::ratio<1, 1000>> elapsedTime;
 
 int main(void) {
 	GLFWwindow* window;
+	int hibernationState = 0;
 
 	/* Initialize the library */
 	if (!glfwInit())
@@ -139,10 +140,12 @@ int main(void) {
 
 		if (keyIsPressed[GLFW_KEY_MINUS] == true) {
 			soundEngine->changeVolume(-0.05f);
+			keyIsPressed[GLFW_KEY_MINUS] = false;
 		}
 
 		if (keyIsPressed[GLFW_KEY_EQUAL] == true) {
 			soundEngine->changeVolume(0.05f);
+			keyIsPressed[GLFW_KEY_EQUAL] = false;
 		}
 
 		if (keyIsPressed[GLFW_KEY_ESCAPE] == true) {
@@ -150,11 +153,15 @@ int main(void) {
 				game->setGameState(STARTSCREENst, COMBATst);
 				gameState = STARTSCREENst;
 			}
+			keyIsPressed[GLFW_KEY_ESCAPE] = false;
 		}
 
 		if (keyIsPressed[GLFW_KEY_F1] == true && gameState != GAMEOVERst) {
-			game->setGameState(HELPSCREENst, lastState);
-			gameState = HELPSCREENst;
+			if (gameState == STARTSCREENst) {
+				hibernationState = game->lastGameState();
+			}
+			game->setGameState(HELPSCREENst, gameState);
+			keyIsPressed[GLFW_KEY_F1] = false;
 		}
 
 		if (keyIsPressed[GLFW_KEY_ENTER] == true) {
@@ -170,15 +177,18 @@ int main(void) {
 			}
 
 			if (gameState == HELPSCREENst) {
-				game->setGameState(lastState, gameState);
-				gameState = lastState;
+				if (lastState == STARTSCREENst) {
+					game->setGameState(STARTSCREENst, hibernationState);
+				}
+				else {
+					game->setGameState(lastState, HELPSCREENst);
+				}
 			}
 
 			if (gameState == GAMEOVERst) {
 				game->setGameState(NEWGAMEst, gameState);
 				gameState = NEWGAMEst;
 			}
-			// some weird quirk with Enter sending more than once, bypassing the startscreen
 			keyIsPressed[GLFW_KEY_ENTER] = false;
 		}
 

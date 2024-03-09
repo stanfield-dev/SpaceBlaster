@@ -22,7 +22,7 @@ SoundEngine::~SoundEngine()
 void SoundEngine::loadGameSounds(libzippp::ZipArchive* zf)
 {
 	libzippp::ZipEntry zipFile;
-	int size;
+	uint64_t size;
 
 	zipFile = zf->getEntry(m_gameSounds[BACKGROUND_MUSIC]);
 	m_bgSoundData = zipFile.readAsBinary();
